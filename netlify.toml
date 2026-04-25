@@ -1,0 +1,104 @@
+# ✅ ESTIVO — Instrukcja wdrożenia (uproszczona)
+# Czas: ok. 30 minut
+
+---
+
+## KROK 1 — Wrzuć projekt na Netlify (5 min)
+
+1. Wejdź na https://netlify.com → zaloguj się
+2. Kliknij **"Add new site" → "Deploy manually"**
+3. **Przeciągnij cały folder `estivo-final`** na pole "Drag and drop"
+4. Poczekaj ~1 minutę na deploy
+5. Zapisz adres URL który Netlify wygeneruje (np. `https://estivo-abc123.netlify.app`)
+
+---
+
+## KROK 2 — Włącz Netlify Identity (3 min)
+
+1. W Netlify → Twoja strona → **"Identity"** (górne menu)
+2. Kliknij **"Enable Identity"**
+3. Idź do **"Settings & usage" → "Registration"** → ustaw **"Invite only"**
+   (żeby tylko płacący klienci mogli tworzyć konta)
+4. Idź do **"Settings & usage" → "External providers"** → możesz dodać Google login
+
+---
+
+## KROK 3 — Stripe (15 min)
+
+1. Wejdź na https://stripe.com → utwórz konto (lub zaloguj się)
+2. **Włącz tryb testowy** (przełącznik "Test mode" w górnym pasku)
+
+3. **Utwórz produkty**: Products → Add product
+   - Produkt 1: `Estivo Starter` → cena `99` PLN, recurring, monthly
+     → Zapisz **Price ID** (np. `price_1ABC...`)
+   - Produkt 2: `Estivo Pro` → cena `199` PLN, recurring, monthly
+     → Zapisz **Price ID** (np. `price_1XYZ...`)
+
+4. **Pobierz klucze**: Developers → API keys
+   - Zapisz `Secret key` (sk_test_...)
+   - Zapisz `Publishable key` (pk_test_...) — na razie nieużywany, ale miej
+
+5. **Webhook** (zrób PO tym jak Netlify jest już wdrożony):
+   - Developers → Webhooks → Add endpoint
+   - URL: `https://TWOJ-ADRES.netlify.app/.netlify/functions/stripe-webhook`
+   - Events: zaznacz `checkout.session.completed`, `customer.subscription.deleted`, `invoice.payment_failed`
+   - Zapisz **Webhook signing secret** (whsec_...)
+
+---
+
+## KROK 4 — Netlify Personal Access Token (2 min)
+
+Potrzebny do automatycznego nadawania ról po płatności.
+
+1. Netlify → kliknij awatar w prawym górnym rogu → **"User settings"**
+2. **"Applications" → "New access token"**
+3. Nazwij go `estivo-webhook`, kliknij Generate
+4. Zapisz token (widoczny tylko raz!)
+
+---
+
+## KROK 5 — Wklej klucze w Netlify (5 min)
+
+Netlify → Twoja strona → **"Site settings" → "Environment variables" → "Add variable"**
+
+Dodaj kolejno:
+
+| Nazwa zmiennej            | Wartość                        |
+|---------------------------|--------------------------------|
+| `STRIPE_SECRET_KEY`       | `sk_test_...` (z kroku 3)      |
+| `STRIPE_WEBHOOK_SECRET`   | `whsec_...` (z kroku 3)        |
+| `STRIPE_PRICE_STARTER`    | `price_...` starter (krok 3)   |
+| `STRIPE_PRICE_PRO`        | `price_...` pro (krok 3)       |
+| `NETLIFY_IDENTITY_TOKEN`  | token z kroku 4                |
+
+Po dodaniu wszystkich → **"Trigger deploy"** (Deploys → Trigger deploy)
+
+---
+
+## KROK 6 — Test (5 min)
+
+1. Wejdź na swój URL Netlify
+2. Kliknij "Zacznij 14-dniowy trial" (plan Pro)
+3. Zostaniesz poproszony o założenie konta (Netlify Identity)
+4. Po rejestracji → Stripe Checkout
+5. Użyj karty testowej: `4242 4242 4242 4242`, dowolna data (przyszła), dowolny CVC
+6. Po płatności → trafiasz na `/app.html`
+
+---
+
+## Na produkcję (gdy masz klientów)
+
+W Stripe wyłącz "Test mode" → Live mode
+Zaktualizuj klucze w Netlify env vars (sk_live_... zamiast sk_test_...)
+Utwórz nowe produkty w trybie Live i zaktualizuj STRIPE_PRICE_*
+
+---
+
+## Koszty miesięczne
+
+| Serwis   | Plan darmowy               | Kiedy płatny              |
+|----------|----------------------------|---------------------------|
+| Netlify  | do 100GB transfer/msc      | ~$19/msc przy dużym ruchu |
+| Stripe   | 0 zł stały                 | 1.4%+0.25 zł od transakcji|
+
+**Podsumowanie: 0 zł/msc do pierwszych ~100 klientów**
