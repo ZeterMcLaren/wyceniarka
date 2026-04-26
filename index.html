@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Estivo — Wycena nieruchomości AI</title>
+
+<!-- Netlify Identity — TYLKO RAZ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  --v:#7C3AED;--vl:#A78BFA;--b:#2563EB;--cy:#06B6D4;
+  --bg:#05030D;--s1:#0B0918;--s2:#110F22;
+  --br:rgba(124,58,237,.18);
+  --t:#F0EDFF;--tm:rgba(240,237,255,.52);--tf:rgba(240,237,255,.14);
+  --green:#10B981;--amber:#F59E0B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;}
+
+/* ORBS */
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.28),transparent 70%);top:-250px;left:-150px;animation:d1 18s ease-in-out infinite;}
+.o2{width:550px;height:550px;background:radial-gradient(circle,rgba(37,99,235,.22),transparent 70%);top:300px;right:-180px;animation:d2 22s ease-in-out infinite;}
+.o3{width:450px;height:450px;background:radial-gradient(circle,rgba(6,182,212,.15),transparent 70%);bottom:100px;left:25%;animation:d3 26s ease-in-out infinite;}
+@keyframes d1{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,30px);}}
+@keyframes d2{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,40px);}}
+@keyframes d3{0%,100%{transform:translate(0,0);}50%{transform:translate(20px,-30px);}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:all .4s;}
+nav.stuck{background:rgba(5,3,13,.9);backdrop-filter:blur(24px);border-color:var(--br);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;}
+.nav-mid{display:flex;gap:4px;}
+.nav-mid a{font-size:13.5px;color:var(--tm);text-decoration:none;padding:6px 14px;border-radius:100px;transition:all .2s;}
+.nav-mid a:hover{color:var(--t);background:rgba(124,58,237,.1);}
+.nav-right{display:flex;gap:10px;align-items:center;}
+.btn-link{background:none;border:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--tm);cursor:pointer;padding:8px 16px;border-radius:100px;transition:all .2s;}
+.btn-link:hover{color:var(--t);background:rgba(255,255,255,.05);}
+.btn-nav{background:linear-gradient(135deg,var(--v),var(--b));border:none;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:#fff;cursor:pointer;padding:9px 22px;border-radius:100px;transition:all .2s;box-shadow:0 4px 20px rgba(124,58,237,.35);}
+.btn-nav:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,.5);}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 80px;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:100px;padding:6px 18px;font-size:12.5px;color:#C4B5FD;margin-bottom:36px;animation:up .9s ease both;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:#A78BFA;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+h1.hero-h{font-family:'Syne',sans-serif;font-size:clamp(52px,9vw,96px);font-weight:800;line-height:.95;letter-spacing:-3px;animation:up .9s .1s ease both;}
+h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C5FD 40%,#67E8F9 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:clamp(16px,2.2vw,20px);color:var(--tm);max-width:540px;margin:28px auto 0;font-weight:300;line-height:1.7;animation:up .9s .2s ease both;}
+.hero-cta{display:flex;gap:14px;justify-content:center;margin-top:48px;flex-wrap:wrap;animation:up .9s .3s ease both;}
+.btn-primary{background:linear-gradient(135deg,var(--v),var(--b));padding:15px 38px;border-radius:100px;font-size:15px;font-weight:500;color:#fff;border:none;cursor:pointer;transition:all .25s;box-shadow:0 0 40px rgba(124,58,237,.45);font-family:'DM Sans',sans-serif;text-decoration:none;display:inline-block;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 60px rgba(124,58,237,.65);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-secondary{padding:15px 38px;border-radius:100px;font-size:15px;font-weight:500;color:var(--t);border:1px solid var(--br);transition:all .25s;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;}
+.btn-secondary:hover{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.5);}
+.hero-stats{display:flex;gap:0;justify-content:center;margin-top:80px;animation:up .9s .45s ease both;background:var(--s1);border:1px solid var(--br);border-radius:20px;overflow:hidden;max-width:520px;width:100%;}
+.stat{flex:1;padding:20px 24px;text-align:center;border-right:1px solid var(--br);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-l{font-size:12px;color:var(--tm);margin-top:2px;}
+
+/* SECTIONS */
+.section{position:relative;z-index:1;padding:110px 24px;}
+.s-label{font-size:11.5px;font-weight:500;color:#A78BFA;letter-spacing:.18em;text-transform:uppercase;text-align:center;margin-bottom:14px;}
+.s-title{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:700;text-align:center;line-height:1.12;letter-spacing:-1.5px;}
+.s-sub{font-size:17px;color:var(--tm);text-align:center;max-width:500px;margin:14px auto 0;font-weight:300;line-height:1.65;}
+.gt{background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+/* TRUST BAR */
+.trust-bar{position:relative;z-index:1;padding:36px 24px;border-top:1px solid var(--br);border-bottom:1px solid var(--br);background:var(--s1);}
+.trust-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--tm);}
+.trust-ico{width:30px;height:30px;border-radius:8px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* FEATURES */
+.feats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;max-width:1080px;margin:64px auto 0;background:var(--br);border:1px solid var(--br);border-radius:24px;overflow:hidden;}
+.feat{background:var(--s1);padding:32px 28px;transition:background .3s;}
+.feat:hover{background:var(--s2);}
+.feat-ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2));border:1px solid rgba(124,58,237,.25);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.feat-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;margin-bottom:9px;}
+.feat-d{font-size:13.5px;color:var(--tm);line-height:1.7;}
+
+/* VALUATOR */
+.val-wrap{max-width:880px;margin:60px auto 0;background:var(--s1);border:1px solid var(--br);border-radius:28px;overflow:hidden;}
+.val-hdr{padding:28px 36px;border-bottom:1px solid var(--br);background:linear-gradient(135deg,rgba(124,58,237,.07),rgba(37,99,235,.05));display:flex;align-items:center;justify-content:space-between;}
+.val-hdr-t{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;}
+.live-chip{display:flex;align-items:center;gap:5px;font-size:12px;color:#34D399;background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.22);padding:4px 12px;border-radius:100px;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#34D399;animation:pulse 2s infinite;}
+.val-body{padding:32px 36px;}
+.val-row{display:grid;gap:14px;margin-bottom:14px;}
+.val-row.c3{grid-template-columns:1fr 1fr 1fr;}
+.val-row.c2{grid-template-columns:1fr 1fr;}
+@media(max-width:640px){.val-row.c3,.val-row.c2{grid-template-columns:1fr;}}
+.vf label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+.vf select,.vf input,.vf textarea{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
+.vf select:focus,.vf input:focus,.vf textarea:focus{border-color:#A78BFA;box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.vf select option{background:var(--s1);}
+.vf textarea{resize:none;min-height:68px;}
+.val-submit{width:100%;padding:15px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15.5px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 36px rgba(124,58,237,.35);margin-top:16px;}
+.val-submit:hover{opacity:.9;transform:translateY(-1px);}
+.val-submit:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.val-result{display:none;border-top:1px solid var(--br);padding:32px 36px;background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(37,99,235,.03));}
+.ld-row{display:flex;align-items:center;gap:9px;padding:12px 0;}
+.ld{width:7px;height:7px;border-radius:50%;background:var(--vl);animation:ld 1.2s infinite;}
+.ld:nth-child(2){animation-delay:.2s;}.ld:nth-child(3){animation-delay:.4s;}
+@keyframes ld{0%,80%,100%{transform:scale(.55);opacity:.35;}40%{transform:scale(1);opacity:1;}}
+.res-price{font-family:'Syne',sans-serif;font-size:54px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.res-range{font-size:13.5px;color:var(--tm);margin-top:5px;}
+.conf-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin:18px 0 4px;overflow:hidden;}
+.conf-fill{height:100%;background:linear-gradient(90deg,var(--vl),var(--cy));border-radius:2px;transition:width 1.3s cubic-bezier(.4,0,.2,1);}
+.conf-lbl{font-size:12px;color:var(--tm);}
+.res-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px;}
+.rm{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:14px 16px;}
+.rm-lbl{font-size:11px;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
+.rm-val{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;}
+.res-analysis{font-size:14px;color:rgba(240,237,255,.65);line-height:1.75;margin-top:20px;padding:18px 20px;background:rgba(255,255,255,.025);border-radius:13px;border:1px solid rgba(255,255,255,.05);}
+.res-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;}
+.rtag{font-size:12.5px;padding:5px 13px;border-radius:100px;}
+.rp{background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22);color:#34D399;}
+.rm2{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.22);color:#FCA5A5;}
+.res-src{margin-top:16px;padding:11px 14px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);border-radius:10px;font-size:11.5px;color:rgba(96,165,250,.8);}
+
+/* SOCIAL PROOF */
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:52px auto 0;}
+.proof-card{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:24px 22px;}
+.proof-stars{display:flex;gap:3px;margin-bottom:14px;}
+.star{width:13px;height:13px;background:var(--amber);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.proof-text{font-size:13.5px;color:var(--tm);line-height:1.65;margin-bottom:18px;font-style:italic;}
+.proof-author{display:flex;align-items:center;gap:10px;}
+.proof-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.proof-name{font-size:13px;font-weight:500;}
+.proof-role{font-size:12px;color:var(--tm);}
+
+/* PRICING */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:940px;margin:60px auto 0;}
+@media(max-width:760px){.plans-grid,.feats-grid,.proof-grid{grid-template-columns:1fr;}}
+.plan{background:var(--s1);border:1px solid var(--br);border-radius:24px;padding:32px 28px;transition:transform .25s;position:relative;}
+.plan:hover{transform:translateY(-4px);}
+.plan.hot{border-color:rgba(124,58,237,.55);background:linear-gradient(160deg,rgba(124,58,237,.14),rgba(37,99,235,.08));box-shadow:0 0 60px rgba(124,58,237,.18);}
+.hot-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:500;padding:4px 16px;background:linear-gradient(135deg,var(--v),var(--b));border-radius:100px;color:#fff;white-space:nowrap;}
+.plan-name{font-size:12px;color:var(--tm);font-weight:500;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;}
+.plan-price{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;line-height:1;}
+.plan-price sup{font-size:19px;font-weight:500;vertical-align:super;}
+.plan-per{font-size:13px;color:var(--tm);margin-top:4px;margin-bottom:22px;}
+.plan-hr{height:1px;background:var(--br);margin-bottom:20px;}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px;}
+.plan-feats li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:rgba(240,237,255,.82);}
+.chk{width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.plan-btn{width:100%;padding:13px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .22s;}
+.pb-out{background:transparent;border:1px solid var(--br);color:var(--t);}
+.pb-out:hover{border-color:var(--vl);background:rgba(124,58,237,.1);}
+.pb-fill{background:linear-gradient(135deg,var(--v),var(--b));color:#fff;box-shadow:0 4px 22px rgba(124,58,237,.42);}
+.pb-fill:hover{box-shadow:0 6px 36px rgba(124,58,237,.65);}
+.plan-btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* FAQ */
+.faq-wrap{max-width:700px;margin:52px auto 0;}
+.faq-item{border-bottom:1px solid var(--br);padding:22px 0;cursor:pointer;}
+.faq-q{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:500;gap:16px;}
+.faq-ico{width:22px;height:22px;border-radius:50%;border:1px solid var(--br);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--v);border-color:var(--v);}
+.faq-a{font-size:14px;color:var(--tm);line-height:1.75;max-height:0;overflow:hidden;transition:max-height .35s ease,margin .35s ease;}
+.faq-item.open .faq-a{max-height:280px;margin-top:12px;}
+
+/* CTA BAND */
+.cta-wrap{position:relative;z-index:1;margin:0 24px 100px;border-radius:28px;padding:80px 40px;text-align:center;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(37,99,235,.18));border:1px solid rgba(124,58,237,.28);overflow:hidden;}
+.cta-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(124,58,237,.35),transparent 65%);}
+.cta-wrap h2{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:800;line-height:1.12;letter-spacing:-1.5px;position:relative;}
+.cta-wrap p{font-size:17px;color:var(--tm);margin-top:14px;position:relative;font-weight:300;}
+.cta-btns{display:flex;gap:14px;justify-content:center;margin-top:38px;position:relative;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.f-logo{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.f-links{display:flex;gap:22px;}
+.f-links a{font-size:13px;color:var(--tm);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--t);}
+.f-copy{font-size:12.5px;color:var(--tf);}
+
+/* PAYWALL MODAL */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(5,3,13,.9);backdrop-filter:blur(14px);align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--s1);border:1px solid rgba(124,58,237,.38);border-radius:28px;padding:40px 36px;max-width:440px;width:90%;text-align:center;position:relative;box-shadow:0 0 80px rgba(124,58,237,.22);}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--tm);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s;}
+.modal-close:hover{color:var(--t);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s1);border:1px solid var(--br);border-radius:12px;padding:12px 22px;font-size:14px;color:var(--t);z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-logo" onclick="scrollTo({top:0,behavior:'smooth'})">estivo</div>
+  <div class="nav-mid">
+    <a href="#funkcje">Funkcje</a>
+    <a href="#wycena">Demo</a>
+    <a href="#cennik">Cennik</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <!-- Netlify Identity otwiera swój modal — jedyny przycisk logowania -->
+    <button class="btn-link" onclick="openLoginModal()">Zaloguj się</button>
+    <button class="btn-nav" onclick="document.getElementById('cennik').scrollIntoView({behavior:'smooth'})">Zacznij za darmo →</button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-badge"><span class="badge-dot"></span>Wyceny nieruchomości napędzane przez AI</div>
+  <h1 class="hero-h">Wyceniaj<br/><em>szybciej</em> niż<br/>konkurencja</h1>
+  <p class="hero-sub">Estivo analizuje lokalizację, metraż i dane transakcyjne NBP — i zwraca profesjonalną wycenę w 10 sekund. Bez arkuszy. Bez zgadywania.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('wycena').scrollIntoView({behavior:'smooth'})">Wypróbuj demo bezpłatnie</button>
+    <a href="#cennik" class="btn-secondary">Zobacz plany i cennik</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">10s</div><div class="stat-l">Czas wyceny</div></div>
+    <div class="stat"><div class="stat-n">94%</div><div class="stat-l">Dokładność</div></div>
+    <div class="stat"><div class="stat-n">8 miast</div><div class="stat-l">Baza danych</div></div>
+  </div>
+</section>
+
+<!-- ═══ TRUST BAR ═══ -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1.5l1.6 3.3 3.7.5-2.7 2.6.6 3.7-3.2-1.7-3.2 1.7.6-3.7-2.7-2.6 3.7-.5z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+      Dane NBP BaRN IV kw. 2025
+    </div>
+    <div class="trust-item">
+      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><rect x="2" y="2" width="11" height="11" rx="2.5" stroke="#A78BFA" stroke-width="1.2"/><path d="M4.5 7.5l2 2 4-4" stroke="#A78BFA" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      Bez umowy · Anuluj kiedy chcesz
+    </div>
+    <div class="trust-item">
+      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="5.5" stroke="#A78BFA" stroke-width="1.2"/><path d="M7.5 4.5v3l1.8 1.8" stroke="#A78BFA" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      14 dni trial · Bez karty kredytowej
+    </div>
+    <div class="trust-item">
+      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1.5a6 6 0 100 11 6 6 0 000-11z" stroke="#60A5FA" stroke-width="1.2"/><path d="M5 7.5l2 2 3.5-3.5" stroke="#60A5FA" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      Raport PDF z Twoim brandingiem
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="section" id="funkcje">
+  <div class="s-label">Dlaczego Estivo</div>
+  <h2 class="s-title reveal">Wszystko czego potrzebuje<br/><span class="gt">nowoczesny agent</span></h2>
+  <div class="feats-grid reveal">
+    <div class="feat">
+      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M10 2l2.2 4.5 5 .7-3.6 3.5.85 5L10 13.4 5.55 15.7l.85-5L2.8 7.2l5-.7z" stroke="#A78BFA" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+      <div class="feat-t">Wycena w 10 sekund</div>
+      <div class="feat-d">Wypełnij formularz — Estivo natychmiast zwraca wycenę z uzasadnieniem, przedziałem cenowym i poziomem trafności opartym na danych rynkowych.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" stroke="#60A5FA" stroke-width="1.4"/><path d="M10 6v4l2.5 2.5" stroke="#60A5FA" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <div class="feat-t">Aktualne dane rynkowe</div>
+      <div class="feat-d">Ceny bazują na oficjalnych transakcjach z bazy NBP BaRN IV kw. 2025. 8 największych polskich miast, dziesiątki dzielnic.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="3" stroke="#22D3EE" stroke-width="1.4"/><path d="M6 10h8M6 7h5M6 13h6" stroke="#22D3EE" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <div class="feat-t">Raport PDF z brandingiem</div>
+      <div class="feat-d">Wygeneruj PDF z Twoim logo i danymi kontaktowymi. Klient dostaje profesjonalny dokument z Twoją marką — nie Estivo.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M3 16l4.5-4.5 3.5 3.5 5-6.5" stroke="#A78BFA" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="feat-t">Historia i trendy rynkowe</div>
+      <div class="feat-d">Wszystkie wyceny w jednym miejscu. Przeglądaj historię, filtruj lokalizacje i śledź trendy cenowe dla obszarów swoich klientów.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><circle cx="8" cy="6.5" r="3" stroke="#60A5FA" stroke-width="1.4"/><path d="M2 18c0-3.5 2.7-5.5 6-5.5s6 2 6 5.5" stroke="#60A5FA" stroke-width="1.4" stroke-linecap="round"/><path d="M14 10l1.3 1.3L18 8" stroke="#60A5FA" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <div class="feat-t">CRM klientów</div>
+      <div class="feat-d">Przypisuj wyceny do klientów, śledź aktywność i ustawiaj automatyczne przypomnienia o follow-upach.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="5" y="2" width="10" height="16" rx="2.5" stroke="#22D3EE" stroke-width="1.4"/><circle cx="10" cy="14.5" r=".8" fill="#22D3EE"/></svg></div>
+      <div class="feat-t">Aplikacja mobilna</div>
+      <div class="feat-d">iOS i Android — rób wyceny podczas prezentacji prosto z telefonu. Tryb offline działa nawet bez zasięgu.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VALUATOR DEMO ═══ -->
+<section class="section" id="wycena" style="padding-top:40px;">
+  <div class="s-label">Live demo</div>
+  <h2 class="s-title reveal">Wypróbuj wyceniarkę<br/><span class="gt">teraz, za darmo</span></h2>
+  <p class="s-sub reveal">Prawdziwy algorytm oparty na danych NBP. Podaj dane nieruchomości i otrzymaj wycenę.</p>
+
+  <div class="val-wrap reveal">
+    <div class="val-hdr">
+      <div class="val-hdr-t">Nowa wycena</div>
+      <div class="live-chip"><span class="live-dot"></span>AI online</div>
+    </div>
+    <div class="val-body">
+      <div class="val-row c3">
+        <div class="vf"><label>Miasto</label>
+          <select id="v-miasto">
+            <option value="">Wybierz miasto</option>
+            <option>Warszawa</option><option>Kraków</option><option>Wrocław</option>
+            <option>Gdańsk</option><option>Poznań</option><option>Łódź</option>
+            <option>Katowice</option><option>Lublin</option>
+          </select>
+        </div>
+        <div class="vf"><label>Dzielnica</label><input id="v-dzielnica" type="text" placeholder="np. Mokotów, Kazimierz"/></div>
+        <div class="vf"><label>Metraż (m²)</label><input id="v-metraz" type="number" placeholder="55" min="10" max="500"/></div>
+      </div>
+      <div class="val-row c3">
+        <div class="vf"><label>Pokoje</label>
+          <select id="v-pokoje"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option value="5+">5+</option></select>
+        </div>
+        <div class="vf"><label>Rok budowy</label><input id="v-rok" type="number" placeholder="2008" min="1900" max="2025"/></div>
+        <div class="vf"><label>Piętro</label><input id="v-pietro" type="number" placeholder="3" min="0" max="50"/></div>
+      </div>
+      <div class="val-row c2">
+        <div class="vf"><label>Stan mieszkania</label>
+          <select id="v-stan">
+            <option value="">Wybierz</option>
+            <option value="do remontu">Do remontu</option>
+            <option value="do odświeżenia">Do odświeżenia</option>
+            <option value="dobry">Dobry</option>
+            <option value="bardzo dobry">Bardzo dobry</option>
+            <option value="deweloperski">Deweloperski</option>
+            <option value="premium">Premium / luksusowy</option>
+          </select>
+        </div>
+        <div class="vf"><label>Typ budynku</label>
+          <select id="v-typ">
+            <option value="">Wybierz</option>
+            <option value="wielka płyta">Wielka płyta</option>
+            <option value="blok z cegły">Blok z cegły</option>
+            <option value="kamienica">Kamienica</option>
+            <option value="nowe budownictwo">Nowe budownictwo</option>
+            <option value="apartamentowiec">Apartamentowiec premium</option>
+          </select>
+        </div>
+      </div>
+      <div class="vf"><textarea id="v-opis" placeholder="Opcjonalne szczegóły: balkon, garaż, widok, bliskość metra, winda, parking..."></textarea></div>
+      <button class="val-submit" id="val-btn" onclick="runValuation()">Wycen nieruchomość →</button>
+    </div>
+    <div class="val-result" id="val-result">
+      <div id="val-loading" class="ld-row" style="display:none;">
+        <div class="ld"></div><div class="ld"></div><div class="ld"></div>
+        <span style="font-size:13.5px;color:var(--tm);margin-left:6px;">Analizuję dane rynkowe NBP...</span>
+      </div>
+      <div id="val-output" style="display:none;">
+        <div class="res-price" id="r-price"></div>
+        <div class="res-range" id="r-range"></div>
+        <div class="conf-bar"><div class="conf-fill" id="r-conf" style="width:0%"></div></div>
+        <div class="conf-lbl" id="r-conf-lbl"></div>
+        <div class="res-metrics">
+          <div class="rm"><div class="rm-lbl">Cena za m²</div><div class="rm-val" id="r-m2">—</div></div>
+          <div class="rm"><div class="rm-lbl">Trafność</div><div class="rm-val" id="r-pewnosc">—</div></div>
+          <div class="rm"><div class="rm-lbl">Trend rynkowy</div><div class="rm-val" id="r-trend" style="font-size:13px;">—</div></div>
+        </div>
+        <div class="res-analysis" id="r-analysis"></div>
+        <div class="res-tags" id="r-tags"></div>
+        <div class="res-src" id="r-src"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL PROOF ═══ -->
+<section class="section" style="padding-top:0;">
+  <div class="s-label">Opinie agentów</div>
+  <h2 class="s-title reveal">Zaufali nam agenci<br/><span class="gt">z całej Polski</span></h2>
+  <div class="proof-grid reveal">
+    <div class="proof-card">
+      <div class="proof-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <div class="proof-text">„Estivo skróciło czas przygotowania wyceny z godziny do dosłownie kilkunastu sekund. Klienci są zachwyceni profesjonalnymi raportami PDF."</div>
+      <div class="proof-author"><div class="proof-av">MK</div><div><div class="proof-name">Marta Kowalska</div><div class="proof-role">Agent RE/MAX · Warszawa</div></div></div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <div class="proof-text">„Wyceny są zaskakująco trafne — weryfikowałem z cenami transakcyjnymi. Polecam każdemu agentowi, który chce wyróżnić się na rynku."</div>
+      <div class="proof-author"><div class="proof-av">PW</div><div><div class="proof-name">Piotr Wiśniewski</div><div class="proof-role">Broker · Kraków</div></div></div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <div class="proof-text">„Plan Agencja dla 8 agentów — zwrot z inwestycji odczuliśmy już w pierwszym miesiącu. Polecam każdemu biuru nieruchomości."</div>
+      <div class="proof-author"><div class="proof-av">AN</div><div><div class="proof-name">Anna Nowak</div><div class="proof-role">Dyrektor Agencji · Wrocław</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="section" id="cennik" style="padding-top:40px;">
+  <div class="s-label">Cennik</div>
+  <h2 class="s-title reveal">Prosty cennik,<br/><span class="gt">bez niespodzianek</span></h2>
+  <p class="s-sub reveal">14-dniowy bezpłatny trial. Bez karty kredytowej. Anuluj kiedy chcesz.</p>
+
+  <div class="plans-grid reveal">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><sup>zł</sup>99</div>
+      <div class="plan-per">/ miesiąc · bez umowy</div>
+      <div class="plan-hr"></div>
+      <ul class="plan-feats">
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>5 wycen miesięcznie</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Wszystkie 8 miast</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Historia wycen 30 dni</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Wsparcie e-mail</li>
+      </ul>
+      <button class="plan-btn pb-out" onclick="choosePlan('starter')" id="btn-starter">Zacznij 14-dniowy trial</button>
+    </div>
+
+    <div class="plan hot">
+      <div class="hot-badge">✦ Najpopularniejszy</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><sup>zł</sup>199</div>
+      <div class="plan-per">/ miesiąc · bez umowy</div>
+      <div class="plan-hr"></div>
+      <ul class="plan-feats">
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Nielimitowane wyceny</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Wszystkie 8 miast</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Raport PDF z brandingiem</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>CRM klientów</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Historia nieograniczona</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Aplikacja mobilna iOS/Android</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Wsparcie priorytetowe</li>
+      </ul>
+      <button class="plan-btn pb-fill" onclick="choosePlan('pro')" id="btn-pro">Zacznij 14-dniowy trial →</button>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Agencja</div>
+      <div class="plan-price"><sup>zł</sup>599</div>
+      <div class="plan-per">/ miesiąc · do 10 agentów</div>
+      <div class="plan-hr"></div>
+      <ul class="plan-feats">
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Wszystko z planu Pro</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Panel administratora</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>White-label — Twoje logo</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Statystyki całej agencji</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Dedykowany opiekun konta</li>
+        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Onboarding dla zespołu</li>
+      </ul>
+      <button class="plan-btn pb-out" onclick="choosePlan('agencja')">Skontaktuj się z nami</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="section" id="faq" style="padding-top:40px;">
+  <div class="s-label">FAQ</div>
+  <h2 class="s-title reveal">Często zadawane<br/>pytania</h2>
+  <div class="faq-wrap reveal">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Jak dokładne są wyceny?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+      <div class="faq-a">Wyceny mają średnią trafność 90–94% w porównaniu z transakcjami z bazy NBP BaRN. Estivo pokazuje zawsze przedział cenowy i poziom pewności — im więcej danych podasz, tym wyższa dokładność.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Na jakich miastach działa Estivo?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+      <div class="faq-a">Aktualnie 8 największych rynków: Warszawa, Kraków, Wrocław, Gdańsk, Poznań, Łódź, Katowice i Lublin — z danymi dla kilkudziesięciu dzielnic. Kolejne miasta co kwartał.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Jak działa dostęp po zakupie?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+      <div class="faq-a">Po zakupie Stripe wysyła Ci e-mail z linkiem do ustawienia hasła i logowania. Po zalogowaniu trafiasz od razu do panelu aplikacji. Cały proces zajmuje około minuty.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Czy mogę wysłać raport PDF klientowi?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+      <div class="faq-a">Tak — w planach Pro i Agencja. Generujesz PDF z Twoim logo, kolorami marki i danymi kontaktowymi. Klient widzi Twoje biuro, nie Estivo.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Czy jest umowa lub kary za rezygnację?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+      <div class="faq-a">Żadnej umowy i żadnych kar. Płatności miesięczne — anuluj w dowolnym momencie z panelu. 14-dniowy trial planu Pro bez karty kredytowej.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Jak chronione są moje dane?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+      <div class="faq-a">Płatności przez Stripe (PCI DSS Level 1). Dane w szyfrowanej bazie Supabase w Europie, zgodnie z RODO. Nigdy nie udostępniamy danych osobom trzecim.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<div class="cta-wrap reveal">
+  <h2>Gotowy żeby wyceniać<br/><span class="gt">szybciej niż kiedykolwiek?</span></h2>
+  <p>14 dni za darmo. Bez karty kredytowej. Zacznij w 2 minuty.</p>
+  <div class="cta-btns">
+    <button class="btn-primary" onclick="choosePlan('pro')">Zacznij 14-dniowy trial →</button>
+    <button class="btn-secondary" onclick="document.getElementById('wycena').scrollIntoView({behavior:'smooth'})">Wypróbuj demo</button>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="f-logo">estivo</div>
+  <div class="f-links">
+    <a href="#">Prywatność</a>
+    <a href="#">Regulamin</a>
+    <a href="mailto:kontakt@estivo.pl">Kontakt</a>
+    <a href="#">Blog</a>
+  </div>
+  <div class="f-copy">© 2025 Estivo · Wszelkie prawa zastrzeżone</div>
+</footer>
+
+<!-- ═══ PAYWALL MODAL (po demo) ═══ -->
+<div class="modal-bg" id="modal-paywall">
+  <div class="modal">
+    <button class="modal-close" onclick="closePaywall()">✕</button>
+    <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(37,99,235,.28));border:1px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+      <svg width="22" height="22" fill="none" viewBox="0 0 22 22"><path d="M11 2l2.8 5.6 6.2.9-4.5 4.4 1.06 6.1-5.56-2.92-5.56 2.92 1.06-6.1-4.5-4.4 6.2-.9z" stroke="#A78BFA" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </div>
+    <div style="font-family:'Syne',sans-serif;font-size:23px;font-weight:700;margin-bottom:10px;">Podoba Ci się?</div>
+    <div style="font-size:15px;color:var(--tm);line-height:1.65;margin-bottom:28px;">To było Twoje bezpłatne demo.<br/>Wybierz plan i wyceniaj bez limitów — <strong style="color:#C4B5FD;">14 dni gratis</strong>.</div>
+    <button class="btn-primary" style="width:100%;padding:14px;margin-bottom:10px;" onclick="closePaywall();choosePlan('pro')">Zacznij 14-dniowy trial Pro →</button>
+    <button class="btn-secondary" style="width:100%;padding:13px;" onclick="closePaywall()">Może innym razem</button>
+    <div style="font-size:11.5px;color:var(--tf);margin-top:16px;">Bez karty kredytowej · Anuluj kiedy chcesz · RODO</div>
+  </div>
+</div>
+
+<script>
+// ── SCROLL / REVEAL ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('stuck',scrollY>50);
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(el.getBoundingClientRect().top<innerHeight-70) el.classList.add('in');
+  });
+},{passive:true});
+document.querySelectorAll('.reveal').forEach(el=>{
+  if(el.getBoundingClientRect().top<innerHeight-70) el.classList.add('in');
+});
+
+// ── FAQ ──
+function toggleFaq(el){el.classList.toggle('open');}
+
+// ── TOAST ──
+function showToast(msg,duration=3000){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),duration);
+}
+
+// ── MODAL ──
+function closePaywall(){document.getElementById('modal-paywall').classList.remove('open');}
+document.getElementById('modal-paywall').addEventListener('click',function(e){
+  if(e.target===this) closePaywall();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closePaywall();
+});
+
+// ── PLAN SELECTION → STRIPE CHECKOUT ──
+window.choosePlan = async function(plan) {
+  if (plan === 'agencja') {
+    window.location.href = 'mailto:kontakt@estivo.pl?subject=Plan%20Agencja%20-%20zapytanie';
+    return;
+  }
+  await redirectToCheckout(plan);
+};
+
+async function redirectToCheckout(plan) {
+  const btn = document.getElementById('btn-' + plan);
+  if (btn) { btn.disabled = true; btn.textContent = 'Łączę ze Stripe...'; }
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error || 'Błąd płatności');
+    }
+  } catch (err) {
+    showToast('Błąd: ' + err.message);
+    if (btn) { btn.disabled = false; btn.textContent = 'Zacznij 14-dniowy trial'; }
+  }
+}
+
+// ── LOGIN MODAL ──
+function openLoginModal() {
+  document.getElementById('modal-login').classList.add('open');
+  setTimeout(() => document.getElementById('ml-email').focus(), 100);
+}
+function closeLoginModal() {
+  document.getElementById('modal-login').classList.remove('open');
+  document.getElementById('ml-err').style.display = 'none';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePaywall(); closeLoginModal(); }
+});
+
+// ── VALUATION ENGINE ──
+const NBP={
+  'Warszawa':{rw:16750,rp:16294,d:{'Śródmieście':1.28,'Wilanów':1.20,'Mokotów':1.12,'Żoliborz':1.10,'Wola':1.05,'Ochota':1.03,'Ursynów':1.0,'Bemowo':.93,'Praga-Południe':.90,'Praga-Północ':.88,'Białołęka':.82,'Targówek':.86}},
+  'Kraków':{rw:14898,rp:15641,d:{'Stare Miasto':1.35,'Kazimierz':1.22,'Krowodrza':1.08,'Grzegórzki':1.12,'Podgórze':1.02,'Dębniki':1.0,'Bronowice':.97,'Nowa Huta':.80}},
+  'Wrocław':{rw:12546,rp:12284,d:{'Stare Miasto':1.28,'Śródmieście':1.18,'Krzyki':1.08,'Fabryczna':.97,'Psie Pole':.85}},
+  'Gdańsk':{rw:13392,rp:14190,d:{'Śródmieście':1.30,'Oliwa':1.22,'Wrzeszcz':1.14,'Zaspa':.95,'Chełm':.88,'Łostowice':.82}},
+  'Poznań':{rw:10636,rp:12405,d:{'Stare Miasto':1.22,'Jeżyce':1.10,'Grunwald':1.06,'Wilda':.97,'Nowe Miasto':.92}},
+  'Łódź':{rw:8038,rp:9500,d:{'Śródmieście':1.18,'Polesie':.95,'Górna':.90,'Widzew':.88,'Bałuty':.87}},
+  'Katowice':{rw:8188,rp:8500,d:{'Śródmieście':1.20,'Brynów':1.05,'Ligota':1.0,'Piotrowice':.92}},
+  'Lublin':{rw:7800,rp:8200,d:{'Śródmieście':1.18,'Wieniawa':1.08,'LSM':.95,'Czuby':.97}}
+};
+const STAN={'do remontu':.76,'do odświeżenia':.87,'dobry':1.0,'bardzo dobry':1.11,'deweloperski':1.06,'premium':1.32};
+const TYP={'wielka płyta':.87,'blok z cegły':.94,'kamienica':1.06,'nowe budownictwo':1.12,'apartamentowiec':1.22};
+const TRENDS={'Warszawa':'stabilny (+1,85% kw/kw)','Kraków':'stabilny (+0,32%)','Wrocław':'korekta (−3,11% r/r)','Gdańsk':'rosnący (+9,5% r/r)','Poznań':'korekta (−2,66% r/r)','Łódź':'rosnący (+5,87% r/r)','Katowice':'stabilny (+2,46% r/r)','Lublin':'stabilny'};
+const ANA={
+  'Warszawa':'Warszawa IV kw. 2025: rynek wtórny 16 750 zł/m², rynek pierwotny 16 294 zł/m². Ceny odbiły +1,85% kw/kw. Śródmieście i Wilanów powyżej 21 000 zł/m². Źródło: NBP BaRN IV kw. 2025.',
+  'Kraków':'Kraków IV kw. 2025: rynek wtórny 14 898 zł/m², rynek pierwotny 15 641 zł/m². Stabilizacja po korekcie (−2,21% r/r). Stare Miasto i Kazimierz 19–20 tys. zł/m². Źródło: NBP BaRN IV kw. 2025.',
+  'Wrocław':'Wrocław IV kw. 2025: rynek wtórny 12 546 zł/m², rynek pierwotny 12 284 zł/m². Korekta −3,11% r/r. Stare Miasto powyżej 16 000 zł/m². Źródło: NBP BaRN IV kw. 2025.',
+  'Gdańsk':'Gdańsk IV kw. 2025: lider wzrostu w Polsce +9,5% r/r. Rynek wtórny 13 392 zł/m², pierwotny 14 190 zł/m². Oliwa i Wrzeszcz powyżej 17 000 zł/m². Źródło: NBP BaRN IV kw. 2025.',
+  'Poznań':'Poznań IV kw. 2025: rynek wtórny 10 636 zł/m², rynek pierwotny 12 405 zł/m². Korekta −2,66% r/r. Duży spread RP/RW. Źródło: NBP BaRN IV kw. 2025.',
+  'Łódź':'Łódź IV kw. 2025: rynek wtórny 8 038 zł/m² (+5,87% r/r). Drugi najsilniejszy wzrost w Polsce. Rewitalizacja centrum podnosi wartości. Źródło: NBP BaRN IV kw. 2025.',
+  'Katowice':'Katowice IV kw. 2025: rynek wtórny 8 188 zł/m², stabilny wzrost +2,46% r/r. Centrum wyraźnie droższe od pozostałych dzielnic. Źródło: NBP BaRN IV kw. 2025.',
+  'Lublin':'Lublin IV kw. 2025: rynek wtórny ~7 800 zł/m². Rynek akademicki z umiarkowaną, stabilną dynamiką. Źródło: GUS BDL / szacunek regionalny.'
+};
+
+let demoUsed=0;
+
+async function runValuation(){
+  const miasto=document.getElementById('v-miasto').value;
+  const metraz=document.getElementById('v-metraz').value;
+  const stan=document.getElementById('v-stan').value;
+  if(!miasto||!metraz||!stan){
+    showToast('Wypełnij: miasto, metraż i stan mieszkania.');
+    return;
+  }
+  if(demoUsed>=1){
+    document.getElementById('modal-paywall').classList.add('open');
+    return;
+  }
+
+  const btn=document.getElementById('val-btn');
+  btn.disabled=true; btn.textContent='Analizuję...';
+  const resEl=document.getElementById('val-result');
+  const ldEl=document.getElementById('val-loading');
+  const outEl=document.getElementById('val-output');
+  resEl.style.display='block'; ldEl.style.display='flex'; outEl.style.display='none';
+
+  await new Promise(r=>setTimeout(r,1600+Math.random()*700));
+
+  const dzielnica=document.getElementById('v-dzielnica').value||'';
+  const typ=document.getElementById('v-typ').value||'';
+  const rok=document.getElementById('v-rok').value||'';
+  const pietro=document.getElementById('v-pietro').value||'';
+  const cd=NBP[miasto]||{rw:9000,rp:9500,d:{}};
+  const isNowe=typ==='nowe budownictwo'||typ==='apartamentowiec'||(rok&&(2025-parseInt(rok))<5);
+  let m2=isNowe?cd.rp:cd.rw;
+  const dzKey=dzielnica?Object.keys(cd.d).find(k=>dzielnica.toLowerCase().includes(k.toLowerCase())):null;
+  if(dzKey) m2*=cd.d[dzKey];
+  m2*=(STAN[stan]||1);
+  m2*=(TYP[typ]||1);
+  if(rok){const a=2025-parseInt(rok);if(a>30) m2*=.91;else if(a>15) m2*=.96;}
+  if(pietro!==''){const p=parseInt(pietro);if(p===0) m2*=.94;else if(p>=8) m2*=.96;}
+  m2=Math.round(m2/50)*50;
+  const cena=Math.round(m2*parseFloat(metraz)/1000)*1000;
+  const spread=Math.round(cena*.065/1000)*1000;
+  const pewnosc=Math.min(93,66+(dzielnica?7:0)+(stan?5:0)+(typ?4:0)+(rok?4:0));
+  const plus=[],minus=[];
+  if((STAN[stan]||1)>=1.1) plus.push('Wysoki standard wykończenia');
+  if((STAN[stan]||1)<.9) minus.push('Stan wymaga nakładów remontowych');
+  if((TYP[typ]||1)>=1.1) plus.push('Prestiżowy typ budynku');
+  if((TYP[typ]||1)<.9) minus.push('Budownictwo wielkopłytowe');
+  if(rok&&(2025-parseInt(rok))<10) plus.push('Nowe budownictwo (< 10 lat)');
+  if(rok&&(2025-parseInt(rok))>35) minus.push('Stary rok budowy (> 35 lat)');
+  if(dzKey&&cd.d[dzKey]>1.1) plus.push('Prestiżowa lokalizacja');
+  if(parseFloat(metraz)>80) plus.push('Duży metraż (> 80 m²)');
+  if(parseFloat(metraz)<35) minus.push('Małe mieszkanie (< 35 m²)');
+
+  document.getElementById('r-price').textContent=cena.toLocaleString('pl-PL')+' zł';
+  document.getElementById('r-range').textContent='Przedział: '+(cena-spread).toLocaleString('pl-PL')+' – '+(cena+spread).toLocaleString('pl-PL')+' zł';
+  setTimeout(()=>{document.getElementById('r-conf').style.width=pewnosc+'%';},120);
+  document.getElementById('r-conf-lbl').textContent='Trafność wyceny: '+pewnosc+'%';
+  document.getElementById('r-m2').textContent=m2.toLocaleString('pl-PL')+' zł/m²';
+  document.getElementById('r-pewnosc').textContent=pewnosc+'%';
+  document.getElementById('r-trend').textContent=TRENDS[miasto]||'stabilny';
+  document.getElementById('r-analysis').textContent=ANA[miasto]||'Rynek nieruchomości w tej lokalizacji charakteryzuje się stabilnym popytem.';
+  const tags=document.getElementById('r-tags');
+  tags.innerHTML=plus.map(t=>'<span class="rtag rp">+ '+t+'</span>').join('')+minus.map(t=>'<span class="rtag rm2">− '+t+'</span>').join('');
+  const rynek=isNowe?'rynek pierwotny':'rynek wtórny';
+  document.getElementById('r-src').innerHTML='<strong style="color:#60A5FA;">'+rynek+'</strong> · Dane NBP BaRN IV kw. 2025 · <a href="https://nbp.pl/publikacje/cykliczne-materialy-analityczne-nbp/rynek-nieruchomosci/informacja-kwartalna/" target="_blank" style="color:#60A5FA;text-decoration:underline;">nbp.pl →</a>';
+
+  ldEl.style.display='none'; outEl.style.display='block';
+  demoUsed++;
+  btn.disabled=false;
+  btn.textContent='Wybierz plan — wyceniaj bez limitów →';
+  btn.onclick=()=>{ document.getElementById('modal-paywall').classList.add('open'); };
+}
+</script>
+
+
+<!-- ═══ LOGIN MODAL ═══ -->
+<div class="modal-bg" id="modal-login">
+  <div class="modal" style="max-width:400px;">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Zaloguj się</div>
+    <div style="font-size:14px;color:var(--tm);margin-bottom:24px;">Panel agenta Estivo</div>
+    <div id="ml-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;"></div>
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Email</label>
+      <input id="ml-email" type="email" placeholder="jan@agencja.pl" autocomplete="email"
+        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''" onkeydown="if(event.key==='Enter')doModalLogin()"/>
+    </div>
+    <div style="margin-bottom:22px;">
+      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Hasło</label>
+      <input id="ml-pass" type="password" placeholder="Twoje hasło" autocomplete="current-password"
+        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''" onkeydown="if(event.key==='Enter')doModalLogin()"/>
+    </div>
+    <button id="ml-btn" onclick="doModalLogin()"
+      style="width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 36px rgba(124,58,237,.35);">
+      Zaloguj się
+    </button>
+    <div style="font-size:12px;color:var(--tf);text-align:center;margin-top:16px;">Nie masz konta? <a href="#cennik" onclick="closeLoginModal()" style="color:#A78BFA;text-decoration:none;">Wybierz plan →</a></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ── SUPABASE LOGIN ──
+const SUPABASE_URL = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
+const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function doModalLogin() {
+  const email = document.getElementById('ml-email').value.trim();
+  const pass  = document.getElementById('ml-pass').value;
+  const errEl = document.getElementById('ml-err');
+  const btn   = document.getElementById('ml-btn');
+  errEl.style.display = 'none';
+  if (!email || !pass) { errEl.textContent = 'Podaj email i hasło.'; errEl.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Loguję...';
+  const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    errEl.textContent = 'Nieprawidłowy email lub hasło.';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Zaloguj się';
+    return;
+  }
+  // Sukces → panel
+  window.location.href = '/app.html';
+}
+</script>
+
+</body>
+</html>

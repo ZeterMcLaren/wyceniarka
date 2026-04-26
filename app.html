@@ -1,0 +1,1146 @@
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Estivo — Panel agenta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  
+/* ... reszta Twoich stylów ... */
+:root{--v:#7C3AED;--vl:#A78BFA;--b:#2563EB;--bl:#60A5FA;--c:#06B6D4;--bg:#06040F;--s1:#0D0A1A;--s2:#13102A;--t:#F5F3FF;--tm:rgba(245,243,255,.55);--tf:rgba(245,243,255,.16);--br:rgba(124,58,237,.22);--brh:rgba(124,58,237,.42);--green:#10B981;--amber:#F59E0B;--red:#EF4444;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);overflow:hidden;}
+.screen{display:none;width:100%;height:100%;position:absolute;inset:0;}
+.screen.active{display:flex;}
+.orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;}
+.o1{width:520px;height:520px;background:radial-gradient(circle,rgba(124,58,237,.3),transparent 70%);top:-160px;left:-80px;}
+.o2{width:420px;height:420px;background:radial-gradient(circle,rgba(37,99,235,.25),transparent 70%);bottom:-80px;right:-80px;}
+
+/* AUTH */
+.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:24px;}
+.auth-card{background:var(--s1);border:1px solid var(--br);border-radius:24px;padding:44px 40px;width:100%;max-width:420px;position:relative;z-index:2;animation:fadeUp .5s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+.logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:28px;}
+.auth-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.auth-sub{font-size:14px;color:var(--tm);margin-bottom:28px;line-height:1.6;}
+.trial-pill{display:flex;align-items:center;gap:7px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:9px;padding:9px 13px;margin-bottom:22px;font-size:13px;color:#34D399;}
+.tdot{width:6px;height:6px;border-radius:50%;background:#34D399;animation:p 2s infinite;}
+@keyframes p{0%,100%{opacity:1;}50%{opacity:.3;}}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--tm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.field input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:10px;padding:12px 15px;font-size:15px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus{border-color:var(--vl);box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.btn-main{width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:12px;font-size:15px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:6px;box-shadow:0 4px 24px rgba(124,58,237,.35);transition:opacity .2s,transform .2s;}
+.btn-main:hover{opacity:.88;transform:translateY(-1px);}
+.btn-main:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.auth-link{text-align:center;font-size:14px;color:var(--tm);margin-top:18px;}
+.auth-link a{color:var(--vl);cursor:pointer;}
+.auth-link a:hover{text-decoration:underline;}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:10px 13px;font-size:13px;color:#F87171;margin-bottom:14px;display:none;}
+
+/* ONBOARDING */
+.ob-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;z-index:1;}
+.ob-card{background:var(--s1);border:1px solid var(--br);border-radius:24px;padding:44px 40px;width:100%;max-width:500px;animation:fadeUp .4s ease both;}
+.ob-prog{display:flex;gap:5px;margin-bottom:32px;}
+.ob-prog span{flex:1;height:3px;border-radius:2px;background:var(--br);transition:background .3s;}
+.ob-prog span.done{background:var(--vl);}
+.ob-prog span.active{background:linear-gradient(90deg,var(--v),var(--b));}
+.ob-title{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;margin-bottom:7px;}
+.ob-sub{font-size:14px;color:var(--tm);margin-bottom:24px;line-height:1.6;}
+.ob-opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px;}
+.ob-opt{background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:13px 15px;cursor:pointer;transition:all .15s;font-size:14px;color:var(--tm);}
+.ob-opt:hover{border-color:var(--vl);background:rgba(124,58,237,.07);}
+.ob-opt.sel{border-color:var(--vl);background:rgba(124,58,237,.13);color:var(--t);}
+.ob-opt-ico{font-size:18px;margin-bottom:5px;}
+.ob-nav{display:flex;justify-content:space-between;}
+.btn-ghost{padding:10px 18px;border:1px solid var(--br);border-radius:9px;background:transparent;color:var(--tm);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all .15s;}
+.btn-ghost:hover{border-color:var(--vl);color:var(--t);}
+.btn-next{padding:10px 22px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:9px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s;}
+.btn-next:hover{opacity:.88;}
+
+/* PRICING */
+.pricing-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;position:relative;z-index:1;}
+.pricing-hdr{text-align:center;margin-bottom:36px;}
+.pricing-title{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:820px;width:100%;}
+.plan{background:var(--s1);border:1px solid var(--br);border-radius:18px;padding:26px 22px;transition:transform .2s;}
+.plan:hover{transform:translateY(-3px);}
+.plan.hot{border-color:var(--v);box-shadow:0 0 50px rgba(124,58,237,.18);}
+.plan-badge{font-size:11px;padding:3px 11px;border-radius:100px;background:linear-gradient(135deg,var(--v),var(--b));color:#fff;display:inline-block;margin-bottom:11px;}
+.plan-name{font-size:12px;color:var(--tm);font-weight:500;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.plan-price{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1;}
+.plan-price sup{font-size:17px;font-weight:500;vertical-align:super;}
+.plan-per{font-size:13px;color:var(--tm);margin-top:4px;margin-bottom:18px;}
+.plan-hr{height:1px;background:var(--br);margin-bottom:16px;}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
+.plan-feats li{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(245,243,255,.8);}
+.chk{width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.plan-btn{width:100%;padding:11px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .2s;}
+.pb-out{background:transparent;border:1px solid var(--br);color:var(--t);}
+.pb-out:hover{border-color:var(--vl);background:rgba(124,58,237,.1);}
+.pb-fill{background:linear-gradient(135deg,var(--v),var(--b));color:#fff;box-shadow:0 4px 18px rgba(124,58,237,.4);}
+.pb-fill:hover{box-shadow:0 6px 32px rgba(124,58,237,.6);}
+.pricing-skip{text-align:center;margin-top:16px;font-size:13px;color:var(--tf);}
+.pricing-skip a{color:var(--tm);cursor:pointer;}
+.pricing-skip a:hover{color:var(--t);}
+
+/* DASHBOARD */
+.dash{flex:1;display:flex;overflow:hidden;}
+.sidebar{width:218px;background:var(--s1);border-right:1px solid var(--br);display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo{padding:22px 18px 18px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;border-bottom:1px solid var(--br);}
+.sb-plan{margin:12px 10px;border-radius:10px;padding:10px 12px;}
+.sb-plan.trial{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);}
+.sb-plan.pro{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);}
+.sb-plan.starter{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);}
+.sb-plan-label{font-size:11px;font-weight:500;margin-bottom:3px;}
+.trial .sb-plan-label{color:#34D399;}
+.pro .sb-plan-label{color:var(--vl);}
+.starter .sb-plan-label{color:#FCD34D;}
+.sb-plan-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+.trial .sb-plan-val,.trial .sb-plan-sub{color:#34D399;}
+.pro .sb-plan-val,.pro .sb-plan-sub{color:var(--vl);}
+.starter .sb-plan-val,.starter .sb-plan-sub{color:#FCD34D;}
+.sb-plan-sub{font-size:11px;opacity:.7;}
+.sb-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:7px;overflow:hidden;}
+.sb-bar-fill{height:100%;border-radius:2px;}
+.trial .sb-bar-fill{background:linear-gradient(90deg,#10B981,#06B6D4);}
+.starter .sb-bar-fill{background:linear-gradient(90deg,#F59E0B,#EF4444);}
+.sb-nav{flex:1;padding:8px 8px;display:flex;flex-direction:column;gap:1px;overflow-y:auto;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;cursor:pointer;font-size:14px;color:var(--tm);transition:all .12s;white-space:nowrap;}
+.sb-item:hover{background:rgba(124,58,237,.1);color:var(--t);}
+.sb-item.active{background:rgba(124,58,237,.15);color:var(--t);}
+.sb-sect{font-size:10px;color:var(--tf);text-transform:uppercase;letter-spacing:.1em;padding:9px 11px 3px;margin-top:5px;}
+.sb-bottom{padding:10px 8px;border-top:1px solid var(--br);}
+.sb-user{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;cursor:pointer;}
+.sb-user:hover{background:rgba(124,58,237,.08);}
+.sb-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
+.sb-uname{font-size:13px;font-weight:500;max-width:120px;overflow:hidden;text-overflow:ellipsis;}
+.sb-uemail{font-size:11px;color:var(--tm);max-width:120px;overflow:hidden;text-overflow:ellipsis;}
+.sb-upg{margin:0 8px 8px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(37,99,235,.12));border:1px solid rgba(124,58,237,.3);border-radius:9px;padding:9px 11px;cursor:pointer;transition:background .2s;}
+.sb-upg:hover{background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(37,99,235,.2));}
+.sb-upg-l{font-size:11px;color:var(--vl);font-weight:500;margin-bottom:1px;}
+.sb-upg-t{font-size:12px;color:var(--tm);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:54px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
+.topbar-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.notif{width:32px;height:32px;border-radius:8px;border:1px solid var(--br);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tm);position:relative;}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--v);border:2px solid var(--bg);}
+.btn-sm{padding:7px 14px;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-sm-out{border:1px solid var(--br);background:transparent;color:var(--tm);}
+.btn-sm-out:hover{border-color:var(--vl);color:var(--t);}
+.btn-sm-fill{background:linear-gradient(135deg,var(--v),var(--b));border:none;color:#fff;}
+.btn-sm-fill:hover{opacity:.88;}
+.content{flex:1;overflow-y:auto;padding:24px;}
+.content::-webkit-scrollbar{width:3px;}
+.content::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px;}
+
+/* TABS */
+.tab-page{display:none;}
+.tab-page.active{display:block;}
+
+/* OVERVIEW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:16px 18px;}
+.kpi-lbl{font-size:12px;color:var(--tm);margin-bottom:5px;}
+.kpi-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;}
+.kpi-d{font-size:12px;margin-top:3px;}
+.chart-card{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:18px 20px;margin-bottom:20px;}
+.chart-bars{display:flex;align-items:flex-end;gap:7px;height:100px;margin-top:14px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--v),var(--b));min-height:3px;}
+.bar-lbl{font-size:10px;color:var(--tm);}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-hdr h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.recent-list{display:flex;flex-direction:column;gap:8px;}
+.ri{background:var(--s1);border:1px solid var(--br);border-radius:11px;padding:12px 15px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .15s;}
+.ri:hover{border-color:var(--brh);}
+.ri-l{display:flex;align-items:center;gap:10px;}
+.ri-ico{width:34px;height:34px;border-radius:8px;background:rgba(124,58,237,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ri-addr{font-size:13px;font-weight:500;}
+.ri-meta{font-size:11px;color:var(--tm);margin-top:1px;}
+.ri-price{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;text-align:right;}
+.ri-m2{font-size:11px;color:var(--tm);margin-top:1px;text-align:right;}
+
+/* VALUATOR */
+.val-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;}
+.val-card{background:var(--s1);border:1px solid var(--br);border-radius:15px;padding:22px;}
+.vf-sect{font-size:11px;font-weight:500;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 10px;}
+.vf-sect:first-child{margin-top:0;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.vf{margin-bottom:0;}
+.vf label{display:block;font-size:12px;color:var(--tm);margin-bottom:5px;}
+.vf input,.vf select,.vf textarea{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.vf input:focus,.vf select:focus,.vf textarea:focus{border-color:var(--vl);}
+.vf select option{background:var(--s2);}
+.vf textarea{min-height:60px;resize:none;}
+.photo-zone{border:1px dashed rgba(124,58,237,.3);border-radius:9px;padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;margin-top:12px;}
+.photo-zone:hover{background:rgba(124,58,237,.05);}
+.photo-zone input{display:none;}
+.pz-ico{width:34px;height:34px;border-radius:8px;background:rgba(124,58,237,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pz-txt{font-size:13px;color:var(--tm);}
+.pz-txt strong{display:block;font-size:14px;color:var(--t);font-weight:500;margin-bottom:1px;}
+.prevs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.prev-w{position:relative;}
+.prev-i{width:48px;height:48px;object-fit:cover;border-radius:7px;border:1px solid var(--br);}
+.prev-rm{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:var(--v);color:#fff;font-size:9px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.val-run-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:10px;font-size:15px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:18px;box-shadow:0 4px 20px rgba(124,58,237,.3);transition:opacity .2s,transform .15s;}
+.val-run-btn:hover{opacity:.88;transform:translateY(-1px);}
+.val-run-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.result-card{background:var(--s1);border:1px solid var(--br);border-radius:15px;padding:22px;display:flex;flex-direction:column;}
+.result-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--tf);padding:28px;}
+.result-empty p{font-size:14px;color:var(--tm);line-height:1.6;margin-top:12px;}
+.result-data{display:none;}
+.r-price{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.r-range{font-size:13px;color:var(--tm);margin-top:4px;}
+.r-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin:12px 0 3px;overflow:hidden;}
+.r-bar-fill{height:100%;background:linear-gradient(90deg,var(--vl),var(--c));border-radius:2px;transition:width 1s ease;}
+.r-bar-lbl{font-size:12px;color:var(--tm);}
+.r-divider{height:1px;background:var(--br);margin:14px 0;}
+.r-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;}
+.r-met{background:rgba(255,255,255,.04);border-radius:9px;padding:10px;}
+.r-met-l{font-size:11px;color:var(--tm);margin-bottom:3px;}
+.r-met-v{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.r-analysis{font-size:13px;color:rgba(245,243,255,.62);line-height:1.7;padding:12px;background:rgba(255,255,255,.03);border-radius:9px;border:1px solid rgba(255,255,255,.06);margin-bottom:12px;}
+.r-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.rtag{font-size:11px;padding:3px 10px;border-radius:100px;}
+.rtag-p{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#34D399;}
+.rtag-m{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#F87171;}
+.r-src{font-size:11px;color:var(--tf);padding:9px 11px;background:rgba(37,99,235,.07);border-radius:8px;border:1px solid rgba(37,99,235,.15);line-height:1.5;margin-bottom:12px;}
+.r-src a{color:var(--bl);}
+.r-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.r-btn{padding:9px;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:center;transition:all .15s;border:1px solid var(--br);background:transparent;color:var(--tm);}
+.r-btn:hover{border-color:var(--vl);color:var(--t);}
+.r-btn.fill{background:linear-gradient(135deg,var(--v),var(--b));border:none;color:#fff;}
+.r-btn.fill:hover{opacity:.88;}
+.ld-row{display:flex;align-items:center;gap:8px;padding:24px 0;}
+.ld{width:7px;height:7px;border-radius:50%;background:var(--vl);animation:ld 1.2s infinite;}
+.ld:nth-child(2){animation-delay:.2s;}
+.ld:nth-child(3){animation-delay:.4s;}
+@keyframes ld{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+
+/* CLIENTS */
+.clients-top{display:flex;gap:10px;margin-bottom:18px;align-items:center;}
+.srch-w{flex:1;position:relative;}
+.srch-w input{width:100%;background:var(--s1);border:1px solid var(--br);border-radius:9px;padding:9px 13px 9px 34px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;}
+.srch-w input:focus{border-color:var(--vl);}
+.srch-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tm);}
+.cl-grid{display:flex;flex-direction:column;gap:9px;}
+.cl-card{background:var(--s1);border:1px solid var(--br);border-radius:12px;padding:12px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s;}
+.cl-card:hover{border-color:var(--brh);}
+.cl-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
+.av-v{background:rgba(124,58,237,.2);color:var(--vl);}
+.av-b{background:rgba(37,99,235,.2);color:var(--bl);}
+.av-g{background:rgba(16,185,129,.2);color:#34D399;}
+.av-a{background:rgba(245,158,11,.2);color:#FCD34D;}
+.cl-name{font-size:14px;font-weight:500;}
+.cl-meta{font-size:12px;color:var(--tm);margin-top:1px;}
+.cl-badge{font-size:11px;padding:2px 8px;border-radius:100px;margin-top:4px;display:inline-block;}
+.bg-green{background:rgba(16,185,129,.1);color:#34D399;border:1px solid rgba(16,185,129,.2);}
+.bg-amber{background:rgba(245,158,11,.1);color:#FCD34D;border:1px solid rgba(245,158,11,.2);}
+.cl-right{margin-left:auto;text-align:right;}
+.cl-wc{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;}
+.cl-last{font-size:11px;color:var(--tm);margin-top:1px;}
+
+/* SETTINGS */
+.set-sections{display:flex;flex-direction:column;gap:18px;max-width:620px;}
+.set-card{background:var(--s1);border:1px solid var(--br);border-radius:15px;overflow:hidden;}
+.set-hdr{padding:15px 18px;border-bottom:1px solid var(--br);font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(124,58,237,.08);}
+.set-row:last-child{border-bottom:none;}
+.set-l{display:flex;align-items:center;gap:11px;}
+.set-ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ico-v{background:rgba(124,58,237,.15);}
+.ico-b{background:rgba(37,99,235,.15);}
+.ico-g{background:rgba(16,185,129,.15);}
+.ico-a{background:rgba(245,158,11,.15);}
+.ico-r{background:rgba(239,68,68,.15);}
+.set-label{font-size:14px;}
+.set-sub{font-size:12px;color:var(--tm);margin-top:1px;}
+.toggle{width:38px;height:21px;border-radius:11px;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s;}
+.toggle.on{background:var(--v);}
+.toggle.off{background:var(--br);}
+.tdot2{width:17px;height:17px;border-radius:50%;background:#fff;position:absolute;top:2px;transition:left .2s;}
+.toggle.on .tdot2{left:19px;}
+.toggle.off .tdot2{left:2px;}
+.plan-box{background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(37,99,235,.1));border:1px solid rgba(124,58,237,.28);border-radius:11px;padding:14px 18px;margin:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.pb-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--vl);}
+.pb-sub{font-size:12px;color:var(--tm);margin-top:2px;}
+.pb-btn{padding:7px 15px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:8px;font-size:13px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;}
+
+/* UPGRADE MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(6,4,15,.82);backdrop-filter:blur(10px);z-index:200;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.upg-modal{background:var(--s1);border:1px solid var(--br);border-radius:22px;padding:38px 34px;width:90%;max-width:440px;text-align:center;animation:fadeUp .3s ease both;}
+.upg-ico{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(37,99,235,.18));border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.upg-title{font-family:'Syne',sans-serif;font-size:23px;font-weight:800;margin-bottom:9px;}
+.upg-sub{font-size:15px;color:var(--tm);line-height:1.6;margin-bottom:24px;}
+.upg-feats{text-align:left;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;}
+.uf{display:flex;align-items:center;gap:9px;font-size:14px;}
+.uf-dot{width:5px;height:5px;border-radius:50%;background:var(--vl);flex-shrink:0;}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--tm);font-size:20px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<!-- REGISTER -->
+
+
+<!-- LOGIN -->
+<div class="screen active" id="s-login">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="logo">estivo</div>
+      <div class="auth-title">Witaj z powrotem</div>
+      <div class="auth-sub">Zaloguj się do panelu agenta.</div>
+      <div class="err" id="login-err"></div>
+      <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="jan@agencja.pl" autocomplete="email"/></div>
+      <div class="field"><label>Hasło</label><input id="l-pass" type="password" placeholder="Twoje hasło" autocomplete="current-password"/></div>
+      <button class="btn-main" id="login-btn" onclick="doLogin()">Zaloguj się</button>
+      <div class="auth-link" style="font-size:13px;color:var(--tm);">Nie masz konta? <a href="/#cennik" style="color:#A78BFA;">Wybierz plan →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="screen" id="s-onboarding">
+  <div class="ob-wrap">
+    <div class="ob-card">
+      <div class="ob-prog">
+        <span id="op1" class="active"></span>
+        <span id="op2"></span>
+        <span id="op3"></span>
+      </div>
+      <div id="ob-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="screen" id="s-pricing">
+  <div class="pricing-wrap">
+    <div class="pricing-hdr">
+      <div class="logo" style="text-align:center;">estivo</div>
+      <div class="pricing-title">Wybierz swój plan</div>
+      <div style="font-size:15px;color:var(--tm);">14 dni za darmo · anuluj kiedy chcesz</div>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><sup>zł</sup>0</div>
+        <div class="plan-per">zawsze za darmo</div>
+        <div class="plan-hr"></div>
+        <ul class="plan-feats">
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>5 wycen miesięcznie</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Analiza zdjęć AI</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Historia 30 dni</li>
+        </ul>
+        <button class="plan-btn pb-out" onclick="choosePlan('starter')">Zacznij za darmo</button>
+      </div>
+      <div class="plan hot">
+        <div class="plan-badge">Najpopularniejszy</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>zł</sup>199</div>
+        <div class="plan-per">/ miesiąc · bez umowy</div>
+        <div class="plan-hr"></div>
+        <ul class="plan-feats">
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Nielimitowane wyceny</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Analiza zdjęć AI</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Raport PDF z brandingiem</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>CRM klientów</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Aplikacja mobilna</li>
+        </ul>
+        <button class="plan-btn pb-fill" onclick="choosePlan('pro')">14 dni za darmo →</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Agencja</div>
+        <div class="plan-price"><sup>zł</sup>599</div>
+        <div class="plan-per">/ miesiąc · do 10 agentów</div>
+        <div class="plan-hr"></div>
+        <ul class="plan-feats">
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Wszystko z Pro</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Panel administratora</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>White-label PDF</li>
+          <li><div class="chk"><svg width="8" height="6" fill="none"><path d="M1 3l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></div>Dedykowany opiekun</li>
+        </ul>
+        <button class="plan-btn pb-out" onclick="choosePlan('agencja')">Skontaktuj się</button>
+      </div>
+    </div>
+    <div class="pricing-skip"><a onclick="choosePlan('starter')">Pomiń — zacznij bezpłatny Starter</a></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="s-dashboard">
+  <div class="dash">
+    <div class="sidebar">
+      <div class="sb-logo">estivo</div>
+      <div class="sb-plan trial" id="sb-plan-box">
+        <div class="sb-plan-label">Trial aktywny</div>
+        <div class="sb-plan-val" id="sb-days">14 dni</div>
+        <div class="sb-plan-sub">do końca trialu</div>
+        <div class="sb-bar"><div class="sb-bar-fill" id="sb-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-item active" onclick="switchTab('overview')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><rect x="1" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>
+          Przegląd
+        </div>
+        <div class="sb-item" onclick="switchTab('valuator')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          Nowa wycena
+        </div>
+        <div class="sb-item" onclick="switchTab('history')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 4.5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Historia
+        </div>
+        <div class="sb-sect">Zarządzanie</div>
+        <div class="sb-item" onclick="switchTab('clients')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="5.5" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 13c0-2.8 2-4.5 4.5-4.5s4.5 1.7 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M10.5 7a2.5 2.5 0 0 0 0-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M12.5 13c0-2.3-1.4-3.8-3-4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Klienci
+        </div>
+        <div class="sb-sect">Konto</div>
+        <div class="sb-item" onclick="switchTab('settings')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 1.5v1M7.5 12.5v1M1.5 7.5h1M12.5 7.5h1M3.3 3.3l.7.7M11 11l.7.7M3.3 11.7l.7-.7M11 4l.7-.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Ustawienia
+        </div>
+      </div>
+      <div class="sb-upg" id="sb-upg-btn" onclick="openUpgrade()">
+        <div class="sb-upg-l">⚡ Ulepsz plan</div>
+        <div class="sb-upg-t">Pro — 199 zł/msc</div>
+      </div>
+      <div class="sb-bottom">
+        <div class="sb-user">
+          <div class="sb-av" id="sb-av">JK</div>
+          <div>
+            <div class="sb-uname" id="sb-uname">Ładowanie...</div>
+            <div class="sb-uemail" id="sb-uemail"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Przegląd</div>
+        <div class="topbar-right">
+          <div class="notif"><svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M7 1.5A3.5 3.5 0 0 0 3.5 5c0 3.5-1.5 4.5-1.5 4.5h10S10.5 8.5 10.5 5A3.5 3.5 0 0 0 7 1.5z" stroke="currentColor" stroke-width="1.2"/><path d="M8 11.5a1 1 0 0 1-2 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><div class="notif-dot"></div></div>
+          <button class="btn-sm btn-sm-fill" onclick="switchTab('valuator')">+ Nowa wycena</button>
+        </div>
+      </div>
+      <div class="content">
+
+        <!-- OVERVIEW -->
+        <div class="tab-page active" id="tab-overview">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-lbl">Wyceny łącznie</div><div class="kpi-val" id="kpi-total">0</div><div class="kpi-d" style="color:var(--tm);">wszystkie czasy</div></div>
+            <div class="kpi"><div class="kpi-lbl">Ten miesiąc</div><div class="kpi-val" id="kpi-month">0</div><div class="kpi-d" id="kpi-limit" style="color:var(--amber);">limit: 5 (Starter)</div></div>
+            <div class="kpi"><div class="kpi-lbl">Aktywni klienci</div><div class="kpi-val" id="kpi-clients">4</div><div class="kpi-d" style="color:var(--green);">↑ 1 nowy</div></div>
+            <div class="kpi"><div class="kpi-lbl">Śr. wycena</div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-d" style="color:var(--tm);">ostatnie 30 dni</div></div>
+          </div>
+          <div class="chart-card">
+            <div class="sec-hdr"><h3>Aktywność wycen</h3><span style="font-size:12px;color:var(--tm);">ostatnie 8 tygodni</span></div>
+            <div class="chart-bars" id="chart-bars"></div>
+          </div>
+          <div class="sec-hdr"><h3>Ostatnie wyceny</h3><button class="btn-sm btn-sm-out" onclick="switchTab('history')">Wszystkie</button></div>
+          <div class="recent-list" id="recent-list">
+            <div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab('valuator')">wykonaj pierwszą →</a></div>
+          </div>
+        </div>
+
+        <!-- VALUATOR -->
+        <div class="tab-page" id="tab-valuator">
+          <div class="val-layout">
+            <div class="val-card">
+              <div class="vf-sect">Lokalizacja</div>
+              <div class="g2">
+                <div class="vf"><label>Miasto</label><select id="v-miasto"><option value="">Wybierz miasto</option><option>Warszawa</option><option>Kraków</option><option>Wrocław</option><option>Gdańsk</option><option>Poznań</option><option>Łódź</option><option>Katowice</option><option>Lublin</option></select></div>
+                <div class="vf"><label>Dzielnica</label><input id="v-dzielnica" type="text" placeholder="np. Mokotów"/></div>
+              </div>
+              <div class="vf-sect">Parametry</div>
+              <div class="g3">
+                <div class="vf"><label>Metraż (m²)</label><input id="v-metraz" type="number" placeholder="55" min="10" max="500"/></div>
+                <div class="vf"><label>Pokoje</label><select id="v-pokoje"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option value="5+">5+</option></select></div>
+                <div class="vf"><label>Rok budowy</label><input id="v-rok" type="number" placeholder="2008" min="1900" max="2025"/></div>
+              </div>
+              <div class="g2" style="margin-top:10px;">
+                <div class="vf"><label>Stan</label><select id="v-stan"><option value="">Wybierz</option><option value="do remontu">Do remontu</option><option value="do odświeżenia">Do odświeżenia</option><option value="dobry">Dobry</option><option value="bardzo dobry">Bardzo dobry</option><option value="deweloperski">Deweloperski</option><option value="premium">Premium</option></select></div>
+                <div class="vf"><label>Typ budynku</label><select id="v-typ"><option value="">Wybierz</option><option value="wielka płyta">Wielka płyta</option><option value="blok z cegły">Blok z cegły</option><option value="kamienica">Kamienica</option><option value="nowe budownictwo">Nowe budownictwo</option><option value="apartamentowiec">Apartamentowiec</option></select></div>
+              </div>
+              <div class="vf-sect">Zdjęcia</div>
+              <div class="photo-zone" onclick="document.getElementById('v-photos').click()">
+                <input type="file" id="v-photos" multiple accept="image/*" onchange="handlePhotos(event)"/>
+                <div class="pz-ico"><svg width="17" height="17" fill="none" viewBox="0 0 17 17"><rect x="1.5" y="3" width="14" height="11" rx="2.2" stroke="#A78BFA" stroke-width="1.2"/><circle cx="6" cy="8" r="1.7" stroke="#A78BFA" stroke-width="1.1"/><path d="M1.5 11.5l3.5-3.5 3.5 3.5 2-2 4 4.5" stroke="#A78BFA" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pz-txt"><strong>Dodaj zdjęcia</strong>AI uwzględni stan wizualny w wycenie</div>
+              </div>
+              <div class="prevs" id="v-prevs"></div>
+              <div class="vf-sect">Uwagi</div>
+              <div class="vf"><textarea id="v-opis" placeholder="np. balkon z widokiem, garaż, bliskość metra..."></textarea></div>
+              <button class="val-run-btn" id="val-btn" onclick="runValuation()">Wycen nieruchomość</button>
+            </div>
+
+            <div class="result-card">
+              <div class="result-empty" id="result-empty">
+                <svg width="44" height="44" fill="none" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" stroke="currentColor" stroke-width="1.3"/><path d="M22 12v10l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                <p>Wypełnij formularz i kliknij <strong style="color:var(--t);">Wycen</strong> aby zobaczyć wyniki</p>
+              </div>
+              <div class="result-data" id="result-data">
+                <div class="vf-sect" style="margin-top:0;">Szacowana wartość</div>
+                <div class="r-price" id="r-price">—</div>
+                <div class="r-range" id="r-range"></div>
+                <div class="r-bar"><div class="r-bar-fill" id="r-bar-fill" style="width:0%"></div></div>
+                <div class="r-bar-lbl" id="r-bar-lbl"></div>
+                <div class="r-divider"></div>
+                <div class="r-metrics">
+                  <div class="r-met"><div class="r-met-l">Cena/m²</div><div class="r-met-v" id="r-m2">—</div></div>
+                  <div class="r-met"><div class="r-met-l">Trafność</div><div class="r-met-v" id="r-pewnosc">—</div></div>
+                  <div class="r-met"><div class="r-met-l">Trend</div><div class="r-met-v" id="r-trend" style="font-size:11px;">—</div></div>
+                </div>
+                <div class="r-analysis" id="r-analysis"></div>
+                <div class="r-tags" id="r-tags"></div>
+                <div class="r-src" id="r-src"></div>
+                <div class="r-actions">
+                  <button class="r-btn" onclick="pdfAlert()">📄 Raport PDF</button>
+                  <button class="r-btn fill" onclick="saveValuation()">💾 Zapisz</button>
+                </div>
+              </div>
+              <div class="ld-row" id="val-loading" style="display:none;"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="font-size:13px;color:var(--tm);">Analizuję dane NBP...</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="tab-page" id="tab-history">
+  <div class="clients-top">
+    <div class="srch-w">
+      <svg class="srch-ico" width="13" height="13" fill="none" viewBox="0 0 13 13"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9 9l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Szukaj: miasto, dzielnica, stan..." oninput="filterHistory(this.value)"/>
+    </div>
+    <button class="btn-sm btn-sm-fill" onclick="switchTab('valuator')">+ Nowa</button>
+  </div>
+  
+  <div id="history-list">
+    <div class="card" style="background: var(--s2); border: 1px solid var(--br); border-radius: 16px; padding: 20px; margin-top: 16px;">
+      <table style="width: 100%; border-collapse: collapse; color: var(--t); font-size: 14px;">
+        <thead>
+          <tr style="text-align: left; border-bottom: 1px solid var(--tf); color: var(--tm);">
+            <th style="padding: 12px;">Data</th>
+            <th style="padding: 12px;">Nieruchomość</th>
+            <th style="padding: 12px;">Wycena</th>
+            <th style="padding: 12px; text-align: right;">Akcja</th>
+          </tr>
+        </thead>
+        <tbody id="history-list-body">
+          <tr style="border-bottom: 1px solid var(--tf);">
+            <td style="padding: 12px;">2024-04-06</td>
+            <td style="padding: 12px;">Warszawa, Mokotów (55m²)</td>
+            <td style="padding: 12px; color: var(--green); font-weight: 600;">850 000 PLN</td>
+            <td style="padding: 12px; text-align: right;">
+              <button class="r-btn" onclick="generateFromHistory('test1')" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; cursor: pointer;">
+                📄 PDF
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+        <!-- CLIENTS -->
+        <div class="tab-page" id="tab-clients">
+          <div class="clients-top">
+            <div class="srch-w">
+              <svg class="srch-ico" width="13" height="13" fill="none" viewBox="0 0 13 13"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9 9l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <input type="text" placeholder="Szukaj klienta..."/>
+            </div>
+            <button class="btn-sm btn-sm-fill">+ Dodaj klienta</button>
+          </div>
+          <div class="cl-grid">
+            <div class="cl-card"><div class="cl-av av-v">AK</div><div><div class="cl-name">Anna Kowalska</div><div class="cl-meta">anna.kowalska@gmail.com</div><span class="cl-badge bg-green">Aktywny</span></div><div class="cl-right"><div class="cl-wc">3 wyceny</div><div class="cl-last">2 dni temu</div></div></div>
+            <div class="cl-card"><div class="cl-av av-b">PW</div><div><div class="cl-name">Piotr Wiśniewski</div><div class="cl-meta">p.wisniewski@wp.pl</div><span class="cl-badge bg-green">Aktywny</span></div><div class="cl-right"><div class="cl-wc">1 wycena</div><div class="cl-last">5 dni temu</div></div></div>
+            <div class="cl-card"><div class="cl-av av-a">MN</div><div><div class="cl-name">Marta Nowak</div><div class="cl-meta">m.nowak@onet.pl</div><span class="cl-badge bg-amber">Follow-up</span></div><div class="cl-right"><div class="cl-wc">2 wyceny</div><div class="cl-last">2 tyg. temu</div></div></div>
+            <div class="cl-card"><div class="cl-av av-g">TZ</div><div><div class="cl-name">Tomasz Zając</div><div class="cl-meta">t.zajac@gmail.com</div><span class="cl-badge bg-amber">Follow-up</span></div><div class="cl-right"><div class="cl-wc">1 wycena</div><div class="cl-last">3 tyg. temu</div></div></div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="tab-page" id="tab-settings">
+          <div class="set-sections">
+            <div class="set-card">
+              <div class="set-hdr">Plan i subskrypcja</div>
+              <div class="plan-box">
+                <div><div class="pb-name" id="set-plan-name">Trial Pro</div><div class="pb-sub" id="set-plan-sub">14 dni za darmo</div></div>
+                <button class="pb-btn" onclick="openUpgrade()">Ulepsz</button>
+              </div>
+            </div>
+            <div class="set-card">
+              <div class="set-hdr">Profil agenta</div>
+              <div class="set-row"><div class="set-l"><div class="set-ico ico-v"><svg width="13" height="13" fill="none" viewBox="0 0 13 13"><circle cx="6.5" cy="4" r="2.2" stroke="#A78BFA" stroke-width="1.2"/><path d="M1.5 12c0-2.5 2-4 5-4s5 1.5 5 4" stroke="#A78BFA" stroke-width="1.2" stroke-linecap="round"/></svg></div><div><div class="set-label" id="set-name-display">—</div><div class="set-sub">Imię i nazwisko</div></div></div><svg width="5" height="9" fill="none" viewBox="0 0 5 9"><path d="M1 1l3 3.5L1 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+              <div class="set-row"><div class="set-l"><div class="set-ico ico-b"><svg width="13" height="13" fill="none" viewBox="0 0 13 13"><rect x="1" y="3" width="11" height="7" rx="1.5" stroke="#60A5FA" stroke-width="1.2"/><path d="M1 5l5.5 3.5L12 5" stroke="#60A5FA" stroke-width="1.2"/></svg></div><div><div class="set-label" id="set-email-display">—</div><div class="set-sub">Email</div></div></div><svg width="5" height="9" fill="none" viewBox="0 0 5 9"><path d="M1 1l3 3.5L1 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            </div>
+            <div class="set-card">
+              <div class="set-hdr">Aplikacja</div>
+              <div class="set-row"><div class="set-l"><div class="set-ico ico-a"><svg width="13" height="13" fill="none" viewBox="0 0 13 13"><path d="M6.5 1.5l1.2 3 3 .5-2.2 2.1.5 3-2.5-1.4-2.5 1.4.5-3-2.2-2.1 3-.5z" stroke="#FCD34D" stroke-width="1.1" stroke-linejoin="round"/></svg></div><div class="set-label">Powiadomienia</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="tdot2"></div></div></div>
+              <div class="set-row"><div class="set-l"><div class="set-ico ico-v"><svg width="13" height="13" fill="none" viewBox="0 0 13 13"><rect x="1.5" y="2" width="10" height="9" rx="1.5" stroke="#A78BFA" stroke-width="1.2"/><path d="M4 5.5h5M4 7.5h3.5" stroke="#A78BFA" stroke-width="1.1" stroke-linecap="round"/></svg></div><div><div class="set-label">Szablon PDF</div><div class="set-sub">Logo, kolory, stopka</div></div></div><svg width="5" height="9" fill="none" viewBox="0 0 5 9"><path d="M1 1l3 3.5L1 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            </div>
+            <div class="set-card">
+              <div class="set-hdr">Konto</div>
+              <div class="set-row" style="cursor:pointer;" onclick="doLogout()"><div class="set-l"><div class="set-ico ico-r"><svg width="13" height="13" fill="none" viewBox="0 0 13 13"><path d="M8.5 2h2.5v9H8.5M5 9.5l3.5-3-3.5-3M1 6.5h7" stroke="#F87171" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="set-label" style="color:#F87171;">Wyloguj się</div></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
+<div class="modal-bg" id="modal-upgrade">
+  <div class="upg-modal" style="position:relative;">
+    <button class="modal-close" onclick="closeUpgrade()">✕</button>
+    <div class="upg-ico"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" stroke="#A78BFA" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+    <div class="upg-title" id="upg-title">Ulepsz do Pro</div>
+    <div class="upg-sub" id="upg-sub">Przejdź na plan Pro i wyceniaj bez ograniczeń.</div>
+    <div class="upg-feats">
+      <div class="uf"><div class="uf-dot"></div>Nielimitowane wyceny AI miesięcznie</div>
+      <div class="uf"><div class="uf-dot"></div>Raport PDF z logo Twojej agencji</div>
+      <div class="uf"><div class="uf-dot"></div>CRM — zarządzanie klientami</div>
+      <div class="uf"><div class="uf-dot"></div>Aplikacja mobilna iOS i Android</div>
+      <div class="uf"><div class="uf-dot"></div>Wsparcie priorytetowe</div>
+    </div>
+    <button class="btn-main" onclick="goToStripe('pro')">Aktywuj Pro — 199 zł/msc →</button>
+    <div style="font-size:12px;color:var(--tf);margin-top:10px;">14 dni za darmo · anuluj kiedy chcesz</div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// CONFIG — podmień na swoje klucze
+// ════════════════════════════════════════
+const SUPABASE_URL = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+let STATE = {
+  user: null,
+  profile: null,
+  subscription: null,
+  history: [],
+  photos: [],
+  lastResult: null,
+  obStep: 1,
+  obData: {}
+};
+
+// ════════════════════════════════════════
+// INIT — Supabase auth
+// ════════════════════════════════════════
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    STATE.user = session.user;
+    try { await loadUserData(); } catch(e) { console.warn(e); }
+    enterDashboard();
+  } else {
+    // Nie zalogowany → wróć na stronę główną
+    window.location.replace('/index.html');
+  }
+})();
+
+// ════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function doLogin() {
+  window.location.href = '/index.html';
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  window.location.replace('/index.html');
+}
+
+function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; }
+
+// ════════════════════════════════════════
+// LOAD USER DATA
+// ════════════════════════════════════════
+async function loadUserData() {
+  const uid = STATE.user.id;
+  const [{ data: profile }, { data: sub }, { data: vals }] = await Promise.all([
+    sb.from('profiles').select('*').eq('id', uid).single(),
+    sb.from('subscriptions').select('*').eq('user_id', uid).single(),
+    sb.from('valuations').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(50)
+  ]);
+  STATE.profile = profile;
+  STATE.subscription = sub;
+  STATE.history = vals || [];
+}
+
+// ════════════════════════════════════════
+// ONBOARDING
+// ════════════════════════════════════════
+const OB_STEPS = [
+  { title:'Jak głównie pracujesz?', sub:'Dopasujemy Estivo do Twojego stylu pracy.', key:'role', opts:[{ico:'🏢',label:'Biuro nieruchomości',val:'biuro'},{ico:'👤',label:'Agent niezależny',val:'niezalezny'},{ico:'🏗️',label:'Deweloper',val:'deweloper'},{ico:'📊',label:'Inwestor',val:'inwestor'}] },
+  { title:'W jakim mieście działasz?', sub:'Skonfigurujemy bazę danych dla Twojego rynku.', key:'city', opts:[{ico:'🏙️',label:'Warszawa',val:'Warszawa'},{ico:'🏛️',label:'Kraków',val:'Kraków'},{ico:'🌊',label:'Gdańsk/Trójmiasto',val:'Gdańsk'},{ico:'📍',label:'Inne miasto',val:'inne'}] },
+  { title:'Ile wycen robisz miesięcznie?', sub:'Dobierzemy plan do Twojej skali.', key:'volume', opts:[{ico:'🌱',label:'1–5 wycen',val:'low'},{ico:'📈',label:'6–20 wycen',val:'mid'},{ico:'🚀',label:'20+ wycen',val:'high'},{ico:'🏢',label:'Cała agencja',val:'agency'}] }
+];
+
+function renderObStep() {
+  const s = OB_STEPS[STATE.obStep - 1];
+  ['op1','op2','op3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = i < STATE.obStep - 1 ? 'done' : i === STATE.obStep - 1 ? 'active' : '';
+  });
+  document.getElementById('ob-body').innerHTML = `
+    <div class="ob-title">${s.title}</div>
+    <div class="ob-sub">${s.sub}</div>
+    <div class="ob-opts">${s.opts.map(o => `<div class="ob-opt ${STATE.obData[s.key]===o.val?'sel':''}" onclick="selOb('${s.key}','${o.val}',this)"><div class="ob-opt-ico">${o.ico}</div>${o.label}</div>`).join('')}</div>
+    <div class="ob-nav">
+      ${STATE.obStep > 1 ? '<button class="btn-ghost" onclick="obBack()">← Wróć</button>' : '<div></div>'}
+      <button class="btn-next" onclick="obNext()">${STATE.obStep < 3 ? 'Dalej →' : 'Przejdź do cennika →'}</button>
+    </div>`;
+}
+
+function selOb(key, val, el) {
+  STATE.obData[key] = val;
+  el.closest('.ob-opts').querySelectorAll('.ob-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function obNext() {
+  if (STATE.obStep < 3) { STATE.obStep++; renderObStep(); return; }
+  if (STATE.user) {
+    await sb.from('profiles').update({ city: STATE.obData.city, role: STATE.obData.role, volume: STATE.obData.volume }).eq('id', STATE.user.id);
+  }
+  show('s-pricing');
+}
+
+function obBack() { if (STATE.obStep > 1) { STATE.obStep--; renderObStep(); } }
+
+// ════════════════════════════════════════
+// PRICING / STRIPE
+// ════════════════════════════════════════
+async function choosePlan(plan) {
+  if (plan === 'agencja') { window.location.href = 'mailto:kontakt@estivo.pl?subject=Plan Agencja'; return; }
+  if (plan === 'starter') { await loadUserData(); enterDashboard(); return; }
+  await goToStripe(plan);
+}
+
+async function goToStripe(plan) {
+  closeUpgrade();
+  const btn = document.querySelector(`[onclick="choosePlan('${plan}')"]`);
+  if (btn) { btn.disabled = true; btn.textContent = 'Przekierowuję...'; }
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        plan,
+        user_id: STATE.user?.id || '',
+        user_email: STATE.user?.email || '',
+        success_url: window.location.origin + '/app?payment=success',
+        cancel_url: window.location.origin + '/app'
+      })
+    });
+    const data = await res.json();
+    if (data.url) { window.location.href = data.url; }
+    else { alert('Błąd Stripe. Spróbuj ponownie.'); }
+  } catch (e) {
+    alert('Błąd połączenia. Sprawdź internet.');
+    if (btn) { btn.disabled = false; btn.textContent = '14 dni za darmo →'; }
+  }
+}
+
+// ════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════
+function enterDashboard() {
+  const p = STATE.profile || {};
+  const name = p.name || STATE.user?.user_metadata?.name || STATE.user?.email?.split('@')[0] || 'Agent';
+  const email = p.email || STATE.user?.email || '';
+  const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) || 'AG';
+  document.getElementById('sb-av').textContent = initials;
+  document.getElementById('sb-uname').textContent = name;
+  document.getElementById('sb-uemail').textContent = email;
+  document.getElementById('set-name-display').textContent = name;
+  document.getElementById('set-email-display').textContent = email;
+
+  const sub = STATE.subscription;
+  updatePlanUI(sub);
+  renderChart();
+  updateKPIs();
+  renderRecent();
+  renderHistoryList();
+  show('s-dashboard');
+}
+
+function updatePlanUI(sub) {
+  const box = document.getElementById('sb-plan-box');
+  const upg = document.getElementById('sb-upg-btn');
+  const planNameEl = document.getElementById('set-plan-name');
+  const planSubEl = document.getElementById('set-plan-sub');
+  const kpiLimit = document.getElementById('kpi-limit');
+
+  if (!sub) return;
+
+  if (sub.status === 'trial') {
+    const daysLeft = Math.max(0, Math.round((new Date(sub.trial_ends_at) - new Date()) / 86400000));
+    document.getElementById('sb-days').textContent = daysLeft + ' dni';
+    const pct = Math.round((daysLeft / 14) * 100);
+    document.getElementById('sb-bar-fill').style.width = pct + '%';
+    planNameEl.textContent = 'Trial Pro';
+    planSubEl.textContent = `${daysLeft} dni do końca trialu`;
+    kpiLimit.textContent = 'Trial Pro — nielimitowane';
+    kpiLimit.style.color = 'var(--green)';
+  } else if (sub.plan === 'pro' && sub.status === 'active') {
+    box.className = 'sb-plan pro';
+    box.innerHTML = '<div class="sb-plan-label">Plan Pro</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
+    upg.style.display = 'none';
+    planNameEl.textContent = 'Plan Pro';
+    planSubEl.textContent = '199 zł / miesiąc';
+    kpiLimit.textContent = 'Nielimitowane';
+    kpiLimit.style.color = 'var(--green)';
+  } else if (sub.plan === 'starter') {
+    box.className = 'sb-plan starter';
+    box.innerHTML = '<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val" id="sb-days">5</div><div class="sb-plan-sub">wycen / miesiąc</div><div class="sb-bar"><div class="sb-bar-fill" id="sb-bar-fill" style="width:100%"></div></div>';
+    planNameEl.textContent = 'Plan Starter';
+    planSubEl.textContent = 'Darmowy — 5 wycen/msc';
+  }
+}
+
+// ════════════════════════════════════════
+// KPI + CHART
+// ════════════════════════════════════════
+function updateKPIs() {
+  const h = STATE.history;
+  document.getElementById('kpi-total').textContent = h.length;
+  const now = new Date();
+  const monthVals = h.filter(v => new Date(v.created_at).getMonth() === now.getMonth());
+  document.getElementById('kpi-month').textContent = monthVals.length;
+  if (h.length) {
+    const avg = Math.round(h.reduce((s,v)=>s+v.cena,0)/h.length);
+    document.getElementById('kpi-avg').textContent = (avg/1000).toFixed(0)+'k zł';
+  }
+}
+
+function renderChart() {
+  const bars = document.getElementById('chart-bars');
+  const labels = ['T-7','T-6','T-5','T-4','T-3','T-2','T-1','Ten'];
+  const data = [2,5,3,8,4,10,6, STATE.history.length];
+  const max = Math.max(...data, 1);
+  bars.innerHTML = data.map((v,i) => `
+    <div class="bar-col">
+      <div class="bar" style="height:${Math.round((v/max)*90)}px;opacity:${i===7?1:.55}"></div>
+      <div class="bar-lbl">${labels[i]}</div>
+    </div>`).join('');
+}
+
+function renderRecent() {
+  const el = document.getElementById('recent-list');
+  if (!STATE.history.length) {
+    el.innerHTML = '<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';
+    return;
+  }
+  el.innerHTML = STATE.history.slice(0,5).map(v => `
+    <div class="ri">
+      <div class="ri-l">
+        <div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+        <div><div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
+      </div>
+      <div><div class="ri-price">${v.cena.toLocaleString('pl-PL')} zł</div><div class="ri-m2">${v.cena_za_m2.toLocaleString('pl-PL')} zł/m²</div></div>
+    </div>`).join('');
+}
+
+function renderHistoryList(filter='') {
+  const el = document.getElementById('history-list');
+  const items = filter ? STATE.history.filter(v => `${v.miasto} ${v.dzielnica||''} ${v.stan}`.toLowerCase().includes(filter.toLowerCase())) : STATE.history;
+  if (!items.length) { el.innerHTML = '<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wyników.</div>'; return; }
+  el.innerHTML = items.map(v => `
+    <div class="ri" style="margin-bottom:8px;">
+      <div class="ri-l">
+        <div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+        <div><div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
+      </div>
+      <div><div class="ri-price">${v.cena.toLocaleString('pl-PL')} zł</div><div class="ri-m2">${v.cena_za_m2.toLocaleString('pl-PL')} zł/m² · Trafność ${v.pewnosc}%</div></div>
+    </div>`).join('');
+}
+
+function filterHistory(v) { renderHistoryList(v); }
+
+// ════════════════════════════════════════
+// VALUATION ENGINE (NBP Q4 2025)
+// ════════════════════════════════════════
+const NBP = {
+  'Warszawa':{rw:16750,rp:16294,d:{'Śródmieście':1.28,'Wilanów':1.20,'Mokotów':1.12,'Żoliborz':1.10,'Wola':1.05,'Ursynów':1.0,'Bemowo':.93,'Praga-Południe':.90,'Białołęka':.82}},
+  'Kraków':{rw:14898,rp:15641,d:{'Stare Miasto':1.35,'Kazimierz':1.22,'Krowodrza':1.08,'Podgórze':1.02,'Dębniki':1.0,'Bronowice':.97,'Nowa Huta':.80}},
+  'Wrocław':{rw:12546,rp:12284,d:{'Stare Miasto':1.28,'Śródmieście':1.18,'Krzyki':1.08,'Fabryczna':.97,'Psie Pole':.85}},
+  'Gdańsk':{rw:13392,rp:14190,d:{'Śródmieście':1.30,'Oliwa':1.22,'Wrzeszcz':1.14,'Zaspa':.95,'Chełm':.88,'Łostowice':.82}},
+  'Poznań':{rw:10636,rp:12405,d:{'Stare Miasto':1.22,'Jeżyce':1.10,'Grunwald':1.06,'Wilda':.97,'Nowe Miasto':.92}},
+  'Łódź':{rw:8038,rp:9500,d:{'Śródmieście':1.18,'Polesie':.95,'Górna':.90,'Widzew':.88,'Bałuty':.87}},
+  'Katowice':{rw:8188,rp:8500,d:{'Śródmieście':1.20,'Brynów':1.05,'Ligota':1.0,'Piotrowice':.92}},
+  'Lublin':{rw:7800,rp:8200,d:{'Śródmieście':1.18,'Wieniawa':1.08,'LSM':.95,'Czuby':.97}}
+};
+const STAN_M={'do remontu':.76,'do odświeżenia':.87,'dobry':1.0,'bardzo dobry':1.11,'deweloperski':1.06,'premium':1.32};
+const TYP_M={'wielka płyta':.87,'blok z cegły':.94,'kamienica':1.06,'nowe budownictwo':1.12,'apartamentowiec':1.22};
+const TRENDS_T={'Warszawa':'stabilny +1.85% kw/kw','Kraków':'stabilny +0.32%','Wrocław':'korekta −3.11% r/r','Gdańsk':'rosnący +9.5% r/r','Poznań':'korekta −2.66% r/r','Łódź':'rosnący +5.87% r/r','Katowice':'stabilny +2.46% r/r','Lublin':'stabilny'};
+const ANALYSES_T={'Warszawa':'Warszawa IV kw. 2025: rynek wtórny 16 750 zł/m², rynek pierwotny 16 294 zł/m². Ceny odbiły +1,85% kw/kw. Śródmieście i Wilanów utrzymują premium powyżej 21 000 zł/m².','Kraków':'Kraków IV kw. 2025: rynek wtórny 14 898 zł/m². Stabilizacja po korekcie — rynek w fazie równowagi. Kazimierz i Stare Miasto notują nadal 19–20 tys. zł/m².','Wrocław':'Wrocław IV kw. 2025: rynek wtórny 12 546 zł/m². Korekta roczna −3,11% r/r. Stare Miasto utrzymuje powyżej 16 000 zł/m².','Gdańsk':'Gdańsk IV kw. 2025: lider wzrostu w Polsce +9,5% r/r. Rynek pierwotny 14 190 zł/m². Oliwa i Wrzeszcz powyżej 17 000 zł/m².','Poznań':'Poznań IV kw. 2025: rynek wtórny 10 636 zł/m², korekta −2,66% r/r. Duży spread RP vs RW sugeruje aktywnych deweloperów.','Łódź':'Łódź IV kw. 2025: 8 038 zł/m² (+5,87% r/r) — drugi najsilniejszy wzrost. Rewitalizacja centrum podnosi wartości.','Katowice':'Katowice IV kw. 2025: 8 188 zł/m², stabilny wzrost +2,46% r/r. Centrum wyraźnie droższe od pozostałych dzielnic.','Lublin':'Lublin IV kw. 2025: ~7 800 zł/m². Rynek akademicki z umiarkowaną dynamiką i stabilnym popytem.'};
+
+let uploadedPhotos = [];
+function handlePhotos(e) {
+  Array.from(e.target.files).forEach(f => {
+    const r = new FileReader(); r.onload = ev => { uploadedPhotos.push({dataUrl:ev.target.result}); renderPrevs(); }; r.readAsDataURL(f);
+  });
+}
+function renderPrevs() {
+  document.getElementById('v-prevs').innerHTML = uploadedPhotos.map((p,i) => `<div class="prev-w"><img src="${p.dataUrl}" class="prev-i"/><button class="prev-rm" onclick="uploadedPhotos.splice(${i},1);renderPrevs()">✕</button></div>`).join('');
+}
+
+async function runValuation() {
+  const miasto = document.getElementById('v-miasto').value;
+  const metraz = document.getElementById('v-metraz').value;
+  const stan = document.getElementById('v-stan').value;
+  const dzielnica = document.getElementById('v-dzielnica').value || "";
+
+  if (!miasto || !metraz || !stan) { 
+    alert('Podaj przynajmniej miasto, metraż i stan.'); 
+    return; 
+  }
+
+  // 1. Pokazujemy ładowanie
+  document.getElementById('result-empty').style.display = 'none';
+  document.getElementById('result-data').style.display = 'none';
+  document.getElementById('val-loading').style.display = 'flex';
+
+  // 2. Symulacja obliczeń AI (Tutaj docelowo będzie Twoje API)
+  // Przykładowy algorytm: 10000 zł za m2 + bonus za miasto/stan
+  const basePrice = 10000;
+  let multiplier = 1;
+  if(miasto === 'Warszawa') multiplier = 1.4;
+  if(stan === 'premium') multiplier *= 1.3;
+  
+  const resPrice = Math.round(metraz * basePrice * multiplier);
+  const formattedPrice = resPrice.toLocaleString('pl-PL');
+
+  // Udajemy, że AI myśli przez 1.5 sekundy
+  await new Promise(r => setTimeout(r, 1500));
+
+  // 3. Wyświetlamy wyniki w panelu bocznym
+  document.getElementById('val-loading').style.display = 'none';
+  document.getElementById('result-data').style.display = 'block';
+  document.getElementById('r-price').innerText = formattedPrice + ' PLN';
+  document.getElementById('r-m2').innerText = Math.round(resPrice/metraz).toLocaleString('pl-PL') + ' PLN';
+  document.getElementById('r-pewnosc').innerText = '94%';
+  document.getElementById('r-analysis').innerText = `Wycena dla nieruchomości ${metraz}m² w lokalizacji ${miasto} (${dzielnica}). Stan: ${stan}.`;
+
+  // 4. KLUCZOWY MOMENT: Dodajemy tę wycenę do tabeli Historii
+  const historyTable = document.getElementById('history-list-body');
+  
+  // Usuwamy napis "Brak wycen" jeśli to pierwsza wycena
+  if (historyTable.innerHTML.includes('Brak wycen')) historyTable.innerHTML = '';
+
+  const newRow = `
+    <tr style="border-bottom: 1px solid var(--tf);">
+      <td style="padding: 12px;">${new Date().toLocaleDateString('pl-PL')}</td>
+      <td style="padding: 12px;">${miasto}, ${dzielnica} (${metraz}m²)</td>
+      <td style="padding: 12px; color: var(--green); font-weight: 600;">${formattedPrice} PLN</td>
+      <td style="padding: 12px; text-align: right;">
+        <button class="r-btn" onclick="generateFromHistory('nowa')" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; cursor: pointer;">
+          📄 PDF
+        </button>
+      </td>
+    </tr>
+  `;
+  
+  // Wstawiamy na samą górę listy
+  historyTable.insertAdjacentHTML('afterbegin', newRow);
+}
+
+  // Sprawdź limit planu Starter
+  const sub = STATE.subscription;
+  if (sub && sub.plan === 'starter' && sub.status !== 'trial') {
+    const now = new Date();
+    const monthVals = STATE.history.filter(v => new Date(v.created_at).getMonth() === now.getMonth());
+    if (monthVals.length >= 5) { openUpgrade('limit'); return; }
+  }
+
+  const btn = document.getElementById('val-btn');
+  btn.disabled = true; btn.textContent = 'Analizuję...';
+  document.getElementById('result-empty').style.display = 'none';
+  document.getElementById('result-data').style.display = 'none';
+  document.getElementById('val-loading').style.display = 'flex';
+
+  await new Promise(r => setTimeout(r, 1200 + Math.random()*600));
+
+  const dzielnica = document.getElementById('v-dzielnica').value;
+  const typ = document.getElementById('v-typ').value;
+  const rok = document.getElementById('v-rok').value;
+  const pokoje = document.getElementById('v-pokoje').value;
+  const opis = document.getElementById('v-opis').value;
+  const isNowe = typ==='nowe budownictwo'||typ==='apartamentowiec'||(rok&&(2025-parseInt(rok))<5);
+  const cd = NBP[miasto]||{rw:9000,rp:9500,d:{}};
+  let m2 = isNowe ? cd.rp : cd.rw;
+  const dz = dzielnica ? Object.keys(cd.d).find(k=>dzielnica.toLowerCase().includes(k.toLowerCase())) : null;
+  if (dz) m2 *= cd.d[dz];
+  m2 *= (STAN_M[stan]||1.0);
+  m2 *= (TYP_M[typ]||1.0);
+  if (rok) { const age=2025-parseInt(rok); if(age>30) m2*=.91; else if(age>15) m2*=.96; }
+  if (uploadedPhotos.length>=3) m2*=1.02;
+  m2 = Math.round(m2/50)*50;
+  const cena = Math.round(m2*parseFloat(metraz)/1000)*1000;
+  const spread = Math.round(cena*.065/1000)*1000;
+  const pewnosc = Math.min(93,66+(dzielnica?7:0)+(stan?5:0)+(typ?4:0)+(rok?4:0)+(uploadedPhotos.length*3));
+  const plus=[], minus=[];
+  if((STAN_M[stan]||1)>=1.1) plus.push('Wysoki standard wykończenia');
+  if((STAN_M[stan]||1)<.9) minus.push('Stan wymaga nakładów');
+  if((TYP_M[typ]||1)>=1.1) plus.push('Prestiżowy typ budynku');
+  if((TYP_M[typ]||1)<.9) minus.push('Budownictwo wielkopłytowe');
+  if(rok&&(2025-parseInt(rok))<10) plus.push('Nowe budownictwo');
+  if(rok&&(2025-parseInt(rok))>35) minus.push('Stary rok budowy');
+  if(dz&&cd.d[dz]>1.1) plus.push('Prestiżowa dzielnica');
+  if(uploadedPhotos.length>0) plus.push('Analiza wizualna zdjęć');
+  const rynek = isNowe ? 'rynek pierwotny' : 'rynek wtórny';
+
+  document.getElementById('r-price').textContent = cena.toLocaleString('pl-PL') + ' zł';
+  document.getElementById('r-range').textContent = `Przedział: ${(cena-spread).toLocaleString('pl-PL')} – ${(cena+spread).toLocaleString('pl-PL')} zł`;
+  setTimeout(()=>document.getElementById('r-bar-fill').style.width = pewnosc+'%', 100);
+  document.getElementById('r-bar-lbl').textContent = `Trafność: ${pewnosc}%`;
+  document.getElementById('r-m2').textContent = m2.toLocaleString('pl-PL')+' zł';
+  document.getElementById('r-pewnosc').textContent = pewnosc+'%';
+  document.getElementById('r-trend').textContent = TRENDS_T[miasto]||'stabilny';
+  document.getElementById('r-analysis').textContent = ANALYSES_T[miasto]||'';
+  const tags = document.getElementById('r-tags');
+  tags.innerHTML = plus.map(t=>`<span class="rtag rtag-p">+ ${t}</span>`).join('') + minus.map(t=>`<span class="rtag rtag-m">− ${t}</span>`).join('');
+  document.getElementById('r-src').innerHTML = `<strong style="color:var(--bl);">${rynek}</strong> · Dane NBP BaRN IV kw. 2025 · <a href="https://nbp.pl/publikacje/cykliczne-materialy-analityczne-nbp/rynek-nieruchomosci/informacja-kwartalna/" target="_blank">nbp.pl</a>`;
+
+  STATE.lastResult = { miasto, dzielnica, metraz:parseFloat(metraz), pokoje, rok:rok?parseInt(rok):null, stan, typ, opis, cena, cena_min:cena-spread, cena_max:cena+spread, cena_za_m2:m2, pewnosc, trend:TRENDS_T[miasto]||'stabilny', analiza:ANALYSES_T[miasto]||'', czynniki_plus:plus, czynniki_minus:minus, rynek, zrodlo:'NBP BaRN IV kw. 2025', photos_count:uploadedPhotos.length };
+
+  document.getElementById('val-loading').style.display = 'none';
+  document.getElementById('result-data').style.display = 'block';
+  btn.disabled = false; btn.textContent = 'Wycen nieruchomość';
+}
+
+async function saveValuation() {
+  if (!STATE.user) {
+    alert('Musisz być zalogowany, aby zapisać wycenę.');
+    return;
+  }
+  if (!STATE.lastResult) {
+    alert('Najpierw dokonaj wyceny!');
+    return;
+  }
+  const { error } = await sb.from('valuations').insert({ 
+    user_id: STATE.user.id, 
+    ...STATE.lastResult,
+    created_at: new Date().toISOString()
+  });
+  if (error) { 
+    alert('Błąd zapisu: ' + error.message); 
+    return; 
+  }
+  try { await loadUserData(); renderHistoryList(); } catch(e) {}
+  alert('✅ Wycena zapisana!');
+}
+
+function pdfAlert() {
+  if (STATE.subscription?.plan !== 'pro') { openUpgrade('pdf'); } else { alert('Generuję PDF... (wkrótce dostępne)'); }
+}
+
+// ════════════════════════════════════════
+// UI NAV
+// ════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const order = ['overview','valuator','history','clients','settings'];
+  const idx = order.indexOf(tab);
+  const items = document.querySelectorAll('.sb-item');
+  if (idx >= 0 && items[idx]) items[idx].classList.add('active');
+  const titles = {overview:'Przegląd',valuator:'Nowa wycena',history:'Historia wycen',clients:'Klienci',settings:'Ustawienia'};
+  document.getElementById('topbar-title').textContent = titles[tab] || tab;
+  if (tab==='history') renderHistoryList();
+}
+
+function openUpgrade(reason) {
+  const title = document.getElementById('upg-title');
+  const sub = document.getElementById('upg-sub');
+  if (reason === 'limit') { title.textContent = 'Limit wycen wyczerpany'; sub.textContent = 'Plan Starter pozwala na 5 wycen/miesiąc. Przejdź na Pro — bez limitów.'; }
+  else if (reason === 'pdf') { title.textContent = 'Raport PDF — plan Pro'; sub.textContent = 'Generowanie brandowanych raportów PDF jest dostępne w planie Pro.'; }
+  else { title.textContent = 'Ulepsz do Pro'; sub.textContent = 'Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.'; }
+  document.getElementById('modal-upgrade').classList.add('open');
+}
+function closeUpgrade() { document.getElementById('modal-upgrade').classList.remove('open'); }
+</script>
+<div id="pdf-template" style="display: none;">
+  <div id="raport-to-print" style="width: 700px; padding: 50px; background: white; color: #1a1a1a; font-family: Arial, sans-serif;">
+    <div style="border-bottom: 3px solid #7C3AED; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+      <h1 style="color: #7C3AED; margin: 0; font-size: 28px;">ESTIVO PRO</h1>
+      <span style="color: #666; font-weight: bold;">RAPORT WYCENY</span>
+    </div>
+    <div style="margin-top: 30px;">
+      <h2 id="pdf-proj-name" style="font-size: 20px; color: #1f2937;">Raport wyceny nieruchomości</h2>
+      <p style="color: #6b7280;">Data wygenerowania: <span id="pdf-current-date"></span></p>
+      
+      <div id="pdf-main-content" style="margin-top: 30px; font-size: 16px; line-height: 1.6; background: #f9fafb; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb;">
+        <p>Szacunkowa wartość nieruchomości została obliczona przy użyciu algorytmów AI Estivo Pro na podstawie aktualnych danych rynkowych.</p>
+      </div>
+    </div>
+    <div style="margin-top: 60px; font-size: 10px; color: #9ca3af; text-align: center; border-top: 1px solid #f3f4f6; padding-top: 20px;">
+      Dokument wygenerowany przez Estivo Pro. Dane mają charakter poglądowy.
+    </div>
+  </div>
+</div>
+
+<script>
+async function generateFromHistory(id) {
+  // Sprawdzamy czy użytkownik ma plan PRO (Twoja funkcja openUpgrade)
+  if (typeof userPlan !== 'undefined' && userPlan !== 'pro') {
+    openUpgrade('pdf');
+    return;
+  }
+
+  const container = document.getElementById('pdf-template');
+  const element = document.getElementById('raport-to-print');
+  
+  // Wpisujemy datę i dane
+  document.getElementById('pdf-current-date').innerText = new Date().toLocaleDateString('pl-PL');
+  
+  // POKAZUJEMY kontener na ułamek sekundy (wymagane przez html2pdf)
+  container.style.display = 'block';
+
+  const opt = {
+    margin: 10,
+    filename: 'Raport_Estivo_Pro.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  // Generujemy i pobieramy
+  html2pdf().set(opt).from(element).save().then(() => {
+    container.style.display = 'none'; // Chowamy z powrotem
+  });
+}
+</script>
+</body>
+</html>
