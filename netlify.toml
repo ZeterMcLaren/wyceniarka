@@ -1,9 +1,0 @@
-[build]
-  publish = "."
-  functions = "functions"
-  command = "npm install"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
