@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Blog — Estivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--v:#7C3AED;--vl:#A78BFA;--b:#2563EB;--bg:#05030D;--s1:#0B0918;--s2:#110F22;--br:rgba(124,58,237,.18);--t:#F0EDFF;--tm:rgba(240,237,255,.52);--tf:rgba(240,237,255,.14);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;}
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.18),transparent 70%);top:-250px;left:-150px;}
+.o2{width:550px;height:550px;background:radial-gradient(circle,rgba(37,99,235,.14),transparent 70%);bottom:100px;right:-180px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,3,13,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--br);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-mid{display:flex;gap:4px;}
+.nav-mid a{font-size:13.5px;color:var(--tm);text-decoration:none;padding:6px 14px;border-radius:100px;transition:all .2s;}
+.nav-mid a:hover,.nav-mid a.active{color:var(--t);background:rgba(124,58,237,.1);}
+.btn-nav{background:linear-gradient(135deg,var(--v),var(--b));border:none;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:#fff;cursor:pointer;padding:9px 22px;border-radius:100px;transition:all .2s;box-shadow:0 4px 20px rgba(124,58,237,.35);text-decoration:none;}
+.btn-nav:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,.5);}
+.page{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:120px 24px 80px;}
+.page-label{font-size:11.5px;font-weight:500;color:#A78BFA;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;}
+.page-title{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:12px;}
+.page-sub{font-size:17px;color:var(--tm);margin-bottom:56px;font-weight:300;max-width:540px;}
+
+/* FEATURED */
+.featured{background:var(--s1);border:1px solid var(--br);border-radius:24px;padding:40px;margin-bottom:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;transition:border-color .25s;text-decoration:none;color:inherit;}
+.featured:hover{border-color:rgba(124,58,237,.45);}
+@media(max-width:700px){.featured{grid-template-columns:1fr;}}
+.feat-tag{display:inline-block;font-size:11px;font-weight:500;padding:4px 12px;border-radius:100px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:#C4B5FD;letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px;}
+.feat-title{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:700;line-height:1.2;letter-spacing:-0.5px;margin-bottom:14px;}
+.feat-excerpt{font-size:15px;color:var(--tm);line-height:1.7;margin-bottom:20px;}
+.feat-meta{font-size:12.5px;color:var(--tf);display:flex;gap:16px;align-items:center;}
+.feat-img{background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.15));border-radius:16px;height:240px;display:flex;align-items:center;justify-content:center;}
+.feat-img svg{opacity:.4;}
+.read-more{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:#A78BFA;font-weight:500;}
+
+/* GRID */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.blog-grid{grid-template-columns:1fr;}}
+.post-card{background:var(--s1);border:1px solid var(--br);border-radius:20px;overflow:hidden;transition:transform .25s,border-color .25s;text-decoration:none;color:inherit;display:flex;flex-direction:column;}
+.post-card:hover{transform:translateY(-4px);border-color:rgba(124,58,237,.4);}
+.card-img{height:160px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(37,99,235,.12));display:flex;align-items:center;justify-content:center;}
+.card-body{padding:22px 20px;flex:1;display:flex;flex-direction:column;}
+.card-tag{font-size:10.5px;font-weight:500;padding:3px 10px;border-radius:100px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#C4B5FD;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;display:inline-block;}
+.card-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.3;margin-bottom:10px;flex:1;}
+.card-excerpt{font-size:13px;color:var(--tm);line-height:1.65;margin-bottom:16px;}
+.card-meta{font-size:12px;color:var(--tf);display:flex;gap:12px;}
+
+/* NEWSLETTER */
+.newsletter{margin-top:64px;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(37,99,235,.08));border:1px solid rgba(124,58,237,.25);border-radius:24px;padding:48px 40px;text-align:center;}
+.newsletter h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;margin-bottom:10px;}
+.newsletter p{color:var(--tm);margin-bottom:28px;font-size:15px;}
+.nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto;}
+.nl-form input{flex:1;background:var(--bg);border:1px solid var(--br);border-radius:100px;padding:12px 20px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.nl-form input:focus{border-color:#A78BFA;}
+.nl-btn{background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:100px;padding:12px 24px;font-size:14px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .2s;}
+.nl-btn:hover{opacity:.9;}
+@media(max-width:500px){.nl-form{flex-direction:column;}.nl-btn{border-radius:13px;}}
+
+footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:32px 24px;text-align:center;font-size:13px;color:var(--tf);margin-top:80px;}
+footer a{color:var(--tm);text-decoration:none;margin:0 12px;}
+footer a:hover{color:var(--t);}
+</style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<nav>
+  <a class="nav-logo" href="/">estivo</a>
+  <div class="nav-mid">
+    <a href="/">Strona główna</a>
+    <a href="/blog.html" class="active">Blog</a>
+    <a href="/kontakt.html">Kontakt</a>
+  </div>
+  <a class="btn-nav" href="/#cennik">Zacznij za darmo →</a>
+</nav>
+
+<div class="page">
+  <div class="page-label">Blog Estivo</div>
+  <h1 class="page-title">Wiedza dla agentów<br/>nieruchomości</h1>
+  <p class="page-sub">Praktyczne porady, analizy rynku i nowości ze świata AI w nieruchomościach.</p>
+
+  <!-- FEATURED POST -->
+  <a class="featured" href="#">
+    <div>
+      <div class="feat-tag">Rynek nieruchomości</div>
+      <div class="feat-title">Ceny mieszkań w Polsce IV kw. 2025 — co mówią dane NBP?</div>
+      <div class="feat-excerpt">Najnowszy raport NBP BaRN pokazuje wyraźne różnice między rynkami. Gdańsk rośnie +9,5% r/r, Wrocław koryguje −3,1%. Sprawdź, co to oznacza dla Twojego portfela klientów.</div>
+      <div class="feat-meta">
+        <span>12 maja 2025</span>
+        <span>·</span>
+        <span>8 min czytania</span>
+      </div>
+      <div style="margin-top:18px;" class="read-more">Czytaj artykuł →</div>
+    </div>
+    <div class="feat-img">
+      <svg width="80" height="80" fill="none" viewBox="0 0 80 80"><path d="M10 60l20-20 15 15 25-30" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="60" r="4" fill="#A78BFA"/><circle cx="30" cy="40" r="4" fill="#A78BFA"/><circle cx="45" cy="55" r="4" fill="#A78BFA"/><circle cx="70" cy="25" r="4" fill="#A78BFA"/></svg>
+    </div>
+  </a>
+
+  <!-- BLOG GRID -->
+  <div class="blog-grid">
+
+    <a class="post-card" href="#">
+      <div class="card-img">
+        <svg width="48" height="48" fill="none" viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="32" rx="6" stroke="#A78BFA" stroke-width="2"/><path d="M16 24h16M16 18h10M16 30h12" stroke="#A78BFA" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Poradnik</span>
+        <div class="card-title">Jak przygotować profesjonalną wycenę mieszkania dla klienta?</div>
+        <div class="card-excerpt">Krok po kroku — od zebrania danych po wysłanie raportu PDF z Twoim brandingiem.</div>
+        <div class="card-meta"><span>5 maja 2025</span><span>·</span><span>5 min</span></div>
+      </div>
+    </a>
+
+    <a class="post-card" href="#">
+      <div class="card-img">
+        <svg width="48" height="48" fill="none" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" stroke="#60A5FA" stroke-width="2"/><path d="M24 16v8l5 5" stroke="#60A5FA" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">AI w nieruchomościach</span>
+        <div class="card-title">Jak AI wycenia nieruchomości? Wyjaśniamy algorytm Estivo</div>
+        <div class="card-excerpt">Skąd bierzemy dane, jak liczymy cenę za m² i dlaczego nasze wyceny mają 94% trafność.</div>
+        <div class="card-meta"><span>28 kwietnia 2025</span><span>·</span><span>6 min</span></div>
+      </div>
+    </a>
+
+    <a class="post-card" href="#">
+      <div class="card-img">
+        <svg width="48" height="48" fill="none" viewBox="0 0 48 48"><path d="M12 36l8-8 8 8 8-12" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Rynek</span>
+        <div class="card-title">Warszawa kontra Kraków — który rynek jest lepszy dla agenta w 2025?</div>
+        <div class="card-excerpt">Porównujemy prowizje, rotację ofert i tempo sprzedaży na dwóch największych rynkach w Polsce.</div>
+        <div class="card-meta"><span>21 kwietnia 2025</span><span>·</span><span>7 min</span></div>
+      </div>
+    </a>
+
+    <a class="post-card" href="#">
+      <div class="card-img">
+        <svg width="48" height="48" fill="none" viewBox="0 0 48 48"><circle cx="20" cy="18" r="8" stroke="#A78BFA" stroke-width="2"/><path d="M8 40c0-6.63 5.37-10 12-10s12 3.37 12 10" stroke="#A78BFA" stroke-width="2" stroke-linecap="round"/><path d="M32 22l4 4 6-8" stroke="#60A5FA" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Sprzedaż</span>
+        <div class="card-title">5 błędów agentów przy pierwszym spotkaniu z klientem sprzedającym</div>
+        <div class="card-excerpt">Pierwsze wrażenie decyduje o mandacie. Sprawdź, czego unikać i jak zdobyć zaufanie od razu.</div>
+        <div class="card-meta"><span>14 kwietnia 2025</span><span>·</span><span>4 min</span></div>
+      </div>
+    </a>
+
+    <a class="post-card" href="#">
+      <div class="card-img">
+        <svg width="48" height="48" fill="none" viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="28" rx="4" stroke="#22D3EE" stroke-width="2"/><path d="M6 18h36" stroke="#22D3EE" stroke-width="2"/><path d="M14 26h8M14 32h12" stroke="#22D3EE" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Narzędzia</span>
+        <div class="card-title">Raport PDF z brandingiem — jak go skonfigurować w Estivo?</div>
+        <div class="card-excerpt">Dodaj logo, dane kontaktowe i kolory Twojej agencji. Klienci zobaczą Twoje biuro, nie Estivo.</div>
+        <div class="card-meta"><span>7 kwietnia 2025</span><span>·</span><span>3 min</span></div>
+      </div>
+    </a>
+
+    <a class="post-card" href="#">
+      <div class="card-img">
+        <svg width="48" height="48" fill="none" viewBox="0 0 48 48"><path d="M24 8l4.5 9 10 1.5-7.25 7 1.7 10L24 31l-8.95 4.5 1.7-10L9.5 18.5l10-1.5z" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Sukces klienta</span>
+        <div class="card-title">Jak biuro RE/MAX Warszawa skróciło czas wyceny z godziny do 10 sekund</div>
+        <div class="card-excerpt">Case study agencji, która wdrożyła Estivo w całym zespole i zobaczyła efekty już w pierwszym tygodniu.</div>
+        <div class="card-meta"><span>1 kwietnia 2025</span><span>·</span><span>5 min</span></div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <h2>Bądź na bieżąco</h2>
+    <p>Nowe artykuły, analizy rynku i porady dla agentów — raz w tygodniu, bez spamu.</p>
+    <div class="nl-form">
+      <input type="email" id="nl-email" placeholder="Twój adres e-mail"/>
+      <button class="nl-btn" onclick="subscribeNewsletter()">Zapisz się →</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:12px;">
+    <a href="/prywatnosc.html">Prywatność</a>
+    <a href="/regulamin.html">Regulamin</a>
+    <a href="/kontakt.html">Kontakt</a>
+    <a href="/blog.html">Blog</a>
+  </div>
+  © 2025 Estivo. Wszystkie prawa zastrzeżone.
+</footer>
+
+<script>
+function subscribeNewsletter() {
+  const email = document.getElementById('nl-email').value.trim();
+  if (!email || !email.includes('@')) {
+    alert('Podaj poprawny adres e-mail.');
+    return;
+  }
+  window.location.href = 'mailto:kontakt@estivo.pl?subject=Newsletter%20Estivo%20-%20zapis&body=Proszę%20o%20zapisanie%20mnie%20do%20newslettera.%20Mój%20email:%20' + encodeURIComponent(email);
+}
+</script>
+</body>
+</html>
