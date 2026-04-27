@@ -1,12 +1,9 @@
 {
   "name": "estivo",
   "version": "1.0.0",
-  "description": "Estivo — AI Property Valuation SaaS",
-  "scripts": {
-    "dev": "netlify dev"
-  },
   "dependencies": {
-    "stripe": "^14.10.0"
+    "stripe": "^14.10.0",
+    "@supabase/supabase-js": "^2.39.0"
   },
   "engines": {
     "node": ">=18.0.0"
