@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Utwórz konto — Estivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--v:#7C3AED;--vl:#A78BFA;--b:#2563EB;--bg:#05030D;--s1:#0B0918;--br:rgba(124,58,237,.18);--t:#F0EDFF;--tm:rgba(240,237,255,.52);--tf:rgba(240,237,255,.14);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden;}
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.22),transparent 70%);top:-250px;left:-150px;}
+.o2{width:500px;height:500px;background:radial-gradient(circle,rgba(37,99,235,.18),transparent 70%);bottom:-100px;right:-150px;}
+.card{position:relative;z-index:1;background:var(--s1);border:1px solid var(--br);border-radius:28px;padding:44px 40px;max-width:460px;width:100%;box-shadow:0 0 80px rgba(124,58,237,.15);}
+.logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22);border-radius:100px;padding:4px 12px;font-size:12px;color:#34D399;margin-bottom:28px;}
+.bdot{width:5px;height:5px;border-radius:50%;background:#34D399;}
+h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px;}
+.sub{font-size:14px;color:var(--tm);margin-bottom:28px;line-height:1.5;}
+.err{display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+.field input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:12px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus{border-color:#A78BFA;box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 36px rgba(124,58,237,.35);margin-top:8px;}
+.btn:hover{opacity:.9;transform:translateY(-1px);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.note{font-size:12px;color:var(--tf);text-align:center;margin-top:16px;line-height:1.6;}
+.login-link{font-size:13px;color:var(--tm);text-align:center;margin-top:20px;}
+.login-link a{color:#A78BFA;text-decoration:none;}
+.success{display:none;text-align:center;padding:20px 0;}
+.success .ico{font-size:48px;margin-bottom:16px;}
+.success h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:10px;}
+.success p{font-size:14px;color:var(--tm);line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div class="card">
+  <div class="logo">estivo</div>
+  <div class="badge"><span class="bdot"></span>Zakup potwierdzony — utwórz konto</div>
+  <h1>Utwórz swoje konto</h1>
+  <p class="sub">Wypełnij poniższe dane aby aktywować dostęp do panelu agenta.</p>
+
+  <div class="err" id="reg-err"></div>
+
+  <div id="reg-form">
+    <div class="row2">
+      <div class="field">
+        <label>Imię</label>
+        <input id="r-imie" type="text" placeholder="Jan" autocomplete="given-name"/>
+      </div>
+      <div class="field">
+        <label>Nazwisko</label>
+        <input id="r-nazwisko" type="text" placeholder="Kowalski" autocomplete="family-name"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Adres e-mail</label>
+      <input id="r-email" type="email" placeholder="jan@agencja.pl" autocomplete="email"/>
+    </div>
+    <div class="field">
+      <label>Numer telefonu</label>
+      <input id="r-tel" type="tel" placeholder="+48 000 000 000" autocomplete="tel"/>
+    </div>
+    <div class="field">
+      <label>Nazwa agencji (opcjonalnie)</label>
+      <input id="r-agencja" type="text" placeholder="np. Nieruchomości Kowalski"/>
+    </div>
+    <div class="field">
+      <label>Hasło</label>
+      <input id="r-pass" type="password" placeholder="Min. 8 znaków" autocomplete="new-password"/>
+    </div>
+    <div class="field">
+      <label>Powtórz hasło</label>
+      <input id="r-pass2" type="password" placeholder="Powtórz hasło" autocomplete="new-password"/>
+    </div>
+    <button class="btn" id="reg-btn" onclick="doRegister()">Utwórz konto i przejdź do panelu →</button>
+    <div class="note">Rejestrując się akceptujesz <a href="/regulamin.html" style="color:#A78BFA;text-decoration:none;">regulamin</a> i <a href="/prywatnosc.html" style="color:#A78BFA;text-decoration:none;">politykę prywatności</a>.</div>
+  </div>
+
+  <div class="success" id="reg-success">
+    <div class="ico">✅</div>
+    <h2>Konto utworzone!</h2>
+    <p>Za chwilę zostaniesz przeniesiony do panelu agenta...</p>
+  </div>
+
+  <div class="login-link">Masz już konto? <a href="/">Zaloguj się →</a></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Sprawdź czy jest już sesja (np. z linku email)
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    window.location.replace('/app.html');
+  }
+})();
+
+async function doRegister() {
+  const imie    = document.getElementById('r-imie').value.trim();
+  const nazwisko= document.getElementById('r-nazwisko').value.trim();
+  const email   = document.getElementById('r-email').value.trim();
+  const tel     = document.getElementById('r-tel').value.trim();
+  const agencja = document.getElementById('r-agencja').value.trim();
+  const pass    = document.getElementById('r-pass').value;
+  const pass2   = document.getElementById('r-pass2').value;
+  const errEl   = document.getElementById('reg-err');
+  const btn     = document.getElementById('reg-btn');
+
+  errEl.style.display = 'none';
+
+  if (!imie || !nazwisko || !email || !tel || !pass) {
+    errEl.textContent = 'Wypełnij wszystkie wymagane pola.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!email.includes('@')) {
+    errEl.textContent = 'Podaj poprawny adres e-mail.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (pass.length < 8) {
+    errEl.textContent = 'Hasło musi mieć co najmniej 8 znaków.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (pass !== pass2) {
+    errEl.textContent = 'Hasła nie są identyczne.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Tworzę konto...';
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      data: {
+        full_name: imie + ' ' + nazwisko,
+        telefon: tel,
+        agencja: agencja || null,
+      },
+      emailRedirectTo: 'https://wyceniarka2.netlify.app/app.html',
+    }
+  });
+
+  if (error) {
+    errEl.textContent = error.message === 'User already registered'
+      ? 'Ten email jest już zarejestrowany. Zaloguj się.'
+      : 'Błąd: ' + error.message;
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Utwórz konto i przejdź do panelu →';
+    return;
+  }
+
+  // Sukces
+  document.getElementById('reg-form').style.display = 'none';
+  document.getElementById('reg-success').style.display = 'block';
+
+  // Poczekaj i przekieruj
+  setTimeout(() => {
+    window.location.replace('/app.html');
+  }, 2000);
+}
+</script>
+</body>
+</html>
