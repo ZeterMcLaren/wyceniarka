@@ -403,6 +403,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
           <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 4.5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
           Historia
         </div>
+        <div class="sb-item" onclick="switchTab('leady')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M1 4h13M1 8h9M1 12h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>
+          Leady
+        </div>
         <div class="sb-sect">Zarządzanie</div>
         <div class="sb-item" onclick="switchTab('clients')">
           <svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="5.5" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 13c0-2.8 2-4.5 4.5-4.5s4.5 1.7 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M10.5 7a2.5 2.5 0 0 0 0-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M12.5 13c0-2.3-1.4-3.8-3-4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -570,6 +574,35 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
             <div class="cl-card"><div class="cl-av av-b">PW</div><div><div class="cl-name">Piotr Wiśniewski</div><div class="cl-meta">p.wisniewski@wp.pl</div><span class="cl-badge bg-green">Aktywny</span></div><div class="cl-right"><div class="cl-wc">1 wycena</div><div class="cl-last">5 dni temu</div></div></div>
             <div class="cl-card"><div class="cl-av av-a">MN</div><div><div class="cl-name">Marta Nowak</div><div class="cl-meta">m.nowak@onet.pl</div><span class="cl-badge bg-amber">Follow-up</span></div><div class="cl-right"><div class="cl-wc">2 wyceny</div><div class="cl-last">2 tyg. temu</div></div></div>
             <div class="cl-card"><div class="cl-av av-g">TZ</div><div><div class="cl-name">Tomasz Zając</div><div class="cl-meta">t.zajac@gmail.com</div><span class="cl-badge bg-amber">Follow-up</span></div><div class="cl-right"><div class="cl-wc">1 wycena</div><div class="cl-last">3 tyg. temu</div></div></div>
+          </div>
+        </div>
+
+        <!-- LEADY -->
+        <div class="tab-page" id="tab-leady">
+          <div class="sec-hdr" style="margin-bottom:20px;">
+            <h3>Leady z wyceniarki</h3>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <button class="btn-sm btn-sm-out" onclick="selectAllLeady()">Zaznacz wszystkie</button>
+              <button class="btn-sm btn-sm-fill" onclick="downloadLeadyCSV()">⬇ Pobierz CSV</button>
+            </div>
+          </div>
+          <div style="background:var(--s1);border:1px solid var(--br);border-radius:16px;overflow:hidden;">
+            <table style="width:100%;border-collapse:collapse;" id="leady-table">
+              <thead>
+                <tr style="border-bottom:1px solid var(--br);background:rgba(124,58,237,.06);">
+                  <th style="padding:12px 16px;text-align:left;"><input type="checkbox" id="lead-select-all" onchange="toggleAllLeady(this)" style="cursor:pointer;accent-color:#A78BFA;"/></th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;">Imię i nazwisko</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;">Email</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;">Telefon</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;">Miasto</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;">Metraż</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;">Data</th>
+                </tr>
+              </thead>
+              <tbody id="leady-tbody">
+                <tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Ładowanie leadów...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -1072,13 +1105,14 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-  const order = ['overview','valuator','history','clients','settings'];
+  const order = ['overview','valuator','history','leady','clients','settings'];
   const idx = order.indexOf(tab);
   const items = document.querySelectorAll('.sb-item');
   if (idx >= 0 && items[idx]) items[idx].classList.add('active');
-  const titles = {overview:'Przegląd',valuator:'Nowa wycena',history:'Historia wycen',clients:'Klienci',settings:'Ustawienia'};
+  const titles = {overview:'Przegląd',valuator:'Nowa wycena',history:'Historia wycen',leady:'Leady',clients:'Klienci',settings:'Ustawienia'};
   document.getElementById('topbar-title').textContent = titles[tab] || tab;
   if (tab==='history') renderHistoryList();
+  if (tab==='leady') loadLeady();
 }
 
 function openUpgrade(reason) {
@@ -1141,6 +1175,75 @@ async function generateFromHistory(id) {
     container.style.display = 'none'; // Chowamy z powrotem
   });
 }
+
+// ── LEADY ──
+let leadyData = [];
+
+async function loadLeady() {
+  const tbody = document.getElementById('leady-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Ładowanie...</td></tr>';
+
+  const { data, error } = await sb.from('leady').select('*').order('created_at', { ascending: false });
+
+  if (error || !data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Brak leadów · Zostaną tu gdy ktoś użyje wyceniarki na stronie głównej</td></tr>';
+    return;
+  }
+
+  leadyData = data;
+  tbody.innerHTML = data.map((l, i) => `
+    <tr style="border-bottom:1px solid rgba(124,58,237,.08);transition:background .15s;" onmouseover="this.style.background='rgba(124,58,237,.05)'" onmouseout="this.style.background=''">
+      <td style="padding:12px 16px;"><input type="checkbox" class="lead-cb" data-i="${i}" style="cursor:pointer;accent-color:#A78BFA;"/></td>
+      <td style="padding:12px 16px;font-size:14px;font-weight:500;">${l.imie_nazwisko || '—'}</td>
+      <td style="padding:12px 16px;font-size:13.5px;color:var(--tm);">${l.email || '—'}</td>
+      <td style="padding:12px 16px;font-size:13.5px;color:var(--tm);">${l.telefon || '—'}</td>
+      <td style="padding:12px 16px;font-size:13.5px;color:var(--tm);">${l.miasto || '—'}</td>
+      <td style="padding:12px 16px;font-size:13.5px;color:var(--tm);">${l.metraz ? l.metraz + ' m²' : '—'}</td>
+      <td style="padding:12px 16px;font-size:12px;color:var(--tf);">${new Date(l.created_at).toLocaleDateString('pl-PL')}</td>
+    </tr>
+  `).join('');
+}
+
+function toggleAllLeady(cb) {
+  document.querySelectorAll('.lead-cb').forEach(c => c.checked = cb.checked);
+}
+
+function selectAllLeady() {
+  const all = document.getElementById('lead-select-all');
+  all.checked = true;
+  toggleAllLeady(all);
+}
+
+function downloadLeadyCSV() {
+  const selected = [...document.querySelectorAll('.lead-cb:checked')].map(c => leadyData[+c.dataset.i]);
+  const toExport = selected.length > 0 ? selected : leadyData;
+
+  if (toExport.length === 0) { alert('Brak leadów do pobrania.'); return; }
+
+  const headers = ['Imię i nazwisko','Email','Telefon','Miasto','Dzielnica','Metraż','Pokoje','Rok budowy','Stan','Typ','Data'];
+  const rows = toExport.map(l => [
+    l.imie_nazwisko || '',
+    l.email || '',
+    l.telefon || '',
+    l.miasto || '',
+    l.dzielnica || '',
+    l.metraz || '',
+    l.pokoje || '',
+    l.rok_budowy || '',
+    l.stan || '',
+    l.typ || '',
+    new Date(l.created_at).toLocaleDateString('pl-PL'),
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+
+  const csv = '﻿' + [headers.join(','), ...rows].join('
+');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'leady-estivo-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
 </script>
 </body>
 </html>
