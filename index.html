@@ -238,26 +238,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
 </section>
 
 <!-- ═══ TRUST BAR ═══ -->
-<div class="trust-bar">
-  <div class="trust-inner">
-    <div class="trust-item">
-      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1.5l1.6 3.3 3.7.5-2.7 2.6.6 3.7-3.2-1.7-3.2 1.7.6-3.7-2.7-2.6 3.7-.5z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-      Dane NBP BaRN IV kw. 2025
-    </div>
-    <div class="trust-item">
-      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><rect x="2" y="2" width="11" height="11" rx="2.5" stroke="#A78BFA" stroke-width="1.2"/><path d="M4.5 7.5l2 2 4-4" stroke="#A78BFA" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-      Bez umowy · Anuluj kiedy chcesz
-    </div>
-    <div class="trust-item">
-      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><circle cx="7.5" cy="7.5" r="5.5" stroke="#A78BFA" stroke-width="1.2"/><path d="M7.5 4.5v3l1.8 1.8" stroke="#A78BFA" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-      14 dni trial · Bez karty kredytowej
-    </div>
-    <div class="trust-item">
-      <div class="trust-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1.5a6 6 0 100 11 6 6 0 000-11z" stroke="#60A5FA" stroke-width="1.2"/><path d="M5 7.5l2 2 3.5-3.5" stroke="#60A5FA" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-      Raport PDF z Twoim brandingiem
-    </div>
-  </div>
-</div>
+
 
 <!-- ═══ FEATURES ═══ -->
 <section class="section" id="funkcje">
@@ -289,11 +270,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
       <div class="feat-t">CRM klientów</div>
       <div class="feat-d">Przypisuj wyceny do klientów, śledź aktywność i ustawiaj automatyczne przypomnienia o follow-upach.</div>
     </div>
-    <div class="feat">
-      <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="5" y="2" width="10" height="16" rx="2.5" stroke="#22D3EE" stroke-width="1.4"/><circle cx="10" cy="14.5" r=".8" fill="#22D3EE"/></svg></div>
-      <div class="feat-t">Aplikacja mobilna</div>
-      <div class="feat-d">iOS i Android — rób wyceny podczas prezentacji prosto z telefonu. Tryb offline działa nawet bez zasięgu.</div>
-    </div>
+
   </div>
 </section>
 
@@ -433,7 +410,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
         <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Raport PDF z brandingiem</li>
         <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>CRM klientów</li>
         <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Historia nieograniczona</li>
-        <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Aplikacja mobilna iOS/Android</li>
+
         <li><div class="chk"><svg width="9" height="7" fill="none" viewBox="0 0 9 7"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>Wsparcie priorytetowe</li>
       </ul>
       <button class="plan-btn pb-fill" onclick="choosePlan('pro')" id="btn-pro">Zacznij 14-dniowy trial →</button>
@@ -503,10 +480,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
 <footer>
   <div class="f-logo">estivo</div>
   <div class="f-links">
-<a href="/prywatnosc.html">Prywatność</a>
-<a href="/regulamin.html">Regulamin</a>
-<a href="/kontakt.html">Kontakt</a>
-<a href="/blog.html">Blog</a>
+    <a href="/prywatnosc.html">Prywatność</a>
+    <a href="/regulamin.html">Regulamin</a>
+    <a href="/kontakt.html">Kontakt</a>
+    <a href="/blog.html">Blog</a>
   </div>
   <div class="f-copy">© 2025 Estivo · Wszelkie prawa zastrzeżone</div>
 </footer>
@@ -640,7 +617,12 @@ async function runValuation(){
     document.getElementById('modal-paywall').classList.add('open');
     return;
   }
+  // Pokaż popup z formularzem lead przed wyceną
+  document.getElementById('modal-lead').classList.add('open');
+  return;
+}
 
+async function doValuation(){
   const btn=document.getElementById('val-btn');
   btn.disabled=true; btn.textContent='Analizuję...';
   const resEl=document.getElementById('val-result');
@@ -751,6 +733,105 @@ async function doModalLogin() {
   }
   // Sukces → panel
   window.location.href = '/app.html';
+}
+</script>
+
+
+<!-- ═══ LEAD MODAL ═══ -->
+<div class="modal-bg" id="modal-lead">
+  <div class="modal" style="max-width:420px;">
+    <button class="modal-close" onclick="closeLeadModal()">✕</button>
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Odbierz bezpłatną wycenę</div>
+    <div style="font-size:14px;color:var(--tm);margin-bottom:24px;">Podaj swoje dane — wyślemy Ci wycenę na email.</div>
+    <div id="lead-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;"></div>
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Imię i nazwisko</label>
+      <input id="lead-name" type="text" placeholder="Jan Kowalski" autocomplete="name"
+        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''"/>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Numer telefonu</label>
+      <input id="lead-phone" type="tel" placeholder="+48 000 000 000" autocomplete="tel"
+        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''"/>
+    </div>
+    <div style="margin-bottom:22px;">
+      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Adres e-mail</label>
+      <input id="lead-email" type="email" placeholder="jan@gmail.com" autocomplete="email"
+        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''"/>
+    </div>
+    <button id="lead-btn" onclick="submitLead()"
+      style="width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 36px rgba(124,58,237,.35);">
+      Pokaż wycenę →
+    </button>
+    <div style="font-size:11.5px;color:var(--tf);text-align:center;margin-top:14px;">Twoje dane są bezpieczne · RODO</div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL_L = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
+const SUPABASE_ANON_L = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
+
+function closeLeadModal() {
+  document.getElementById('modal-lead').classList.remove('open');
+  document.getElementById('lead-err').style.display = 'none';
+}
+
+async function submitLead() {
+  const name  = document.getElementById('lead-name').value.trim();
+  const phone = document.getElementById('lead-phone').value.trim();
+  const email = document.getElementById('lead-email').value.trim();
+  const errEl = document.getElementById('lead-err');
+  const btn   = document.getElementById('lead-btn');
+  errEl.style.display = 'none';
+
+  if (!name || !phone || !email) {
+    errEl.textContent = 'Wypełnij wszystkie pola.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!email.includes('@')) {
+    errEl.textContent = 'Podaj poprawny adres e-mail.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Zapisuję...';
+
+  // Zbierz dane nieruchomości z formularza
+  const leadData = {
+    imie_nazwisko: name,
+    email: email,
+    telefon: phone,
+    miasto: document.getElementById('v-miasto').value,
+    dzielnica: document.getElementById('v-dzielnica').value || null,
+    metraz: parseFloat(document.getElementById('v-metraz').value) || null,
+    pokoje: document.getElementById('v-pokoje').value || null,
+    rok_budowy: document.getElementById('v-rok').value || null,
+    stan: document.getElementById('v-stan').value || null,
+    typ: document.getElementById('v-typ').value || null,
+  };
+
+  try {
+    await fetch(SUPABASE_URL_L + '/rest/v1/leady', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_L,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_L,
+      },
+      body: JSON.stringify(leadData)
+    });
+  } catch(e) {
+    console.warn('Lead save error:', e);
+  }
+
+  // Zamknij popup i uruchom wycenę
+  document.getElementById('modal-lead').classList.remove('open');
+  btn.disabled = false; btn.textContent = 'Pokaż wycenę →';
+  await doValuation();
 }
 </script>
 
