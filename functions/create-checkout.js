@@ -42,7 +42,7 @@ exports.handler = async (event) => {
       // Zbieramy email w Stripe — nie wymagamy rejestracji przed płatnością
       billing_address_collection: 'auto',
       locale: 'pl',
-      success_url: `${siteUrl}/app.html?payment=success`,
+      success_url: `${siteUrl}/rejestracja.html?payment=success`,
       cancel_url:  `${siteUrl}/#cennik`,
     });
 
