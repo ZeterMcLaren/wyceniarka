@@ -179,7 +179,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s1);border:1px solid var(--br);border-radius:12px;padding:12px 22px;font-size:14px;color:var(--t);z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* input shared style helper */
 .modal-input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
 .modal-input:focus{border-color:#A78BFA;}
 .modal-label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
@@ -493,10 +492,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     LOGIN MODAL — email + password
-     Po zalogowaniu → /app.html (dashboard)
-     ══════════════════════════════════════ -->
+<!-- LOGIN MODAL -->
 <div class="modal-bg" id="modal-login">
   <div class="modal" style="max-width:400px;text-align:left;">
     <button class="modal-close" onclick="closeLoginModal()">✕</button>
@@ -519,11 +515,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     REGISTER MODAL — shown after payment
-     on /rejestracja.html?payment=success
-     (also accessible as standalone page)
-     ══════════════════════════════════════ -->
+<!-- REGISTER MODAL -->
 <div class="modal-bg" id="modal-register">
   <div class="modal" style="max-width:420px;text-align:left;">
     <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Utwórz konto</div>
@@ -540,7 +532,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
     </div>
     <div class="modal-field">
       <label class="modal-label">Hasło</label>
-      <input id="reg-pass" class="modal-input" type="password" placeholder="Min. 8 znaków" autocomplete="new-password"/>
+      <input id="reg-pass" class="modal-input" type="password" placeholder="Min. 6 znaków" autocomplete="new-password"/>
     </div>
     <div class="modal-field" style="margin-bottom:22px;">
       <label class="modal-label">Powtórz hasło</label>
@@ -588,14 +580,10 @@ const SUPABASE_URL = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── INIT: if already logged in → go to dashboard ──
+// ── INIT ──
 (async () => {
   const { data: { session } } = await _sb.auth.getSession();
-  if (session?.user) {
-    window.location.replace('/app.html');
-    return;
-  }
-  // If redirected here after payment, open register modal
+  if (session?.user) { window.location.replace('/app.html'); return; }
   if (new URLSearchParams(location.search).get('payment') === 'success') {
     document.getElementById('modal-register').classList.add('open');
   }
@@ -642,7 +630,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closePaywall(); closeLoginModal(); closeLeadModal(); }
 });
 
-// ── PLAN SELECTION → STRIPE CHECKOUT ──
+// ── PLAN SELECTION → STRIPE ──
 window.choosePlan = async function(plan) {
   if (plan === 'agencja') {
     window.location.href = 'mailto:kontakt@estivo.pl?subject=Plan%20Agencja%20-%20zapytanie';
@@ -661,11 +649,8 @@ async function redirectToCheckout(plan) {
       body: JSON.stringify({ plan })
     });
     const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      throw new Error(data.error || 'Błąd płatności');
-    }
+    if (data.url) { window.location.href = data.url; }
+    else throw new Error(data.error || 'Błąd płatności');
   } catch (err) {
     showToast('Błąd: ' + err.message);
     if (btn) {
@@ -675,7 +660,7 @@ async function redirectToCheckout(plan) {
   }
 }
 
-// ── LOGIN (email + password) → redirect to dashboard ──
+// ── LOGIN ──
 async function doModalLogin() {
   const email = document.getElementById('ml-email').value.trim();
   const pass  = document.getElementById('ml-pass').value;
@@ -687,7 +672,6 @@ async function doModalLogin() {
   try {
     const { error } = await _sb.auth.signInWithPassword({ email, password: pass });
     if (error) throw error;
-    // Success → go to dashboard
     window.location.href = '/app.html';
   } catch(err) {
     errEl.textContent = 'Nieprawidłowy email lub hasło.';
@@ -696,7 +680,7 @@ async function doModalLogin() {
   }
 }
 
-// ── REGISTER (after payment) → create account → redirect to dashboard ──
+// ── REGISTER (replaced with register-fn.js version) ──
 async function doRegister() {
   const name  = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
@@ -713,8 +697,8 @@ async function doRegister() {
   if (!email.includes('@')) {
     errEl.textContent = 'Podaj poprawny adres e-mail.'; errEl.style.display = 'block'; return;
   }
-  if (pass.length < 8) {
-    errEl.textContent = 'Hasło musi mieć co najmniej 8 znaków.'; errEl.style.display = 'block'; return;
+  if (pass.length < 6) {
+    errEl.textContent = 'Hasło musi mieć co najmniej 6 znaków.'; errEl.style.display = 'block'; return;
   }
   if (pass !== pass2) {
     errEl.textContent = 'Hasła nie są identyczne.'; errEl.style.display = 'block'; return;
@@ -723,32 +707,71 @@ async function doRegister() {
   btn.disabled = true; btn.textContent = 'Tworzę konto...';
 
   try {
+    // 1. Look up pending plan from Stripe webhook
+    let plan = 'pro'; // default
+    try {
+      const { data: pending } = await _sb
+        .from('pending_registrations')
+        .select('plan, stripe_customer_id')
+        .eq('email', email)
+        .single();
+      if (pending?.plan) plan = pending.plan;
+    } catch (e) { /* no pending row — use default */ }
+
+    // 2. Sign up with email + password
     const { data, error } = await _sb.auth.signUp({
       email,
       password: pass,
       options: { data: { name } }
     });
     if (error) throw error;
+    const userId = data.user?.id;
+    if (!userId) throw new Error('Nie udało się utworzyć konta.');
 
-    // Save display name to profiles table
-    if (data.user) {
-      await _sb.from('profiles').upsert({ id: data.user.id, name, email });
-    }
+    // 3. Save profile
+    await _sb.from('profiles').upsert({ id: userId, name, email });
 
-    okEl.style.display = 'block';
-    // If email confirmation is disabled in Supabase → session is live, redirect immediately
-    // If confirmation is required → sign them in manually after they click the link
-    const { data: { session } } = await _sb.auth.getSession();
-    if (session) {
-      setTimeout(() => { window.location.href = '/app.html'; }, 1200);
-    } else {
-      okEl.textContent = '✅ Sprawdź skrzynkę email — kliknij w link aktywacyjny, a następnie zaloguj się.';
+    // 4. Save subscription (trial)
+    const trialEnds = new Date();
+    trialEnds.setDate(trialEnds.getDate() + 14);
+    await _sb.from('subscriptions').upsert({
+      user_id: userId,
+      plan,
+      status: 'trial',
+      trial_ends_at: trialEnds.toISOString(),
+    }, { onConflict: 'user_id' });
+
+    // 5. Sign in immediately
+    const { error: signInErr } = await _sb.auth.signInWithPassword({ email, password: pass });
+    if (signInErr) {
+      okEl.textContent = '✅ Sprawdź skrzynkę email i kliknij w link aktywacyjny, a następnie wróć i zaloguj się.';
+      okEl.style.display = 'block';
       btn.textContent = 'Gotowe';
+      return;
     }
-  } catch(err) {
+
+    // 6. Clean up pending registration
+    await _sb.from('pending_registrations').delete().eq('email', email);
+
+    okEl.textContent = '✅ Konto utworzone! Przekierowuję do panelu…';
+    okEl.style.display = 'block';
+    setTimeout(() => { window.location.href = '/app.html'; }, 1200);
+
+  } catch (err) {
+    // Handle "User already registered" — sign them in instead
+    if (err.message?.includes('already registered') || err.message?.includes('already been registered')) {
+      const { error: signInErr } = await _sb.auth.signInWithPassword({ email, password: pass });
+      if (!signInErr) {
+        okEl.textContent = '✅ Zalogowano! Przekierowuję do panelu…';
+        okEl.style.display = 'block';
+        setTimeout(() => { window.location.href = '/app.html'; }, 1200);
+        return;
+      }
+    }
     errEl.textContent = err.message || 'Błąd rejestracji. Spróbuj ponownie.';
     errEl.style.display = 'block';
-    btn.disabled = false; btn.textContent = 'Utwórz konto i przejdź do panelu →';
+    btn.disabled = false;
+    btn.textContent = 'Utwórz konto i przejdź do panelu →';
   }
 }
 
@@ -795,14 +818,14 @@ function runValuation() {
 }
 
 async function doValuation() {
-  const btn     = document.getElementById('val-btn');
-  const miasto  = _currentMiasto || document.getElementById('v-miasto').value;
-  const metraz  = document.getElementById('v-metraz').value;
-  const stan    = document.getElementById('v-stan').value;
+  const btn       = document.getElementById('val-btn');
+  const miasto    = _currentMiasto || document.getElementById('v-miasto').value;
+  const metraz    = document.getElementById('v-metraz').value;
+  const stan      = document.getElementById('v-stan').value;
   const dzielnica = document.getElementById('v-dzielnica').value || '';
-  const typ     = document.getElementById('v-typ').value || '';
-  const rok     = document.getElementById('v-rok').value || '';
-  const pietro  = document.getElementById('v-pietro').value || '';
+  const typ       = document.getElementById('v-typ').value || '';
+  const rok       = document.getElementById('v-rok').value || '';
+  const pietro    = document.getElementById('v-pietro').value || '';
 
   btn.disabled = true; btn.textContent = 'Analizuję...';
   const resEl = document.getElementById('val-result');
