@@ -110,8 +110,6 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .rp{background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22);color:#34D399;}
 .rm2{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.22);color:#FCA5A5;}
 .res-src{margin-top:16px;padding:11px 14px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);border-radius:10px;font-size:11.5px;color:rgba(96,165,250,.8);}
-
-/* CTA AFTER RESULT */
 .res-cta{margin-top:24px;padding:20px;background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(37,99,235,.1));border:1px solid rgba(124,58,237,.3);border-radius:16px;text-align:center;}
 .res-cta p{font-size:14px;color:var(--tm);margin-bottom:14px;}
 .res-cta .btn-primary{padding:12px 32px;font-size:14px;}
@@ -181,30 +179,13 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s1);border:1px solid var(--br);border-radius:12px;padding:12px 22px;font-size:14px;color:var(--t);z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-@keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+/* input shared style helper */
+.modal-input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.modal-input:focus{border-color:#A78BFA;}
+.modal-label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+.modal-field{margin-bottom:14px;text-align:left;}
 
-/* MOBILE APP PROMO SECTION */
-.app-promo{max-width:1080px;margin:64px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;}
-.app-promo-left{background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(37,99,235,.1));border:1px solid rgba(124,58,237,.28);border-radius:24px;padding:36px 32px;display:flex;flex-direction:column;justify-content:space-between;}
-.app-promo-right{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.app-stat-card{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:24px 20px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,border-color .2s;}
-.app-stat-card:hover{transform:translateY(-3px);border-color:rgba(124,58,237,.4);}
-.app-stat-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;}
-.ico-purple{background:rgba(124,58,237,.18);}
-.ico-blue{background:rgba(37,99,235,.18);}
-.ico-cyan{background:rgba(6,182,212,.18);}
-.ico-green{background:rgba(16,185,129,.18);}
-.app-stat-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;line-height:1;}
-.app-stat-l{font-size:13px;color:var(--tm);line-height:1.4;}
-.app-promo-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;line-height:1.2;margin-bottom:12px;}
-.app-promo-sub{font-size:14px;color:var(--tm);line-height:1.7;margin-bottom:24px;}
-.app-badges{display:flex;gap:10px;flex-wrap:wrap;}
-.app-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--tm);cursor:default;}
-.app-badge-ico{font-size:18px;}
-.app-badge strong{display:block;font-size:12px;color:var(--t);}
-.app-badge span{font-size:10px;color:var(--tf);}
-.soon-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);border-radius:100px;padding:3px 11px;font-size:11px;color:#C4B5FD;margin-bottom:18px;}
-@media(max-width:760px){.app-promo{grid-template-columns:1fr;}.app-promo-right{grid-template-columns:1fr 1fr;}}
+@keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
 </style>
 </head>
 <body>
@@ -279,55 +260,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
       <div class="feat-ico"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="5" y="2" width="10" height="16" rx="2.5" stroke="#34D399" stroke-width="1.4"/><circle cx="10" cy="15" r="1" fill="#34D399"/><path d="M7.5 5.5h5M7.5 8h3.5" stroke="#34D399" stroke-width="1.2" stroke-linecap="round"/></svg></div>
       <div class="feat-t">Leady z wyceniarki</div>
       <div class="feat-d">Każdy użytkownik demo zostawia kontakt. Przeglądaj, filtruj i eksportuj gotowe leady do swojego CRM jednym kliknięciem.</div>
-    </div>
-  </div>
-
-  <!-- STATS / APP PROMO SECTION — zamiast pustej dziury po aplikacji mobilnej -->
-  <div class="app-promo reveal">
-    <div class="app-promo-left">
-      <div>
-        <div class="soon-pill">
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" fill="#A78BFA"/></svg>
-          Wkrótce dostępne
-        </div>
-        <div class="app-promo-title">Estivo<br/>w Twojej kieszeni</div>
-        <div class="app-promo-sub">Pełny panel agenta na iOS i Androidzie. Wyceniaj nieruchomości podczas spotkań z klientem, generuj PDF na miejscu i zarządzaj leadami z każdego miejsca.</div>
-        <div class="app-badges">
-          <div class="app-badge">
-            <div class="app-badge-ico">🍎</div>
-            <div><strong>App Store</strong><span>iOS 16+</span></div>
-          </div>
-          <div class="app-badge">
-            <div class="app-badge-ico">🤖</div>
-            <div><strong>Google Play</strong><span>Android 10+</span></div>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(124,58,237,.2);">
-        <div style="font-size:12px;color:var(--tf);">Dołącz do listy oczekujących →</div>
-        <div style="display:flex;gap:10px;margin-top:10px;">
-          <input type="email" placeholder="Twój email" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(124,58,237,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;" onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor='rgba(124,58,237,.3)'" id="app-waitlist-email"/>
-          <button onclick="joinWaitlist()" style="background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;">Zapisz się</button>
-        </div>
-      </div>
-    </div>
-    <div class="app-promo-right">
-      <div class="app-stat-card">
-        <div class="app-stat-ico ico-purple"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M10 2l2.2 4.5 5 .7-3.6 3.5.85 5L10 13.4 5.55 15.7l.85-5L2.8 7.2l5-.7z" stroke="#A78BFA" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
-        <div><div class="app-stat-n" style="background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">10s</div><div class="app-stat-l">Czas generowania wyceny</div></div>
-      </div>
-      <div class="app-stat-card">
-        <div class="app-stat-ico ico-blue"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" stroke="#60A5FA" stroke-width="1.4"/><path d="M10 6v4l2.5 2.5" stroke="#60A5FA" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <div><div class="app-stat-n" style="background:linear-gradient(135deg,#93C5FD,#67E8F9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">94%</div><div class="app-stat-l">Średnia trafność wycen</div></div>
-      </div>
-      <div class="app-stat-card">
-        <div class="app-stat-ico ico-cyan"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M3 5h14M3 10h10M3 15h7" stroke="#22D3EE" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <div><div class="app-stat-n" style="background:linear-gradient(135deg,#67E8F9,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">8</div><div class="app-stat-l">Największych miast w bazie</div></div>
-      </div>
-      <div class="app-stat-card">
-        <div class="app-stat-ico ico-green"><svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="3" stroke="#34D399" stroke-width="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="#34D399" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <div><div class="app-stat-n" style="background:linear-gradient(135deg,#34D399,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">NBP</div><div class="app-stat-l">Dane BaRN IV kw. 2025</div></div>
-      </div>
     </div>
   </div>
 </section>
@@ -507,7 +439,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-q">Jak działa dostęp po zakupie?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
-      <div class="faq-a">Po zakupie Stripe automatycznie zakłada Ci konto i wysyła link do ustawienia hasła. Po kliknięciu w link trafiasz prosto do panelu aplikacji. Cały proces zajmuje około minuty.</div>
+      <div class="faq-a">Po opłaceniu planu Stripe przekieruje Cię na stronę rejestracji — podajesz email i hasło, konto jest gotowe od razu. Możesz też dokończyć rejestrację przez link wysłany na e-mail.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-q">Czy mogę wysłać raport PDF klientowi?<div class="faq-ico"><svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M4.5 1v7M1 4.5h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
@@ -561,24 +493,23 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
   </div>
 </div>
 
-<!-- LOGIN MODAL -->
+<!-- ══════════════════════════════════════
+     LOGIN MODAL — email + password
+     Po zalogowaniu → /app.html (dashboard)
+     ══════════════════════════════════════ -->
 <div class="modal-bg" id="modal-login">
-  <div class="modal" style="max-width:400px;">
+  <div class="modal" style="max-width:400px;text-align:left;">
     <button class="modal-close" onclick="closeLoginModal()">✕</button>
     <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Zaloguj się</div>
     <div style="font-size:14px;color:var(--tm);margin-bottom:24px;">Panel agenta Estivo</div>
     <div id="ml-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;"></div>
-    <div style="margin-bottom:14px;">
-      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Email</label>
-      <input id="ml-email" type="email" placeholder="jan@agencja.pl" autocomplete="email"
-        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''" onkeydown="if(event.key==='Enter')doModalLogin()"/>
+    <div class="modal-field">
+      <label class="modal-label">Email</label>
+      <input id="ml-email" class="modal-input" type="email" placeholder="jan@agencja.pl" autocomplete="email" onkeydown="if(event.key==='Enter')doModalLogin()"/>
     </div>
-    <div style="margin-bottom:22px;">
-      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Hasło</label>
-      <input id="ml-pass" type="password" placeholder="Twoje hasło" autocomplete="current-password"
-        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''" onkeydown="if(event.key==='Enter')doModalLogin()"/>
+    <div class="modal-field" style="margin-bottom:22px;">
+      <label class="modal-label">Hasło</label>
+      <input id="ml-pass" class="modal-input" type="password" placeholder="Twoje hasło" autocomplete="current-password" onkeydown="if(event.key==='Enter')doModalLogin()"/>
     </div>
     <button id="ml-btn" onclick="doModalLogin()"
       style="width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 36px rgba(124,58,237,.35);">
@@ -588,31 +519,59 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
   </div>
 </div>
 
+<!-- ══════════════════════════════════════
+     REGISTER MODAL — shown after payment
+     on /rejestracja.html?payment=success
+     (also accessible as standalone page)
+     ══════════════════════════════════════ -->
+<div class="modal-bg" id="modal-register">
+  <div class="modal" style="max-width:420px;text-align:left;">
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Utwórz konto</div>
+    <div style="font-size:14px;color:var(--tm);margin-bottom:24px;">Płatność zakończona — skonfiguruj dostęp do panelu.</div>
+    <div id="reg-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;"></div>
+    <div id="reg-ok" style="display:none;background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#34D399;margin-bottom:16px;">✅ Konto utworzone! Trwa przekierowanie do panelu…</div>
+    <div class="modal-field">
+      <label class="modal-label">Imię i nazwisko</label>
+      <input id="reg-name" class="modal-input" type="text" placeholder="Jan Kowalski" autocomplete="name"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Email</label>
+      <input id="reg-email" class="modal-input" type="email" placeholder="jan@agencja.pl" autocomplete="email"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Hasło</label>
+      <input id="reg-pass" class="modal-input" type="password" placeholder="Min. 8 znaków" autocomplete="new-password"/>
+    </div>
+    <div class="modal-field" style="margin-bottom:22px;">
+      <label class="modal-label">Powtórz hasło</label>
+      <input id="reg-pass2" class="modal-input" type="password" placeholder="Powtórz hasło" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()"/>
+    </div>
+    <button id="reg-btn" onclick="doRegister()"
+      style="width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 36px rgba(124,58,237,.35);">
+      Utwórz konto i przejdź do panelu →
+    </button>
+    <div style="font-size:11.5px;color:var(--tf);text-align:center;margin-top:14px;">Twoje dane są bezpieczne · RODO</div>
+  </div>
+</div>
+
 <!-- LEAD MODAL -->
 <div class="modal-bg" id="modal-lead">
-  <div class="modal" style="max-width:420px;">
+  <div class="modal" style="max-width:420px;text-align:left;">
     <button class="modal-close" onclick="closeLeadModal()">✕</button>
     <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Odbierz bezpłatną wycenę</div>
-    <!-- NAPRAWKA: usunięto "wyślemy na email" — wycena pokazuje się na stronie -->
     <div style="font-size:14px;color:var(--tm);margin-bottom:24px;">Podaj dane kontaktowe — wycena pojawi się od razu na ekranie.</div>
     <div id="lead-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;"></div>
-    <div style="margin-bottom:14px;">
-      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Imię i nazwisko</label>
-      <input id="lead-name" type="text" placeholder="Jan Kowalski" autocomplete="name"
-        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''"/>
+    <div class="modal-field">
+      <label class="modal-label">Imię i nazwisko</label>
+      <input id="lead-name" class="modal-input" type="text" placeholder="Jan Kowalski" autocomplete="name"/>
     </div>
-    <div style="margin-bottom:14px;">
-      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Numer telefonu</label>
-      <input id="lead-phone" type="tel" placeholder="+48 000 000 000" autocomplete="tel"
-        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''"/>
+    <div class="modal-field">
+      <label class="modal-label">Numer telefonu</label>
+      <input id="lead-phone" class="modal-input" type="tel" placeholder="+48 000 000 000" autocomplete="tel"/>
     </div>
-    <div style="margin-bottom:22px;">
-      <label style="display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;">Adres e-mail</label>
-      <input id="lead-email" type="email" placeholder="jan@gmail.com" autocomplete="email"
-        style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='#A78BFA'" onblur="this.style.borderColor=''"/>
+    <div class="modal-field" style="margin-bottom:22px;">
+      <label class="modal-label">Adres e-mail</label>
+      <input id="lead-email" class="modal-input" type="email" placeholder="jan@gmail.com" autocomplete="email"/>
     </div>
     <button id="lead-btn" onclick="submitLead()"
       style="width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 36px rgba(124,58,237,.35);">
@@ -629,11 +588,16 @@ const SUPABASE_URL = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── SPRAWDŹ CZY ZALOGOWANY → przekieruj do app ──
+// ── INIT: if already logged in → go to dashboard ──
 (async () => {
   const { data: { session } } = await _sb.auth.getSession();
   if (session?.user) {
     window.location.replace('/app.html');
+    return;
+  }
+  // If redirected here after payment, open register modal
+  if (new URLSearchParams(location.search).get('payment') === 'success') {
+    document.getElementById('modal-register').classList.add('open');
   }
 })();
 
@@ -656,10 +620,9 @@ function showToast(msg, duration = 3500) {
   setTimeout(() => t.classList.remove('show'), duration);
 }
 
-function closePaywall() { document.getElementById('modal-paywall').classList.remove('open'); }
-document.getElementById('modal-paywall').addEventListener('click', function(e) { if (e.target === this) closePaywall(); });
-
-function openLoginModal() {
+// ── MODAL HELPERS ──
+function closePaywall()    { document.getElementById('modal-paywall').classList.remove('open'); }
+function openLoginModal()  {
   document.getElementById('modal-login').classList.add('open');
   setTimeout(() => document.getElementById('ml-email').focus(), 100);
 }
@@ -667,14 +630,14 @@ function closeLoginModal() {
   document.getElementById('modal-login').classList.remove('open');
   document.getElementById('ml-err').style.display = 'none';
 }
-document.getElementById('modal-login').addEventListener('click', function(e) { if (e.target === this) closeLoginModal(); });
-
-function closeLeadModal() {
+function closeLeadModal()  {
   document.getElementById('modal-lead').classList.remove('open');
   document.getElementById('lead-err').style.display = 'none';
 }
-document.getElementById('modal-lead').addEventListener('click', function(e) { if (e.target === this) closeLeadModal(); });
 
+document.getElementById('modal-paywall').addEventListener('click', e => { if(e.target===e.currentTarget) closePaywall(); });
+document.getElementById('modal-login').addEventListener('click',   e => { if(e.target===e.currentTarget) closeLoginModal(); });
+document.getElementById('modal-lead').addEventListener('click',    e => { if(e.target===e.currentTarget) closeLeadModal(); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closePaywall(); closeLoginModal(); closeLeadModal(); }
 });
@@ -705,11 +668,14 @@ async function redirectToCheckout(plan) {
     }
   } catch (err) {
     showToast('Błąd: ' + err.message);
-    if (btn) { btn.disabled = false; btn.textContent = plan === 'pro' ? 'Zacznij 14-dniowy trial →' : 'Zacznij 14-dniowy trial'; }
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = plan === 'pro' ? 'Zacznij 14-dniowy trial →' : 'Zacznij 14-dniowy trial';
+    }
   }
 }
 
-// ── SUPABASE LOGIN ──
+// ── LOGIN (email + password) → redirect to dashboard ──
 async function doModalLogin() {
   const email = document.getElementById('ml-email').value.trim();
   const pass  = document.getElementById('ml-pass').value;
@@ -719,9 +685,9 @@ async function doModalLogin() {
   if (!email || !pass) { errEl.textContent = 'Podaj email i hasło.'; errEl.style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Loguję...';
   try {
-    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+    const { error } = await _sb.auth.signInWithPassword({ email, password: pass });
     if (error) throw error;
-    // Sukces → zapisz sesję i przejdź do panelu
+    // Success → go to dashboard
     window.location.href = '/app.html';
   } catch(err) {
     errEl.textContent = 'Nieprawidłowy email lub hasło.';
@@ -730,19 +696,60 @@ async function doModalLogin() {
   }
 }
 
-// ── WAITLIST ──
-async function joinWaitlist() {
-  const email = document.getElementById('app-waitlist-email').value.trim();
-  if (!email || !email.includes('@')) { showToast('Podaj poprawny email.'); return; }
+// ── REGISTER (after payment) → create account → redirect to dashboard ──
+async function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const errEl = document.getElementById('reg-err');
+  const okEl  = document.getElementById('reg-ok');
+  const btn   = document.getElementById('reg-btn');
+  errEl.style.display = 'none'; okEl.style.display = 'none';
+
+  if (!name || !email || !pass || !pass2) {
+    errEl.textContent = 'Wypełnij wszystkie pola.'; errEl.style.display = 'block'; return;
+  }
+  if (!email.includes('@')) {
+    errEl.textContent = 'Podaj poprawny adres e-mail.'; errEl.style.display = 'block'; return;
+  }
+  if (pass.length < 8) {
+    errEl.textContent = 'Hasło musi mieć co najmniej 8 znaków.'; errEl.style.display = 'block'; return;
+  }
+  if (pass !== pass2) {
+    errEl.textContent = 'Hasła nie są identyczne.'; errEl.style.display = 'block'; return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Tworzę konto...';
+
   try {
-    await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY },
-      body: JSON.stringify({ email })
+    const { data, error } = await _sb.auth.signUp({
+      email,
+      password: pass,
+      options: { data: { name } }
     });
-  } catch(e) {}
-  document.getElementById('app-waitlist-email').value = '';
-  showToast('✅ Zapisano! Powiadomimy Cię o premierze aplikacji.');
+    if (error) throw error;
+
+    // Save display name to profiles table
+    if (data.user) {
+      await _sb.from('profiles').upsert({ id: data.user.id, name, email });
+    }
+
+    okEl.style.display = 'block';
+    // If email confirmation is disabled in Supabase → session is live, redirect immediately
+    // If confirmation is required → sign them in manually after they click the link
+    const { data: { session } } = await _sb.auth.getSession();
+    if (session) {
+      setTimeout(() => { window.location.href = '/app.html'; }, 1200);
+    } else {
+      okEl.textContent = '✅ Sprawdź skrzynkę email — kliknij w link aktywacyjny, a następnie zaloguj się.';
+      btn.textContent = 'Gotowe';
+    }
+  } catch(err) {
+    errEl.textContent = err.message || 'Błąd rejestracji. Spróbuj ponownie.';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Utwórz konto i przejdź do panelu →';
+  }
 }
 
 // ── VALUATION ENGINE (NBP Q4 2025) ──
@@ -775,30 +782,20 @@ const ANA = {
 };
 
 let demoUsed = 0;
-
-// NAPRAWKA 1: zapisujemy miasto w zmiennej dostępnej dla doValuation
 let _currentMiasto = '';
 
 function runValuation() {
   const miasto = document.getElementById('v-miasto').value;
   const metraz = document.getElementById('v-metraz').value;
   const stan   = document.getElementById('v-stan').value;
-  if (!miasto || !metraz || !stan) {
-    showToast('Wypełnij: miasto, metraż i stan mieszkania.');
-    return;
-  }
-  if (demoUsed >= 1) {
-    document.getElementById('modal-paywall').classList.add('open');
-    return;
-  }
-  // zapisz miasto do zmiennej globalnej przed otwarciem modala
+  if (!miasto || !metraz || !stan) { showToast('Wypełnij: miasto, metraż i stan mieszkania.'); return; }
+  if (demoUsed >= 1) { document.getElementById('modal-paywall').classList.add('open'); return; }
   _currentMiasto = miasto;
   document.getElementById('modal-lead').classList.add('open');
 }
 
 async function doValuation() {
-  const btn   = document.getElementById('val-btn');
-  // NAPRAWKA 1: używamy _currentMiasto zamiast niezdefiniowanej lokalnej zmiennej
+  const btn     = document.getElementById('val-btn');
   const miasto  = _currentMiasto || document.getElementById('v-miasto').value;
   const metraz  = document.getElementById('v-metraz').value;
   const stan    = document.getElementById('v-stan').value;
@@ -811,10 +808,7 @@ async function doValuation() {
   const resEl = document.getElementById('val-result');
   const ldEl  = document.getElementById('val-loading');
   const outEl = document.getElementById('val-output');
-  resEl.style.display = 'block';
-  ldEl.style.display  = 'flex';
-  outEl.style.display = 'none';
-  // scroll do wyników
+  resEl.style.display = 'block'; ldEl.style.display = 'flex'; outEl.style.display = 'none';
   resEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   await new Promise(r => setTimeout(r, 1600 + Math.random() * 700));
@@ -833,10 +827,10 @@ async function doValuation() {
   const spread = Math.round(cena * .065 / 1000) * 1000;
   const pewnosc = Math.min(93, 66 + (dzielnica ? 7 : 0) + (stan ? 5 : 0) + (typ ? 4 : 0) + (rok ? 4 : 0));
   const plus = [], minus = [];
-  if ((STAN[stan] || 1) >= 1.1) plus.push('Wysoki standard wykończenia');
-  if ((STAN[stan] || 1) < .9)  minus.push('Stan wymaga nakładów remontowych');
-  if ((TYP[typ] || 1) >= 1.1)  plus.push('Prestiżowy typ budynku');
-  if ((TYP[typ] || 1) < .9)   minus.push('Budownictwo wielkopłytowe');
+  if ((STAN[stan]||1) >= 1.1) plus.push('Wysoki standard wykończenia');
+  if ((STAN[stan]||1) < .9)  minus.push('Stan wymaga nakładów remontowych');
+  if ((TYP[typ]||1) >= 1.1)  plus.push('Prestiżowy typ budynku');
+  if ((TYP[typ]||1) < .9)   minus.push('Budownictwo wielkopłytowe');
   if (rok && (2025 - parseInt(rok)) < 10) plus.push('Nowe budownictwo (< 10 lat)');
   if (rok && (2025 - parseInt(rok)) > 35) minus.push('Stary rok budowy (> 35 lat)');
   if (dzKey && cd.d[dzKey] > 1.1) plus.push('Prestiżowa lokalizacja');
@@ -844,7 +838,7 @@ async function doValuation() {
   if (parseFloat(metraz) < 35) minus.push('Małe mieszkanie (< 35 m²)');
 
   document.getElementById('r-price').textContent  = cena.toLocaleString('pl-PL') + ' zł';
-  document.getElementById('r-range').textContent  = 'Przedział: ' + (cena - spread).toLocaleString('pl-PL') + ' – ' + (cena + spread).toLocaleString('pl-PL') + ' zł';
+  document.getElementById('r-range').textContent  = 'Przedział: ' + (cena-spread).toLocaleString('pl-PL') + ' – ' + (cena+spread).toLocaleString('pl-PL') + ' zł';
   setTimeout(() => { document.getElementById('r-conf').style.width = pewnosc + '%'; }, 120);
   document.getElementById('r-conf-lbl').textContent = 'Trafność wyceny: ' + pewnosc + '%';
   document.getElementById('r-m2').textContent      = m2.toLocaleString('pl-PL') + ' zł/m²';
@@ -852,12 +846,11 @@ async function doValuation() {
   document.getElementById('r-trend').textContent   = TRENDS[miasto] || 'stabilny';
   document.getElementById('r-analysis').textContent = ANA[miasto] || 'Rynek nieruchomości w tej lokalizacji charakteryzuje się stabilnym popytem.';
   const tags = document.getElementById('r-tags');
-  tags.innerHTML = plus.map(t => '<span class="rtag rp">+ ' + t + '</span>').join('') + minus.map(t => '<span class="rtag rm2">− ' + t + '</span>').join('');
+  tags.innerHTML = plus.map(t=>'<span class="rtag rp">+ '+t+'</span>').join('') + minus.map(t=>'<span class="rtag rm2">− '+t+'</span>').join('');
   const rynek = isNowe ? 'rynek pierwotny' : 'rynek wtórny';
-  document.getElementById('r-src').innerHTML = '<strong style="color:#60A5FA;">' + rynek + '</strong> · Dane NBP BaRN IV kw. 2025 · <a href="https://nbp.pl/publikacje/cykliczne-materialy-analityczne-nbp/rynek-nieruchomosci/informacja-kwartalna/" target="_blank" style="color:#60A5FA;text-decoration:underline;">nbp.pl →</a>';
+  document.getElementById('r-src').innerHTML = '<strong style="color:#60A5FA;">'+rynek+'</strong> · Dane NBP BaRN IV kw. 2025 · <a href="https://nbp.pl/publikacje/cykliczne-materialy-analityczne-nbp/rynek-nieruchomosci/informacja-kwartalna/" target="_blank" style="color:#60A5FA;text-decoration:underline;">nbp.pl →</a>';
 
-  ldEl.style.display  = 'none';
-  outEl.style.display = 'block';
+  ldEl.style.display = 'none'; outEl.style.display = 'block';
   demoUsed++;
   btn.disabled = false;
   btn.textContent = 'Wyceniaj bez limitów — wybierz plan →';
@@ -872,28 +865,9 @@ async function submitLead() {
   const errEl = document.getElementById('lead-err');
   const btn   = document.getElementById('lead-btn');
   errEl.style.display = 'none';
-
-  if (!name || !phone || !email) {
-    errEl.textContent = 'Wypełnij wszystkie pola.'; errEl.style.display = 'block'; return;
-  }
-  if (!email.includes('@')) {
-    errEl.textContent = 'Podaj poprawny adres e-mail.'; errEl.style.display = 'block'; return;
-  }
-
+  if (!name || !phone || !email) { errEl.textContent = 'Wypełnij wszystkie pola.'; errEl.style.display = 'block'; return; }
+  if (!email.includes('@')) { errEl.textContent = 'Podaj poprawny adres e-mail.'; errEl.style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Zapisuję...';
-
-  const leadData = {
-    imie_nazwisko: name,
-    email,
-    telefon: phone,
-    miasto: document.getElementById('v-miasto').value,
-    dzielnica: document.getElementById('v-dzielnica').value || null,
-    metraz: parseFloat(document.getElementById('v-metraz').value) || null,
-    pokoje: document.getElementById('v-pokoje').value || null,
-    rok_budowy: document.getElementById('v-rok').value || null,
-    stan: document.getElementById('v-stan').value || null,
-    typ: document.getElementById('v-typ').value || null,
-  };
 
   try {
     await fetch(SUPABASE_URL + '/rest/v1/leady', {
@@ -904,13 +878,21 @@ async function submitLead() {
         'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
         'Prefer': 'return=minimal'
       },
-      body: JSON.stringify(leadData)
+      body: JSON.stringify({
+        imie_nazwisko: name, email, telefon: phone,
+        miasto: document.getElementById('v-miasto').value,
+        dzielnica: document.getElementById('v-dzielnica').value || null,
+        metraz: parseFloat(document.getElementById('v-metraz').value) || null,
+        pokoje: document.getElementById('v-pokoje').value || null,
+        rok_budowy: document.getElementById('v-rok').value || null,
+        stan: document.getElementById('v-stan').value || null,
+        typ: document.getElementById('v-typ').value || null,
+      })
     });
   } catch(e) { console.warn('Lead save error:', e); }
 
   closeLeadModal();
   btn.disabled = false; btn.textContent = 'Pokaż wycenę →';
-  // NAPRAWKA 1: uruchom wycenę — teraz _currentMiasto jest ustawione
   await doValuation();
 }
 </script>
