@@ -26,25 +26,26 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: JSON.stringify({ received: true }) };
     }
 
-    // Supabase Admin Client
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_KEY
     );
 
-    // Wyślij zaproszenie — Supabase tworzy konto i wysyła email z linkiem
-    const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
-      data: {
-        plan: plan,
+    // Store pending registration so the register page can pick up the plan
+    const { error } = await supabase
+      .from('pending_registrations')
+      .upsert({
+        email,
+        plan,
         stripe_customer_id: session.customer,
-      },
-      redirectTo: 'https://wyceniarka2.netlify.app/app.html',
-    });
+        stripe_session_id: session.id,
+        created_at: new Date().toISOString(),
+      }, { onConflict: 'email' });
 
     if (error) {
-      console.error('Supabase invite error:', error.message);
+      console.error('Supabase error:', error.message);
     } else {
-      console.log('Zaproszenie wysłane do:', email);
+      console.log('Pending registration saved for:', email);
     }
   }
 
