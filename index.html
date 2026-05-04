@@ -728,10 +728,7 @@ async function doRegister() {
     const userId = data.user?.id;
     if (!userId) throw new Error('Nie udało się utworzyć konta.');
 
-    // 3. Save profile
-    await _sb.from('profiles').upsert({ id: userId, name, email });
-
-    // 4. Save subscription (trial)
+    // 3. Save subscription (trial)
     const trialEnds = new Date();
     trialEnds.setDate(trialEnds.getDate() + 14);
     await _sb.from('subscriptions').upsert({
