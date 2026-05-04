@@ -24,6 +24,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;font-s
 @keyframes d1{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,30px);}}
 @keyframes d2{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,40px);}}
 @keyframes d3{0%,100%{transform:translate(0,0);}50%{transform:translate(20px,-30px);}}
+
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:all .4s;}
 nav.stuck{background:rgba(5,3,13,.9);backdrop-filter:blur(24px);border-color:var(--br);}
 .nav-logo{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;}
@@ -35,6 +36,7 @@ nav.stuck{background:rgba(5,3,13,.9);backdrop-filter:blur(24px);border-color:var
 .btn-link:hover{color:var(--t);background:rgba(255,255,255,.05);}
 .btn-nav{background:linear-gradient(135deg,var(--v),var(--b));border:none;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:#fff;cursor:pointer;padding:9px 22px;border-radius:100px;transition:all .2s;box-shadow:0 4px 20px rgba(124,58,237,.35);}
 .btn-nav:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,.5);}
+
 .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 80px;text-align:center;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:100px;padding:6px 18px;font-size:12.5px;color:#C4B5FD;margin-bottom:36px;animation:up .9s ease both;}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:#A78BFA;animation:pulse 2s infinite;}
@@ -53,6 +55,7 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .stat:last-child{border-right:none;}
 .stat-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .stat-l{font-size:12px;color:var(--tm);margin-top:2px;}
+
 .section{position:relative;z-index:1;padding:110px 24px;}
 .s-label{font-size:11.5px;font-weight:500;color:#A78BFA;letter-spacing:.18em;text-transform:uppercase;text-align:center;margin-bottom:14px;}
 .s-title{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:700;text-align:center;line-height:1.12;letter-spacing:-1.5px;}
@@ -60,12 +63,15 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .gt{background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
 .reveal.in{opacity:1;transform:none;}
+
 .feats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;max-width:1080px;margin:64px auto 0;background:var(--br);border:1px solid var(--br);border-radius:24px;overflow:hidden;}
 .feat{background:var(--s1);padding:32px 28px;transition:background .3s;}
 .feat:hover{background:var(--s2);}
 .feat-ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2));border:1px solid rgba(124,58,237,.25);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
 .feat-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;margin-bottom:9px;}
 .feat-d{font-size:13.5px;color:var(--tm);line-height:1.7;}
+
+/* VALUATOR */
 .val-wrap{max-width:880px;margin:60px auto 0;background:var(--s1);border:1px solid var(--br);border-radius:28px;overflow:hidden;}
 .val-hdr{padding:28px 36px;border-bottom:1px solid var(--br);background:linear-gradient(135deg,rgba(124,58,237,.07),rgba(37,99,235,.05));display:flex;align-items:center;justify-content:space-between;}
 .val-hdr-t{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;}
@@ -107,6 +113,8 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .res-cta{margin-top:24px;padding:20px;background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(37,99,235,.1));border:1px solid rgba(124,58,237,.3);border-radius:16px;text-align:center;}
 .res-cta p{font-size:14px;color:var(--tm);margin-bottom:14px;}
 .res-cta .btn-primary{padding:12px 32px;font-size:14px;}
+
+/* PROOF */
 .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:52px auto 0;}
 .proof-card{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:24px 22px;}
 .proof-stars{display:flex;gap:3px;margin-bottom:14px;}
@@ -116,6 +124,8 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .proof-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
 .proof-name{font-size:13px;font-weight:500;}
 .proof-role{font-size:12px;color:var(--tm);}
+
+/* PRICING */
 .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:940px;margin:60px auto 0;}
 @media(max-width:760px){.plans-grid,.feats-grid,.proof-grid{grid-template-columns:1fr;}}
 .plan{background:var(--s1);border:1px solid var(--br);border-radius:24px;padding:32px 28px;transition:transform .25s;position:relative;}
@@ -136,6 +146,8 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .pb-fill{background:linear-gradient(135deg,var(--v),var(--b));color:#fff;box-shadow:0 4px 22px rgba(124,58,237,.42);}
 .pb-fill:hover{box-shadow:0 6px 36px rgba(124,58,237,.65);}
 .plan-btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* FAQ */
 .faq-wrap{max-width:700px;margin:52px auto 0;}
 .faq-item{border-bottom:1px solid var(--br);padding:22px 0;cursor:pointer;}
 .faq-q{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:500;gap:16px;}
@@ -143,28 +155,35 @@ h1.hero-h em{font-style:normal;background:linear-gradient(135deg,#C4B5FD 0%,#93C
 .faq-item.open .faq-ico{transform:rotate(45deg);background:var(--v);border-color:var(--v);}
 .faq-a{font-size:14px;color:var(--tm);line-height:1.75;max-height:0;overflow:hidden;transition:max-height .35s ease,margin .35s ease;}
 .faq-item.open .faq-a{max-height:280px;margin-top:12px;}
+
+/* CTA BAND */
 .cta-wrap{position:relative;z-index:1;margin:0 24px 100px;border-radius:28px;padding:80px 40px;text-align:center;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(37,99,235,.18));border:1px solid rgba(124,58,237,.28);overflow:hidden;}
 .cta-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(124,58,237,.35),transparent 65%);}
 .cta-wrap h2{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:800;line-height:1.12;letter-spacing:-1.5px;position:relative;}
 .cta-wrap p{font-size:17px;color:var(--tm);margin-top:14px;position:relative;font-weight:300;}
 .cta-btns{display:flex;gap:14px;justify-content:center;margin-top:38px;position:relative;flex-wrap:wrap;}
+
 footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
 .f-logo{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .f-links{display:flex;gap:22px;}
 .f-links a{font-size:13px;color:var(--tm);text-decoration:none;transition:color .2s;}
 .f-links a:hover{color:var(--t);}
 .f-copy{font-size:12.5px;color:var(--tf);}
+
 .modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(5,3,13,.9);backdrop-filter:blur(14px);align-items:center;justify-content:center;}
 .modal-bg.open{display:flex;}
 .modal{background:var(--s1);border:1px solid rgba(124,58,237,.38);border-radius:28px;padding:40px 36px;max-width:440px;width:90%;text-align:center;position:relative;box-shadow:0 0 80px rgba(124,58,237,.22);}
 .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--tm);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s;}
 .modal-close:hover{color:var(--t);}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s1);border:1px solid var(--br);border-radius:12px;padding:12px 22px;font-size:14px;color:var(--t);z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
 .modal-input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:11px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
 .modal-input:focus{border-color:#A78BFA;}
 .modal-label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
 .modal-field{margin-bottom:14px;text-align:left;}
+
 @keyframes up{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
 </style>
 </head>
@@ -249,6 +268,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
   <div class="s-label">Live demo</div>
   <h2 class="s-title reveal">Wypróbuj wyceniarkę<br/><span class="gt">teraz, za darmo</span></h2>
   <p class="s-sub reveal">Prawdziwy algorytm oparty na danych NBP. Podaj dane nieruchomości i otrzymaj wycenę.</p>
+
   <div class="val-wrap reveal">
     <div class="val-hdr">
       <div class="val-hdr-t">Nowa wycena</div>
@@ -501,7 +521,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--br);padding:36px 4
     <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">Utwórz konto</div>
     <div style="font-size:14px;color:var(--tm);margin-bottom:24px;">Płatność zakończona — skonfiguruj dostęp do panelu.</div>
     <div id="reg-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#FCA5A5;margin-bottom:16px;"></div>
-    <div id="reg-ok" style="display:none;background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#34D399;margin-bottom:16px;"></div>
+    <div id="reg-ok" style="display:none;background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#34D399;margin-bottom:16px;">✅ Konto utworzone! Trwa przekierowanie do panelu…</div>
     <div class="modal-field">
       <label class="modal-label">Imię i nazwisko</label>
       <input id="reg-name" class="modal-input" type="text" placeholder="Jan Kowalski" autocomplete="name"/>
@@ -598,7 +618,7 @@ function closeLoginModal() {
   document.getElementById('modal-login').classList.remove('open');
   document.getElementById('ml-err').style.display = 'none';
 }
-function closeLeadModal() {
+function closeLeadModal()  {
   document.getElementById('modal-lead').classList.remove('open');
   document.getElementById('lead-err').style.display = 'none';
 }
@@ -654,13 +674,13 @@ async function doModalLogin() {
     if (error) throw error;
     window.location.href = '/app.html';
   } catch(err) {
-    errEl.textContent = 'Nieprawidłowy email lub hasło. Upewnij się, że potwierdziłeś adres email.';
+    errEl.textContent = 'Nieprawidłowy email lub hasło.';
     errEl.style.display = 'block';
     btn.disabled = false; btn.textContent = 'Zaloguj się';
   }
 }
 
-// ── REGISTER ──
+// ── REGISTER (replaced with register-fn.js version) ──
 async function doRegister() {
   const name  = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
@@ -687,18 +707,18 @@ async function doRegister() {
   btn.disabled = true; btn.textContent = 'Tworzę konto...';
 
   try {
-    // 1. Look up pending plan from Stripe webhook (falls back to 'pro')
-    let plan = 'pro';
+    // 1. Look up pending plan from Stripe webhook
+    let plan = 'pro'; // default
     try {
       const { data: pending } = await _sb
         .from('pending_registrations')
-        .select('plan')
+        .select('plan, stripe_customer_id')
         .eq('email', email)
         .single();
       if (pending?.plan) plan = pending.plan;
-    } catch(e) { /* no pending row — use default */ }
+    } catch (e) { /* no pending row — use default */ }
 
-    // 2. Sign up
+    // 2. Sign up with email + password
     const { data, error } = await _sb.auth.signUp({
       email,
       password: pass,
@@ -708,20 +728,7 @@ async function doRegister() {
     const userId = data.user?.id;
     if (!userId) throw new Error('Nie udało się utworzyć konta.');
 
-    // 3. Sign in immediately to get a live session
-    const { error: signInErr } = await _sb.auth.signInWithPassword({ email, password: pass });
-    if (signInErr) {
-      // Email confirmation still on — tell user to check inbox
-      okEl.textContent = '✅ Sprawdź skrzynkę email — kliknij link aktywacyjny, a następnie wróć i zaloguj się.';
-      okEl.style.display = 'block';
-      btn.textContent = 'Gotowe';
-      return;
-    }
-
-    // 4. Now authenticated — save profile
-    await _sb.from('profiles').upsert({ id: userId, name, email });
-
-    // 5. Save subscription with trial end date
+    // 3. Save subscription (trial)
     const trialEnds = new Date();
     trialEnds.setDate(trialEnds.getDate() + 14);
     await _sb.from('subscriptions').upsert({
@@ -731,16 +738,24 @@ async function doRegister() {
       trial_ends_at: trialEnds.toISOString(),
     }, { onConflict: 'user_id' });
 
-    // 6. Clean up pending registration row
-    try { await _sb.from('pending_registrations').delete().eq('email', email); } catch(e) {}
+    // 5. Sign in immediately
+    const { error: signInErr } = await _sb.auth.signInWithPassword({ email, password: pass });
+    if (signInErr) {
+      okEl.textContent = '✅ Sprawdź skrzynkę email i kliknij w link aktywacyjny, a następnie wróć i zaloguj się.';
+      okEl.style.display = 'block';
+      btn.textContent = 'Gotowe';
+      return;
+    }
 
-    // 7. Redirect to dashboard
+    // 6. Clean up pending registration
+    await _sb.from('pending_registrations').delete().eq('email', email);
+
     okEl.textContent = '✅ Konto utworzone! Przekierowuję do panelu…';
     okEl.style.display = 'block';
     setTimeout(() => { window.location.href = '/app.html'; }, 1200);
 
-  } catch(err) {
-    // If user already exists — try signing them in directly
+  } catch (err) {
+    // Handle "User already registered" — sign them in instead
     if (err.message?.includes('already registered') || err.message?.includes('already been registered')) {
       const { error: signInErr } = await _sb.auth.signInWithPassword({ email, password: pass });
       if (!signInErr) {
@@ -873,6 +888,7 @@ async function submitLead() {
   if (!name || !phone || !email) { errEl.textContent = 'Wypełnij wszystkie pola.'; errEl.style.display = 'block'; return; }
   if (!email.includes('@')) { errEl.textContent = 'Podaj poprawny adres e-mail.'; errEl.style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Zapisuję...';
+
   try {
     await fetch(SUPABASE_URL + '/rest/v1/leady', {
       method: 'POST',
@@ -894,6 +910,7 @@ async function submitLead() {
       })
     });
   } catch(e) { console.warn('Lead save error:', e); }
+
   closeLeadModal();
   btn.disabled = false; btn.textContent = 'Pokaż wycenę →';
   await doValuation();
