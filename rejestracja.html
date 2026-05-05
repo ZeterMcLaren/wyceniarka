@@ -24,6 +24,11 @@ h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:6p
 .field label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
 .field input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:12px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;}
 .field input:focus{border-color:#A78BFA;box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.phone-wrap{display:flex;align-items:center;background:var(--bg);border:1px solid var(--br);border-radius:11px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.phone-wrap:focus-within{border-color:#A78BFA;box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.phone-prefix{padding:12px 12px 12px 15px;font-size:14.5px;color:var(--tm);white-space:nowrap;user-select:none;}
+.phone-wrap input{border:none;border-radius:0;padding:12px 15px 12px 0;background:transparent;box-shadow:none !important;}
+.phone-wrap input:focus{border:none;box-shadow:none;}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 36px rgba(124,58,237,.35);margin-top:8px;}
 .btn:hover{opacity:.9;transform:translateY(-1px);}
@@ -45,7 +50,7 @@ h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:6p
   <div class="logo">estivo</div>
   <div class="badge"><span class="bdot"></span>Zakup potwierdzony — utwórz konto</div>
   <h1>Utwórz swoje konto</h1>
-  <p class="sub">Wypełnij poniższe dane aby aktywować dostęp do panelu agenta.</p>
+  <p class="sub">Wypełnij dane aby aktywować dostęp do panelu agenta.</p>
 
   <div class="err" id="reg-err"></div>
 
@@ -66,19 +71,22 @@ h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:6p
     </div>
     <div class="field">
       <label>Numer telefonu</label>
-      <input id="r-tel" type="tel" placeholder="+48 000 000 000" autocomplete="tel"/>
+      <div class="phone-wrap">
+        <span class="phone-prefix">+48</span>
+        <input id="r-tel" type="tel" placeholder="500 123 456" maxlength="12"/>
+      </div>
     </div>
     <div class="field">
       <label>Nazwa agencji (opcjonalnie)</label>
       <input id="r-agencja" type="text" placeholder="np. Nieruchomości Kowalski"/>
     </div>
     <div class="field">
-      <label>Hasło</label>
-      <input id="r-pass" type="password" placeholder="Min. 8 znaków" autocomplete="new-password"/>
+      <label>Hasło (min. 8 znaków)</label>
+      <input id="r-pass" type="password" placeholder="np. 12345678" autocomplete="new-password"/>
     </div>
     <div class="field">
       <label>Powtórz hasło</label>
-      <input id="r-pass2" type="password" placeholder="Powtórz hasło" autocomplete="new-password"/>
+      <input id="r-pass2" type="password" placeholder="Powtórz hasło" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()"/>
     </div>
     <button class="btn" id="reg-btn" onclick="doRegister()">Utwórz konto i przejdź do panelu →</button>
     <div class="note">Rejestrując się akceptujesz <a href="/regulamin.html" style="color:#A78BFA;text-decoration:none;">regulamin</a> i <a href="/prywatnosc.html" style="color:#A78BFA;text-decoration:none;">politykę prywatności</a>.</div>
@@ -95,16 +103,14 @@ h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:6p
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
+const SUPABASE_URL    = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Sprawdź czy jest już sesja (np. z linku email)
+// If already logged in → go straight to dashboard
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
-  if (session?.user) {
-    window.location.replace('/app.html');
-  }
+  if (session?.user) window.location.replace('/app.html');
 })();
 
 async function doRegister() {
@@ -120,61 +126,117 @@ async function doRegister() {
 
   errEl.style.display = 'none';
 
+  // Validation
   if (!imie || !nazwisko || !email || !tel || !pass) {
     errEl.textContent = 'Wypełnij wszystkie wymagane pola.';
-    errEl.style.display = 'block';
-    return;
+    errEl.style.display = 'block'; return;
   }
   if (!email.includes('@')) {
     errEl.textContent = 'Podaj poprawny adres e-mail.';
-    errEl.style.display = 'block';
-    return;
+    errEl.style.display = 'block'; return;
+  }
+  if (!/^\d{7,12}$/.test(tel.replace(/\s/g, ''))) {
+    errEl.textContent = 'Podaj poprawny numer telefonu (tylko cyfry, bez +48).';
+    errEl.style.display = 'block'; return;
   }
   if (pass.length < 8) {
     errEl.textContent = 'Hasło musi mieć co najmniej 8 znaków.';
-    errEl.style.display = 'block';
-    return;
+    errEl.style.display = 'block'; return;
   }
   if (pass !== pass2) {
     errEl.textContent = 'Hasła nie są identyczne.';
-    errEl.style.display = 'block';
-    return;
+    errEl.style.display = 'block'; return;
   }
 
   btn.disabled = true;
   btn.textContent = 'Tworzę konto...';
 
-  const { data, error } = await sb.auth.signUp({
-    email,
-    password: pass,
-    options: {
-      data: {
-        full_name: imie + ' ' + nazwisko,
-        telefon: tel,
-        agencja: agencja || null,
-      },
-      emailRedirectTo: 'https://wyceniarka2.netlify.app/app.html',
-    }
-  });
+  try {
+    const fullName = imie + ' ' + nazwisko;
+    const fullTel  = '+48' + tel.replace(/\s/g, '');
 
-  if (error) {
-    errEl.textContent = error.message === 'User already registered'
-      ? 'Ten email jest już zarejestrowany. Zaloguj się.'
-      : 'Błąd: ' + error.message;
+    // 1. Look up plan + trial_ends_at written by Stripe webhook
+    let plan = 'starter';
+    let trialEndsAt = null;
+    try {
+      const { data: pending } = await sb
+        .from('pending_registrations')
+        .select('plan, trial_ends_at')
+        .eq('email', email)
+        .single();
+      if (pending?.plan)         plan        = pending.plan;
+      if (pending?.trial_ends_at) trialEndsAt = pending.trial_ends_at;
+    } catch(e) { /* no row yet — use defaults */ }
+
+    // Fallback: 14 days from now
+    if (!trialEndsAt) {
+      const d = new Date();
+      d.setDate(d.getDate() + 14);
+      trialEndsAt = d.toISOString();
+    }
+
+    // 2. Create auth user
+    const { data, error: signUpErr } = await sb.auth.signUp({
+      email,
+      password: pass,
+      options: { data: { full_name: fullName, telefon: fullTel, agencja: agencja || null } }
+    });
+    if (signUpErr) throw signUpErr;
+    const userId = data.user?.id;
+    if (!userId) throw new Error('Nie udało się utworzyć konta. Spróbuj ponownie.');
+
+    // 3. Sign in immediately to get a live session (requires email confirm OFF in Supabase)
+    const { error: signInErr } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (signInErr) {
+      // Email confirmation is still on — ask user to check inbox
+      errEl.textContent = 'Sprawdź skrzynkę email i kliknij link aktywacyjny, a następnie wróć i zaloguj się.';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Utwórz konto i przejdź do panelu →';
+      return;
+    }
+
+    // 4. Save profile (now we have a live session so RLS passes)
+    await sb.from('profiles').upsert({
+      id:      userId,
+      name:    fullName,
+      email,
+      telefon: fullTel,
+      agencja: agencja || null,
+    });
+
+    // 5. Save subscription
+    await sb.from('subscriptions').upsert({
+      user_id:       userId,
+      plan,
+      status:        'trial',
+      trial_ends_at: trialEndsAt,
+    }, { onConflict: 'user_id' });
+
+    // 6. Clean up pending registration
+    try { await sb.from('pending_registrations').delete().eq('email', email); } catch(e) {}
+
+    // 7. Show success and redirect
+    document.getElementById('reg-form').style.display = 'none';
+    document.getElementById('reg-success').style.display = 'block';
+    setTimeout(() => { window.location.replace('/app.html'); }, 1500);
+
+  } catch(err) {
+    // Already registered → try signing in directly
+    if (err.message?.includes('already registered') || err.message?.includes('already been registered')) {
+      const { error: signInErr } = await sb.auth.signInWithPassword({ email, password: pass });
+      if (!signInErr) {
+        document.getElementById('reg-form').style.display = 'none';
+        document.getElementById('reg-success').style.display = 'block';
+        setTimeout(() => { window.location.replace('/app.html'); }, 1500);
+        return;
+      }
+    }
+    errEl.textContent = err.message || 'Błąd rejestracji. Spróbuj ponownie.';
     errEl.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Utwórz konto i przejdź do panelu →';
-    return;
   }
-
-  // Sukces
-  document.getElementById('reg-form').style.display = 'none';
-  document.getElementById('reg-success').style.display = 'block';
-
-  // Poczekaj i przekieruj
-  setTimeout(() => {
-    window.location.replace('/app.html');
-  }, 2000);
 }
 </script>
 </body>
