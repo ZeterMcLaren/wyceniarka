@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Reset hasła — Estivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--v:#7C3AED;--b:#2563EB;--bg:#05030D;--s1:#0B0918;--br:rgba(124,58,237,.18);--t:#F0EDFF;--tm:rgba(240,237,255,.52);--tf:rgba(240,237,255,.14);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;}
+.o1{width:600px;height:600px;background:radial-gradient(circle,rgba(124,58,237,.22),transparent 70%);top:-200px;left:-100px;}
+.o2{width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.18),transparent 70%);bottom:-100px;right:-100px;}
+.card{position:relative;z-index:1;background:var(--s1);border:1px solid var(--br);border-radius:24px;padding:44px 40px;max-width:420px;width:100%;box-shadow:0 0 80px rgba(124,58,237,.12);}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#C4B5FD,#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:28px;display:block;text-decoration:none;}
+h1{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:8px;}
+.sub{font-size:14px;color:var(--tm);margin-bottom:28px;line-height:1.6;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+.field input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:11px;padding:12px 15px;font-size:14.5px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus{border-color:#A78BFA;box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:13px;font-size:15px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 36px rgba(124,58,237,.35);margin-top:4px;}
+.btn:hover{opacity:.9;transform:translateY(-1px);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.msg{display:none;border-radius:10px;padding:11px 14px;font-size:13.5px;margin-bottom:16px;line-height:1.5;}
+.msg.ok{background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.25);color:#34D399;}
+.msg.err{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#FCA5A5;}
+.back{display:block;text-align:center;margin-top:20px;font-size:13px;color:var(--tm);text-decoration:none;}
+.back:hover{color:var(--t);}
+
+/* New password form */
+#new-pass-form{display:none;}
+</style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div class="card">
+  <a href="/" class="logo">estivo</a>
+
+  <!-- Step 1: Request reset email -->
+  <div id="request-form">
+    <h1>Reset hasła</h1>
+    <p class="sub">Podaj adres email — wyślemy Ci link do ustawienia nowego hasła.</p>
+    <div class="msg" id="req-msg"></div>
+    <div class="field">
+      <label>Adres e-mail</label>
+      <input id="req-email" type="email" placeholder="jan@agencja.pl" autocomplete="email" onkeydown="if(event.key==='Enter')sendReset()"/>
+    </div>
+    <button class="btn" id="req-btn" onclick="sendReset()">Wyślij link resetujący →</button>
+  </div>
+
+  <!-- Step 2: Set new password (shown after clicking email link) -->
+  <div id="new-pass-form">
+    <h1>Nowe hasło</h1>
+    <p class="sub">Ustaw nowe hasło dla swojego konta Estivo.</p>
+    <div class="msg" id="np-msg"></div>
+    <div class="field">
+      <label>Nowe hasło (min. 8 znaków)</label>
+      <input id="np-pass" type="password" placeholder="Nowe hasło" autocomplete="new-password"/>
+    </div>
+    <div class="field">
+      <label>Powtórz hasło</label>
+      <input id="np-pass2" type="password" placeholder="Powtórz hasło" autocomplete="new-password" onkeydown="if(event.key==='Enter')setNewPassword()"/>
+    </div>
+    <button class="btn" id="np-btn" onclick="setNewPassword()">Ustaw nowe hasło →</button>
+  </div>
+
+  <a href="/" class="back">← Wróć do logowania</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL     = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Check if this is a password recovery redirect (has access_token in URL hash)
+(async () => {
+  const hash = window.location.hash;
+  if (hash.includes('type=recovery') || hash.includes('access_token')) {
+    // Supabase sets the session automatically from the URL hash
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      document.getElementById('request-form').style.display = 'none';
+      document.getElementById('new-pass-form').style.display = 'block';
+    }
+  }
+})();
+
+// Listen for auth state changes (recovery token)
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    document.getElementById('request-form').style.display = 'none';
+    document.getElementById('new-pass-form').style.display = 'block';
+  }
+});
+
+async function sendReset() {
+  const email = document.getElementById('req-email').value.trim();
+  const msgEl = document.getElementById('req-msg');
+  const btn   = document.getElementById('req-btn');
+  msgEl.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    msgEl.textContent = 'Podaj poprawny adres e-mail.';
+    msgEl.className = 'msg err'; msgEl.style.display = 'block'; return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Wysyłam...';
+
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://wyceniarka2.netlify.app/reset-hasla.html'
+  });
+
+  btn.disabled = false; btn.textContent = 'Wyślij link resetujący →';
+
+  if (error) {
+    msgEl.textContent = 'Błąd: ' + error.message;
+    msgEl.className = 'msg err';
+  } else {
+    msgEl.textContent = '✅ Link wysłany! Sprawdź skrzynkę email i kliknij w link aby ustawić nowe hasło.';
+    msgEl.className = 'msg ok';
+    document.getElementById('req-email').disabled = true;
+    btn.disabled = true; btn.textContent = 'Link wysłany';
+  }
+  msgEl.style.display = 'block';
+}
+
+async function setNewPassword() {
+  const pass  = document.getElementById('np-pass').value;
+  const pass2 = document.getElementById('np-pass2').value;
+  const msgEl = document.getElementById('np-msg');
+  const btn   = document.getElementById('np-btn');
+  msgEl.style.display = 'none';
+
+  if (pass.length < 8) {
+    msgEl.textContent = 'Hasło musi mieć co najmniej 8 znaków.';
+    msgEl.className = 'msg err'; msgEl.style.display = 'block'; return;
+  }
+  if (pass !== pass2) {
+    msgEl.textContent = 'Hasła nie są identyczne.';
+    msgEl.className = 'msg err'; msgEl.style.display = 'block'; return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Zapisuję...';
+
+  const { error } = await sb.auth.updateUser({ password: pass });
+
+  if (error) {
+    msgEl.textContent = 'Błąd: ' + error.message;
+    msgEl.className = 'msg err';
+    btn.disabled = false; btn.textContent = 'Ustaw nowe hasło →';
+  } else {
+    msgEl.textContent = '✅ Hasło zmienione! Przekierowuję do panelu...';
+    msgEl.className = 'msg ok';
+    btn.disabled = true;
+    setTimeout(() => { window.location.replace('/app.html'); }, 1500);
+  }
+  msgEl.style.display = 'block';
+}
+</script>
+</body>
+</html>
