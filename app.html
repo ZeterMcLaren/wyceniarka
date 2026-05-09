@@ -22,7 +22,6 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .ld:nth-child(2){animation-delay:.2s;}.ld:nth-child(3){animation-delay:.4s;}
 @keyframes ld{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
 .dash{display:flex;width:100%;height:100%;position:relative;z-index:1;}
-/* SIDEBAR */
 .sidebar{width:218px;background:var(--s1);border-right:1px solid var(--br);display:flex;flex-direction:column;flex-shrink:0;}
 .sb-logo{padding:22px 18px 18px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;border-bottom:1px solid var(--br);}
 .sb-plan{margin:12px 10px;border-radius:10px;padding:10px 12px;}
@@ -53,7 +52,6 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .sb-upg:hover{background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(37,99,235,.2));}
 .sb-upg-l{font-size:11px;color:var(--vl);font-weight:500;margin-bottom:1px;}
 .sb-upg-t{font-size:12px;color:var(--tm);}
-/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .topbar{height:54px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
 .topbar-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
@@ -67,19 +65,23 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .content::-webkit-scrollbar{width:3px;}
 .content::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px;}
 .tab-page{display:none;}.tab-page.active{display:block;}
+
 /* KPIs */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
 .kpi{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:16px 18px;}
 .kpi-lbl{font-size:12px;color:var(--tm);margin-bottom:5px;}
 .kpi-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;}
 .kpi-d{font-size:12px;margin-top:3px;}
+.kpi-usage{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:16px 18px;}
+.ku-lbl{font-size:12px;color:var(--tm);margin-bottom:8px;}
+.ku-nums{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.ku-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}
+.ku-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+
 .chart-card{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:18px 20px;margin-bottom:20px;}
 .chart-bars{display:flex;align-items:flex-end;gap:7px;height:100px;margin-top:14px;}
-.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
-.bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--v),var(--b));min-height:3px;cursor:pointer;transition:opacity .15s;}
-.bar:hover{opacity:.75;}
-.bar-tooltip{display:none;position:absolute;bottom:calc(100% + 22px);left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--t);white-space:nowrap;pointer-events:none;z-index:10;}
-.bar-col:hover .bar-tooltip{display:block;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--v),var(--b));min-height:3px;}
 .bar-lbl{font-size:10px;color:var(--tm);}
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .sec-hdr h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
@@ -92,6 +94,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .ri-meta{font-size:11px;color:var(--tm);margin-top:1px;}
 .ri-price{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;text-align:right;}
 .ri-m2{font-size:11px;color:var(--tm);margin-top:1px;text-align:right;}
+
 /* VALUATOR */
 .val-layout{display:grid;grid-template-columns:1fr 360px;gap:18px;}
 .val-card{background:var(--s1);border:1px solid var(--br);border-radius:15px;padding:22px;}
@@ -99,22 +102,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .vf-sect:first-child{margin-top:0;}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.vf{margin-bottom:0;}
 .vf label{display:block;font-size:12px;color:var(--tm);margin-bottom:5px;}
 .vf input,.vf select,.vf textarea{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;}
 .vf input:focus,.vf select:focus,.vf textarea:focus{border-color:var(--vl);}
 .vf select option{background:var(--s2);}
 .vf textarea{min-height:60px;resize:none;}
-/* Photo zone */
-.photo-zone{border:1px dashed rgba(124,58,237,.3);border-radius:9px;padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;}
-.photo-zone:hover{background:rgba(124,58,237,.05);}
-.pz-ico{width:34px;height:34px;border-radius:8px;background:rgba(124,58,237,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.pz-txt{font-size:13px;color:var(--tm);}
-.pz-txt strong{display:block;font-size:14px;color:var(--t);font-weight:500;margin-bottom:1px;}
-.photo-previews{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
-.prev-w{position:relative;}
-.prev-i{width:52px;height:52px;object-fit:cover;border-radius:7px;border:1px solid var(--br);}
-.prev-rm{position:absolute;top:-4px;right:-4px;width:15px;height:15px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
 .val-run-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:10px;font-size:15px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:18px;box-shadow:0 4px 20px rgba(124,58,237,.3);transition:opacity .2s,transform .15s;}
 .val-run-btn:hover{opacity:.88;transform:translateY(-1px);}
 .val-run-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
@@ -139,12 +131,13 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .rtag-m{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#F87171;}
 .r-src{font-size:11px;color:var(--tf);padding:9px 11px;background:rgba(37,99,235,.07);border-radius:8px;border:1px solid rgba(37,99,235,.15);line-height:1.5;margin-bottom:12px;}
 .r-src a{color:var(--bl);}
-.r-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.r-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px;}
 .r-btn{padding:9px;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:center;transition:all .15s;border:1px solid var(--br);background:transparent;color:var(--tm);}
 .r-btn:hover{border-color:var(--vl);color:var(--t);}
 .r-btn.fill{background:linear-gradient(135deg,var(--v),var(--b));border:none;color:#fff;}
 .r-btn.fill:hover{opacity:.88;}
 .ld-row{display:flex;align-items:center;gap:8px;padding:24px 0;}
+
 /* HISTORY */
 .clients-top{display:flex;gap:10px;margin-bottom:18px;align-items:center;}
 .srch-w{flex:1;position:relative;}
@@ -155,13 +148,47 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .hist-item:hover{border-color:var(--brh);}
 .hist-btn{padding:5px 12px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid var(--br);background:transparent;color:var(--tm);transition:all .12s;}
 .hist-btn:hover{border-color:var(--vl);color:var(--t);}
-.hist-btn.pdf-btn{background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(37,99,235,.1));border-color:rgba(124,58,237,.35);color:var(--vl);}
-.hist-btn.pdf-btn:hover{opacity:.8;}
-.hist-check{cursor:pointer;accent-color:#A78BFA;width:15px;height:15px;}
+.hist-btn.primary{background:linear-gradient(135deg,var(--v),var(--b));border:none;color:#fff;}
+.hist-btn.primary:hover{opacity:.85;}
+.hist-btn.locked{color:rgba(167,139,250,.6);border-color:rgba(124,58,237,.25);}
+
+/* CRM */
+.crm-top{display:flex;gap:10px;margin-bottom:18px;align-items:center;}
+.crm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.client-card{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:16px;transition:border-color .15s;}
+.client-card:hover{border-color:var(--brh);}
+.cc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.cc-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
+.cc-name{font-size:14px;font-weight:500;}
+.cc-email{font-size:12px;color:var(--tm);}
+.cc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.cc-tag{font-size:11px;padding:2px 9px;border-radius:100px;}
+.cc-tag-b{background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);color:var(--bl);}
+.cc-tag-g{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#34D399;}
+.cc-tag-a{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#FCD34D;}
+.cc-tag-r{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#F87171;}
+.cc-assigned-vals{border-top:1px solid rgba(124,58,237,.1);padding-top:10px;margin-top:4px;}
+.cc-val-pill{display:flex;align-items:center;justify-content:space-between;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.18);border-radius:8px;padding:7px 10px;margin-bottom:5px;}
+.cc-val-pill-info{font-size:12px;color:var(--t);}
+.cc-val-pill-price{font-size:12px;font-weight:600;color:var(--vl);}
+.cc-val-pill-rm{background:none;border:none;color:var(--tf);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;}
+.cc-val-pill-rm:hover{color:#F87171;}
+.cc-note{font-size:12px;color:var(--tm);margin-top:8px;line-height:1.5;border-top:1px solid rgba(124,58,237,.1);padding-top:8px;}
+.cc-date{font-size:11px;color:var(--tf);margin-top:6px;}
+.cc-actions{display:flex;gap:6px;margin-top:10px;}
+.cc-btn{flex:1;padding:7px;border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid var(--br);background:transparent;color:var(--tm);transition:all .12s;text-align:center;}
+.cc-btn:hover{border-color:var(--vl);color:var(--t);}
+.cc-btn.assign{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.35);color:var(--vl);}
+.cc-btn.assign:hover{background:rgba(124,58,237,.22);}
+.cc-btn.del{color:#F87171;border-color:rgba(239,68,68,.2);}
+.cc-btn.del:hover{background:rgba(239,68,68,.1);}
+
 /* MODALS */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(6,4,15,.82);backdrop-filter:blur(10px);z-index:200;align-items:center;justify-content:center;}
 .modal-bg.open{display:flex;}
 .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--tm);font-size:20px;cursor:pointer;}
+
+/* Detail modal */
 .detail-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:32px;width:90%;max-width:560px;position:relative;max-height:90vh;overflow-y:auto;}
 .detail-modal::-webkit-scrollbar{width:2px;}
 .dm-price{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -169,30 +196,31 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .dm-cell{background:rgba(255,255,255,.04);border-radius:9px;padding:10px 12px;}
 .dm-cell-l{font-size:11px;color:var(--tm);margin-bottom:3px;}
 .dm-cell-v{font-size:14px;font-weight:500;}
-.dm-photos{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0;}
-.dm-photo{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--br);cursor:pointer;}
-/* SETTINGS */
-.set-sections{display:flex;flex-direction:column;gap:18px;max-width:620px;}
-.set-card{background:var(--s1);border:1px solid var(--br);border-radius:15px;overflow:hidden;}
-.set-hdr{padding:15px 18px;border-bottom:1px solid var(--br);font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
-.set-row{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(124,58,237,.08);}
-.set-row:last-child{border-bottom:none;}
-.set-l{display:flex;align-items:center;gap:11px;}
-.set-ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ico-v{background:rgba(124,58,237,.15);}
-.ico-b{background:rgba(37,99,235,.15);}
-.ico-r{background:rgba(239,68,68,.15);}
-.ico-a{background:rgba(245,158,11,.15);}
-.set-label{font-size:14px;}
-.set-sub{font-size:12px;color:var(--tm);margin-top:1px;}
-.plan-box{background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(37,99,235,.1));border:1px solid rgba(124,58,237,.28);border-radius:11px;padding:14px 18px;margin:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-.pb-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--vl);}
-.pb-sub{font-size:12px;color:var(--tm);margin-top:2px;}
-.pb-btn{padding:7px 15px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:8px;font-size:13px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;}
-.set-input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
-.set-input:focus{border-color:var(--vl);}
-.set-input:disabled{opacity:.5;cursor:not-allowed;}
-/* UPGRADE MODAL */
+
+/* Assign val modal */
+.assign-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:28px;width:90%;max-width:500px;position:relative;max-height:80vh;overflow-y:auto;}
+.assign-modal::-webkit-scrollbar{width:2px;}
+.av-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;border:1px solid var(--br);background:var(--bg);cursor:pointer;transition:all .15s;margin-bottom:8px;}
+.av-item:hover{border-color:var(--vl);background:rgba(124,58,237,.06);}
+.av-item.selected{border-color:var(--vl);background:rgba(124,58,237,.12);}
+.av-ico{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(37,99,235,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.av-city{font-size:13px;font-weight:500;}
+.av-meta{font-size:11px;color:var(--tm);margin-top:2px;}
+.av-price{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--vl);margin-left:auto;white-space:nowrap;}
+.av-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--br);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.av-item.selected .av-check{border-color:var(--vl);background:var(--vl);}
+
+/* Client modal */
+.client-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:30px;width:90%;max-width:500px;position:relative;max-height:90vh;overflow-y:auto;}
+.client-modal::-webkit-scrollbar{width:2px;}
+.client-modal .vf{margin-bottom:11px;}
+.client-modal .vf label{font-size:12px;color:var(--tm);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em;}
+.client-modal .vf input,.client-modal .vf select,.client-modal .vf textarea{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.client-modal .vf input:focus,.client-modal .vf select:focus,.client-modal .vf textarea:focus{border-color:var(--vl);}
+.client-modal .vf select option{background:var(--s2);}
+.client-modal .vf textarea{min-height:60px;resize:none;}
+
+/* Upgrade modal */
 .upg-modal{background:var(--s1);border:1px solid var(--br);border-radius:22px;padding:38px 34px;width:90%;max-width:440px;text-align:center;position:relative;}
 .upg-ico{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(37,99,235,.18));border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
 .upg-title{font-family:'Syne',sans-serif;font-size:23px;font-weight:800;margin-bottom:9px;}
@@ -202,53 +230,34 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .uf-dot{width:5px;height:5px;border-radius:50%;background:var(--vl);flex-shrink:0;}
 .btn-main{width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:12px;font-size:15px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;box-shadow:0 4px 24px rgba(124,58,237,.35);transition:opacity .2s;}
 .btn-main:hover{opacity:.88;}
-/* CANCEL MODAL */
-.cancel-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:32px;width:90%;max-width:440px;position:relative;}
-/* CRM */
-.crm-top{display:flex;gap:10px;margin-bottom:18px;align-items:center;}
-.crm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
-.client-card{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:16px;transition:border-color .15s;cursor:pointer;}
-.client-card:hover{border-color:var(--brh);}
-.cc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.cc-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--b));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
-.cc-name{font-size:14px;font-weight:500;}
-.cc-email{font-size:12px;color:var(--tm);}
-.cc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
-.cc-tag{font-size:11px;padding:2px 9px;border-radius:100px;}
-.cc-tag-b{background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);color:var(--bl);}
-.cc-tag-g{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#34D399;}
-.cc-tag-a{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#FCD34D;}
-.cc-tag-r{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#F87171;}
-.cc-valuations{margin-top:10px;border-top:1px solid rgba(124,58,237,.1);padding-top:8px;}
-.cc-val-item{font-size:12px;color:var(--tm);padding:4px 0;display:flex;justify-content:space-between;}
-.cc-note{font-size:12px;color:var(--tm);margin-top:8px;line-height:1.5;border-top:1px solid rgba(124,58,237,.1);padding-top:8px;}
-.cc-date{font-size:11px;color:var(--tf);margin-top:6px;}
-.cc-actions{display:flex;gap:6px;margin-top:10px;}
-.cc-btn{flex:1;padding:6px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid var(--br);background:transparent;color:var(--tm);transition:all .12s;text-align:center;}
-.cc-btn:hover{border-color:var(--vl);color:var(--t);}
-.cc-btn.del{color:#F87171;border-color:rgba(239,68,68,.2);}
-.cc-btn.del:hover{background:rgba(239,68,68,.1);}
-.client-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:30px;width:90%;max-width:500px;position:relative;max-height:90vh;overflow-y:auto;}
-.client-modal .vf{margin-bottom:11px;}
-.client-modal .vf label{font-size:12px;color:var(--tm);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em;}
-.client-modal .vf input,.client-modal .vf select,.client-modal .vf textarea{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;}
-.client-modal .vf input:focus,.client-modal .vf select:focus,.client-modal .vf textarea:focus{border-color:var(--vl);}
-.client-modal .vf select option{background:var(--s2);}
-.client-modal .vf textarea{min-height:60px;resize:none;}
-/* AGENCJA */
-.agencja-modal{background:var(--s1);border:1px solid var(--br);border-radius:22px;padding:36px 32px;width:90%;max-width:440px;position:relative;}
-.agencja-modal .vf{margin-bottom:12px;}
-.agencja-modal .vf label{font-size:12px;color:var(--tm);display:block;margin-bottom:5px;}
-.agencja-modal .vf input,.agencja-modal .vf textarea{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
-.agencja-modal .vf input:focus,.agencja-modal .vf textarea:focus{border-color:var(--c);}
-.agencja-modal .vf textarea{min-height:70px;resize:none;}
-.checks-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px;}
-.chk-item{display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;color:var(--tm);}
-.chk-item input[type=checkbox]{accent-color:var(--c);width:14px;height:14px;cursor:pointer;}
-/* LIMIT BADGE */
-.limit-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:100px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#FCD34D;}
-.limit-badge.danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#F87171;}
-.limit-badge.ok{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.2);color:#34D399;}
+
+/* SETTINGS */
+.set-sections{display:flex;flex-direction:column;gap:18px;max-width:620px;}
+.set-card{background:var(--s1);border:1px solid var(--br);border-radius:15px;overflow:hidden;}
+.set-hdr{padding:15px 18px;border-bottom:1px solid var(--br);font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(124,58,237,.08);}
+.set-row:last-child{border-bottom:none;}
+.set-l{display:flex;align-items:center;gap:11px;}
+.set-ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ico-r{background:rgba(239,68,68,.15);}
+.set-label{font-size:14px;}
+.plan-box{background:linear-gradient(135deg,rgba(124,58,237,.14),rgba(37,99,235,.1));border:1px solid rgba(124,58,237,.28);border-radius:11px;padding:14px 18px;margin:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.pb-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--vl);}
+.pb-sub{font-size:12px;color:var(--tm);margin-top:2px;}
+.pb-btn{padding:7px 15px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:8px;font-size:13px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.set-input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.set-input:focus{border-color:var(--vl);}
+.set-input:disabled{opacity:.5;cursor:not-allowed;}
+
+/* Limit banner */
+.limit-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.limit-banner.danger{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);}
+.lb-txt{font-size:13px;color:#FCD34D;}
+.limit-banner.danger .lb-txt{color:#F87171;}
+.lb-btn{padding:5px 14px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:7px;font-size:12px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;}
+
+/* LEADY */
+.leady-table-wrap{background:var(--s1);border:1px solid var(--br);border-radius:16px;overflow:hidden;}
 </style>
 </head>
 <body>
@@ -256,14 +265,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 <div id="loading-screen"><div class="ld-logo">estivo</div><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 
 <div class="dash" id="dashboard" style="display:none;">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-logo">estivo</div>
     <div class="sb-plan trial" id="sb-plan-box">
       <div class="sb-plan-label">Ładowanie...</div>
-      <div class="sb-plan-val" id="sb-days">—</div>
-      <div class="sb-plan-sub" id="sb-plan-sub">—</div>
-      <div class="sb-bar"><div class="sb-bar-fill" id="sb-bar-fill" style="width:100%"></div></div>
+      <div class="sb-plan-val">—</div>
     </div>
     <div class="sb-nav">
       <div class="sb-item active" data-tab="overview" onclick="switchTab('overview')"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><rect x="1" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>Przegląd</div>
@@ -281,12 +287,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     </div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-title" id="topbar-title">Przegląd</div>
       <div class="topbar-right">
-        <span id="topbar-limit-badge"></span>
         <button class="btn-sm btn-sm-fill" onclick="switchTab('valuator')">+ Nowa wycena</button>
       </div>
     </div>
@@ -294,11 +298,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 
       <!-- OVERVIEW -->
       <div class="tab-page active" id="tab-overview">
+        <div id="overview-limit-banner" style="display:none;"></div>
         <div class="kpi-row">
           <div class="kpi"><div class="kpi-lbl">Wyceny łącznie</div><div class="kpi-val" id="kpi-total">0</div><div class="kpi-d" style="color:var(--tm);">wszystkie czasy</div></div>
-          <div class="kpi"><div class="kpi-lbl">Ten miesiąc</div><div class="kpi-val" id="kpi-month">0</div><div class="kpi-d" id="kpi-limit" style="color:var(--amber);">limit: 5 (Starter)</div></div>
+          <div class="kpi"><div class="kpi-lbl">Ten miesiąc</div><div class="kpi-val" id="kpi-month">0</div><div class="kpi-d" id="kpi-limit-txt" style="color:var(--amber);">—</div></div>
           <div class="kpi"><div class="kpi-lbl">Leady</div><div class="kpi-val" id="kpi-leads">—</div><div class="kpi-d" style="color:var(--tm);">z wyceniarki</div></div>
-          <div class="kpi"><div class="kpi-lbl">Śr. wycena</div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-d" style="color:var(--tm);">ostatnie 30 dni</div></div>
+          <div class="kpi kpi-usage" id="kpi-usage-box"><div class="ku-lbl">Wykorzystanie limitu</div><div class="ku-nums" id="ku-nums">—</div><div class="ku-bar"><div class="ku-fill" id="ku-fill" style="width:0%"></div></div></div>
         </div>
         <div class="chart-card">
           <div class="sec-hdr"><h3>Aktywność wycen</h3><span style="font-size:12px;color:var(--tm);">ostatnie 8 dni</span></div>
@@ -310,6 +315,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 
       <!-- VALUATOR -->
       <div class="tab-page" id="tab-valuator">
+        <div id="val-limit-banner" style="display:none;"></div>
         <div class="val-layout">
           <div class="val-card">
             <div class="vf-sect">Lokalizacja</div>
@@ -327,13 +333,6 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
               <div class="vf"><label>Stan</label><select id="v-stan"><option value="">Wybierz</option><option value="do remontu">Do remontu</option><option value="do odświeżenia">Do odświeżenia</option><option value="dobry">Dobry</option><option value="bardzo dobry">Bardzo dobry</option><option value="deweloperski">Deweloperski</option><option value="premium">Premium</option></select></div>
               <div class="vf"><label>Typ budynku</label><select id="v-typ"><option value="">Wybierz</option><option value="wielka płyta">Wielka płyta</option><option value="blok z cegły">Blok z cegły</option><option value="kamienica">Kamienica</option><option value="nowe budownictwo">Nowe budownictwo</option><option value="apartamentowiec">Apartamentowiec</option></select></div>
             </div>
-            <div class="vf-sect">Zdjęcia nieruchomości</div>
-            <div class="photo-zone" onclick="document.getElementById('photo-input').click()">
-              <input type="file" id="photo-input" multiple accept="image/*" style="display:none;" onchange="handlePhotos(event)"/>
-              <div class="pz-ico"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><rect x="1.5" y="3" width="15" height="12" rx="2" stroke="#A78BFA" stroke-width="1.2"/><circle cx="6" cy="8.5" r="1.8" stroke="#A78BFA" stroke-width="1.1"/><path d="M1.5 12l4-4 4 4 2.5-2.5 4.5 5" stroke="#A78BFA" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="pz-txt"><strong>Dodaj zdjęcia</strong>Kliknij lub przeciągnij · PNG, JPG</div>
-            </div>
-            <div class="photo-previews" id="photo-previews"></div>
             <div class="vf-sect">Uwagi</div>
             <div class="vf"><textarea id="v-opis" placeholder="np. balkon z widokiem, garaż, bliskość metra..."></textarea></div>
             <button class="val-run-btn" id="val-btn" onclick="runValuation()">Wycen nieruchomość</button>
@@ -358,7 +357,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
               <div class="r-analysis" id="r-analysis"></div>
               <div class="r-tags" id="r-tags"></div>
               <div class="r-src" id="r-src"></div>
-              <div class="r-actions" id="r-actions-box"></div>
+              <div class="r-actions" id="r-actions"></div>
             </div>
             <div class="ld-row" id="val-loading" style="display:none;"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="font-size:13px;color:var(--tm);margin-left:4px;">Analizuję dane NBP...</span></div>
           </div>
@@ -372,7 +371,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
             <svg class="srch-ico" width="13" height="13" fill="none" viewBox="0 0 13 13"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9 9l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
             <input type="text" placeholder="Szukaj: miasto, dzielnica, stan..." oninput="renderHistoryList(this.value)"/>
           </div>
-          <button class="btn-sm btn-sm-out" onclick="bulkPDF()">📄 Pobierz zaznaczone PDF</button>
+          <button class="btn-sm btn-sm-out" onclick="bulkPDF()" id="bulk-pdf-btn">📄 PDF zaznaczonych</button>
           <button class="btn-sm btn-sm-fill" onclick="switchTab('valuator')">+ Nowa</button>
         </div>
         <div id="history-list"></div>
@@ -393,7 +392,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
       <!-- LEADY -->
       <div class="tab-page" id="tab-leady">
         <div class="sec-hdr" style="margin-bottom:20px;"><h3>Leady z wyceniarki</h3><div style="display:flex;gap:10px;"><button class="btn-sm btn-sm-out" onclick="selectAllLeady()">Zaznacz wszystkie</button><button class="btn-sm btn-sm-fill" onclick="downloadLeadyCSV()">⬇ Pobierz CSV</button></div></div>
-        <div style="background:var(--s1);border:1px solid var(--br);border-radius:16px;overflow:hidden;">
+        <div class="leady-table-wrap">
           <table style="width:100%;border-collapse:collapse;">
             <thead><tr style="border-bottom:1px solid var(--br);background:rgba(124,58,237,.06);">
               <th style="padding:12px 16px;text-align:left;"><input type="checkbox" id="lead-select-all" onchange="toggleAllLeady(this)" style="cursor:pointer;accent-color:#A78BFA;"/></th>
@@ -414,8 +413,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
         <div class="set-sections">
           <div class="set-card">
             <div class="set-hdr">Plan i subskrypcja</div>
-            <div class="plan-box"><div><div class="pb-name" id="set-plan-name">—</div><div class="pb-sub" id="set-plan-sub">—</div></div><button class="pb-btn" onclick="openUpgrade()">Ulepsz</button></div>
-            <div style="padding:0 18px 16px;"><button id="cancel-trial-btn" onclick="openCancelModal()" style="padding:8px 16px;background:transparent;border:1px solid rgba(239,68,68,.3);border-radius:8px;color:#F87171;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;display:none;">Anuluj trial</button></div>
+            <div class="plan-box"><div><div class="pb-name" id="set-plan-name">—</div><div class="pb-sub" id="set-plan-sub">—</div></div><button class="pb-btn" onclick="openUpgrade()" id="set-upgrade-btn">Ulepsz</button></div>
           </div>
           <div class="set-card">
             <div class="set-hdr">Profil agenta</div>
@@ -466,11 +464,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     <div class="dm-price" id="dm-price">—</div>
     <div style="font-size:13px;color:var(--tm);margin-top:4px;" id="dm-range"></div>
     <div class="dm-grid" id="dm-grid"></div>
-    <div id="dm-photos" class="dm-photos"></div>
-    <div style="font-size:13px;color:rgba(245,243,255,.62);line-height:1.7;padding:12px;background:rgba(255,255,255,.03);border-radius:9px;border:1px solid rgba(255,255,255,.06);margin:12px 0;" id="dm-analysis"></div>
+    <div style="font-size:13px;color:rgba(245,243,255,.62);line-height:1.7;padding:12px;background:rgba(255,255,255,.03);border-radius:9px;border:1px solid rgba(255,255,255,.06);margin-bottom:12px;" id="dm-analysis"></div>
     <div style="background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:9px 11px;font-size:11px;color:var(--tf);margin-bottom:16px;" id="dm-src"></div>
     <div style="display:flex;gap:8px;">
-      <button class="btn-main" style="margin-top:0;" id="dm-pdf-btn" onclick="generatePDFFromDetail()">📄 Pobierz PDF</button>
+      <button class="btn-main" style="margin-top:0;" id="dm-pdf-btn">📄 Pobierz PDF</button>
       <button onclick="closeModal('modal-detail')" style="padding:14px 20px;background:transparent;border:1px solid var(--br);border-radius:12px;font-size:14px;color:var(--tm);font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;">Zamknij</button>
     </div>
   </div>
@@ -482,71 +479,25 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     <button class="modal-close" onclick="closeModal('modal-upgrade')">✕</button>
     <div class="upg-ico"><svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" stroke="#A78BFA" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
     <div class="upg-title" id="upg-title">Ulepsz do Pro</div>
-    <div class="upg-sub" id="upg-sub">Wyceniaj bez ograniczeń.</div>
-    <div class="upg-feats" id="upg-feats">
-      <div class="uf"><div class="uf-dot"></div>Nielimitowane wyceny AI</div>
-      <div class="uf"><div class="uf-dot"></div>Raport PDF z logo agencji</div>
-      <div class="uf"><div class="uf-dot"></div>CRM klientów</div>
-      <div class="uf"><div class="uf-dot"></div>Historia nieograniczona</div>
-    </div>
-    <button class="btn-main" id="upg-main-btn" onclick="goToStripe('pro')">Aktywuj Pro — 199 zł/msc →</button>
-    <button class="btn-main" id="upg-agencja-btn" style="background:linear-gradient(135deg,var(--c),var(--b));display:none;margin-top:8px;" onclick="openAgencjaModal()">Kontakt — Plan Agencja →</button>
-    <div style="font-size:12px;color:var(--tf);margin-top:10px;" id="upg-footnote">14 dni za darmo · anuluj kiedy chcesz</div>
+    <div class="upg-sub" id="upg-sub">Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.</div>
+    <div class="upg-feats"><div class="uf"><div class="uf-dot"></div>Nielimitowane wyceny AI</div><div class="uf"><div class="uf-dot"></div>Raport PDF z logo agencji</div><div class="uf"><div class="uf-dot"></div>CRM klientów</div><div class="uf"><div class="uf-dot"></div>Historia wycen bez limitu</div><div class="uf"><div class="uf-dot"></div>Wsparcie priorytetowe</div></div>
+    <button class="btn-main" onclick="goToStripe('pro')">Aktywuj Pro — 199 zł/msc →</button>
+    <div style="font-size:12px;color:var(--tf);margin-top:10px;">14 dni za darmo · anuluj kiedy chcesz</div>
   </div>
 </div>
 
-<!-- MODAL: Anuluj trial -->
-<div class="modal-bg" id="modal-cancel">
-  <div class="cancel-modal">
-    <button class="modal-close" onclick="closeModal('modal-cancel')">✕</button>
-    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Anuluj trial</div>
-    <div style="font-size:14px;color:var(--tm);margin-bottom:20px;">Przykro nam, że odchodzisz. Powiedz nam dlaczego — pomoże nam to się poprawić.</div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:12px;color:var(--tm);margin-bottom:8px;text-transform:uppercase;letter-spacing:.07em;">Powód (wybierz)</div>
-      <div style="display:flex;flex-direction:column;gap:7px;" id="cancel-reasons">
-        <label class="chk-item"><input type="radio" name="cancel-reason" value="Za drogo"/> Za drogo</label>
-        <label class="chk-item"><input type="radio" name="cancel-reason" value="Nie potrzebuję już tej funkcji"/> Nie potrzebuję już tej funkcji</label>
-        <label class="chk-item"><input type="radio" name="cancel-reason" value="Znalazłem lepszą alternatywę"/> Znalazłem lepszą alternatywę</label>
-        <label class="chk-item"><input type="radio" name="cancel-reason" value="Problemy techniczne"/> Problemy techniczne</label>
-        <label class="chk-item"><input type="radio" name="cancel-reason" value="Inne"/> Inne</label>
-      </div>
-    </div>
-    <div style="margin-bottom:20px;">
-      <div style="font-size:12px;color:var(--tm);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">Dodatkowe uwagi (opcjonalnie)</div>
-      <textarea id="cancel-comment" style="width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;resize:none;min-height:70px;" placeholder="Co moglibyśmy zrobić lepiej?"></textarea>
-    </div>
-    <div id="cancel-msg" style="display:none;font-size:13px;padding:9px 12px;border-radius:8px;margin-bottom:12px;"></div>
-    <div style="display:flex;gap:8px;">
-      <button onclick="submitCancelAndRedirect()" style="flex:1;padding:12px;background:linear-gradient(135deg,#EF4444,#DC2626);border:none;border-radius:9px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Potwierdź anulowanie →</button>
-      <button onclick="closeModal('modal-cancel')" style="padding:12px 18px;background:transparent;border:1px solid var(--br);border-radius:9px;font-size:14px;color:var(--tm);font-family:'DM Sans',sans-serif;cursor:pointer;">Zostań</button>
-    </div>
+<!-- MODAL: Assign valuation to client -->
+<div class="modal-bg" id="modal-assign">
+  <div class="assign-modal">
+    <button class="modal-close" onclick="closeModal('modal-assign')">✕</button>
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">Przypisz wycenę</div>
+    <div style="font-size:13px;color:var(--tm);margin-bottom:20px;" id="assign-client-name-label">do klienta</div>
+    <div id="assign-val-list" style="margin-bottom:18px;"></div>
+    <button onclick="saveAssignment()" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:10px;font-size:14px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">Zapisz przypisanie</button>
   </div>
 </div>
 
-<!-- MODAL: Agencja -->
-<div class="modal-bg" id="modal-agencja">
-  <div class="agencja-modal">
-    <button class="modal-close" onclick="closeModal('modal-agencja')">✕</button>
-    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;background:linear-gradient(135deg,#67E8F9,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Plan Agencja</div>
-    <div style="font-size:14px;color:var(--tm);margin-bottom:20px;">Skontaktujemy się w ciągu 24h.</div>
-    <div class="vf"><label>Imię i nazwisko *</label><input id="ag-name" type="text" placeholder="Jan Kowalski"/></div>
-    <div class="vf"><label>Email *</label><input id="ag-email" type="email" placeholder="jan@agencja.pl"/></div>
-    <div class="vf"><label>Numer telefonu</label><input id="ag-tel" type="tel" placeholder="+48 500 123 456"/></div>
-    <div class="vf"><label>Interesujące możliwości</label><div class="checks-grid">
-      <label class="chk-item"><input type="checkbox" value="Nielimitowane wyceny"/> Nielimitowane wyceny</label>
-      <label class="chk-item"><input type="checkbox" value="PDF z logo"/> PDF z logo</label>
-      <label class="chk-item"><input type="checkbox" value="CRM"/> CRM</label>
-      <label class="chk-item"><input type="checkbox" value="White-label"/> White-label</label>
-      <label class="chk-item"><input type="checkbox" value="API"/> API dostęp</label>
-      <label class="chk-item"><input type="checkbox" value="Dedykowany opiekun"/> Dedykowany opiekun</label>
-    </div></div>
-    <div class="vf"><label>Dodatkowe informacje</label><textarea id="ag-msg" placeholder="Opisz potrzeby Twojej agencji..."></textarea></div>
-    <div id="ag-msg-status" style="display:none;font-size:13px;padding:9px 12px;border-radius:8px;margin-bottom:10px;"></div>
-    <button onclick="submitAgencja()" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--c),var(--b));border:none;border-radius:10px;font-size:15px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">Wyślij zapytanie</button>
-  </div>
-</div>
-
-<!-- MODAL: Klient -->
+<!-- MODAL: Client -->
 <div class="modal-bg" id="modal-client">
   <div class="client-modal">
     <button class="modal-close" onclick="closeModal('modal-client')">✕</button>
@@ -566,14 +517,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
       <div class="vf"><label>Budżet</label><input id="cl-budget" type="text" placeholder="np. 600 000 zł"/></div>
     </div>
     <div class="vf"><label>Notatka</label><textarea id="cl-note" placeholder="Preferencje, uwagi..."></textarea></div>
-    <!-- Przypisz wyceny -->
-    <div class="vf">
-      <label>Przypisz wyceny</label>
-      <div id="cl-valuations-list" style="max-height:140px;overflow-y:auto;border:1px solid var(--br);border-radius:8px;background:var(--bg);padding:6px;">
-        <div style="font-size:13px;color:var(--tf);padding:8px;">Brak zapisanych wycen</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:4px;">
+    <div style="display:flex;gap:8px;margin-top:6px;">
       <button onclick="saveClient()" style="flex:1;padding:11px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:9px;font-size:14px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">Zapisz klienta</button>
       <button onclick="closeModal('modal-client')" style="padding:11px 16px;background:transparent;border:1px solid var(--br);border-radius:9px;font-size:14px;color:var(--tm);font-family:'DM Sans',sans-serif;cursor:pointer;">Anuluj</button>
     </div>
@@ -585,722 +529,777 @@ const SUPABASE_URL      = 'https://wvzuqbdwlmidorgnfpdz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let STATE = { user:null, profile:null, subscription:null, history:[], lastResult:null };
-let leadyData=[], clientsData=[], logoBase64=null, uploadedPhotos=[], detailVal=null;
+const STARTER_LIMIT = 5;
+
+let STATE = { user:null, profile:null, subscription:null, history:[], lastResult:null, lastSavedId:null };
+let leadyData = [], clientsData = [], logoBase64 = null;
+let assignCurrentClientId = null, assignSelectedValId = null;
 
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
-(async()=>{
-  try{
-    await new Promise(r=>setTimeout(r,300));
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session?.user){window.location.replace('/index.html');return;}
-    STATE.user=session.user;
-    try{await loadUserData();}catch(e){console.warn('loadUserData:',e);}
+(async () => {
+  try {
+    await new Promise(r => setTimeout(r, 300));
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session?.user) { window.location.replace('/index.html'); return; }
+    STATE.user = session.user;
+    try { await loadUserData(); } catch(e) { console.warn('loadUserData:', e); }
     renderDashboard();
-    await pruneOldHistory();
-  }catch(e){console.error('Init:',e);}
-  finally{
-    document.getElementById('loading-screen').style.display='none';
-    document.getElementById('dashboard').style.display='flex';
+  } catch(e) { console.error('Init:', e); }
+  finally {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'flex';
   }
 })();
 
 // ═══════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════
-async function loadUserData(){
-  const uid=STATE.user.id;
-  const [{data:profile},{data:sub},{data:vals}]=await Promise.all([
-    sb.from('profiles').select('*').eq('id',uid).single(),
-    sb.from('subscriptions').select('*').eq('user_id',uid).single(),
-    sb.from('valuations').select('*').eq('user_id',uid).order('created_at',{ascending:false}).limit(200)
+async function loadUserData() {
+  const uid = STATE.user.id;
+  const [{ data: profile }, { data: sub }, { data: vals }] = await Promise.all([
+    sb.from('profiles').select('*').eq('id', uid).single(),
+    sb.from('subscriptions').select('*').eq('user_id', uid).single(),
+    sb.from('valuations').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(200)
   ]);
-  STATE.profile=profile||{};
-  STATE.subscription=sub||null;
-  STATE.history=(vals||[]).filter(v=>isVisibleHistory(v,sub));
+  STATE.profile = profile || {};
+  STATE.subscription = sub || null;
+
+  // History visibility by plan
+  const allVals = vals || [];
+  if (isStarterOnly(sub)) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 30);
+    STATE.history = allVals.filter(v => new Date(v.created_at) >= cutoff);
+    // Prune old ones from DB
+    const oldIds = allVals.filter(v => new Date(v.created_at) < cutoff).map(v => v.id);
+    if (oldIds.length) {
+      await sb.from('valuations').delete().eq('user_id', uid).in('id', oldIds).catch(() => {});
+    }
+  } else {
+    STATE.history = allVals;
+  }
 }
 
-function isVisibleHistory(v,sub){
-  if(!sub)return true;
-  if(sub.plan==='pro'&&sub.status==='active')return true;
-  if(sub.status==='trial')return true;
-  // Starter: 30 dni
-  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);
-  return new Date(v.created_at)>=cutoff;
+function isStarterOnly(sub) {
+  if (!sub) return true;
+  if (sub.status === 'trial') return false;
+  if (sub.plan === 'pro' && sub.status === 'active') return false;
+  if (sub.plan === 'agencja' && sub.status === 'active') return false;
+  return true; // starter active or anything else
 }
 
-async function pruneOldHistory(){
-  const sub=STATE.subscription;
-  if(!sub||sub.plan==='pro'||sub.status==='trial')return;
-  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);
-  await sb.from('valuations').delete().eq('user_id',STATE.user.id).lt('created_at',cutoff.toISOString());
+function isPro() { return !isStarterOnly(STATE.subscription); }
+
+function monthlyUsed() {
+  const now = new Date();
+  return STATE.history.filter(v => {
+    const d = new Date(v.created_at);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).length;
 }
 
-function isPro(){
-  const s=STATE.subscription;
-  if(!s)return false;
-  return s.status==='trial'||(s.plan==='pro'&&s.status==='active')||(s.plan==='agencja'&&s.status==='active');
-}
-
-function monthlyUsed(){
-  const now=new Date();
-  return STATE.history.filter(v=>{const d=new Date(v.created_at);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).length;
+function canValuate() {
+  if (isPro()) return true;
+  return monthlyUsed() < STARTER_LIMIT;
 }
 
 // ═══════════════════════════════════════
 // RENDER DASHBOARD
 // ═══════════════════════════════════════
-function renderDashboard(){
-  const p=STATE.profile||{};
-  const meta=STATE.user?.user_metadata||{};
-  const name=p.name||meta.full_name||meta.name||STATE.user?.email?.split('@')[0]||'Agent';
-  const email=p.email||STATE.user?.email||'';
-  const initials=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)||'AG';
+function renderDashboard() {
+  const p = STATE.profile || {};
+  const meta = STATE.user?.user_metadata || {};
+  const name = p.name || meta.full_name || meta.name || STATE.user?.email?.split('@')[0] || 'Agent';
+  const email = p.email || STATE.user?.email || '';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'AG';
 
-  document.getElementById('sb-av').textContent=initials;
-  document.getElementById('sb-uname').textContent=name;
-  document.getElementById('sb-uemail').textContent=email;
-  document.getElementById('set-name-input').value=p.name||name;
-  document.getElementById('set-email-input').value=email;
-  document.getElementById('set-tel-input').value=p.phone||p.telefon||'';
-  document.getElementById('set-agencja-input').value=p.agencja||'';
-  document.getElementById('set-nip-input').value=p.nip||'';
-  document.getElementById('set-www-input').value=p.www||'';
-  document.getElementById('set-adres-input').value=p.adres||'';
-  if(p.logo_base64){logoBase64=p.logo_base64;document.getElementById('logo-preview').innerHTML=`<img src="${p.logo_base64}" style="width:100%;height:100%;object-fit:contain;"/>`;}
+  document.getElementById('sb-av').textContent = initials;
+  document.getElementById('sb-uname').textContent = name;
+  document.getElementById('sb-uemail').textContent = email;
+  document.getElementById('set-name-input').value = p.name || name;
+  document.getElementById('set-email-input').value = email;
+  document.getElementById('set-tel-input').value = p.phone || p.telefon || '';
+  document.getElementById('set-agencja-input').value = p.agencja || '';
+  document.getElementById('set-nip-input').value = p.nip || '';
+  document.getElementById('set-www-input').value = p.www || '';
+  document.getElementById('set-adres-input').value = p.adres || '';
+  if (p.logo_base64) {
+    logoBase64 = p.logo_base64;
+    document.getElementById('logo-preview').innerHTML = `<img src="${p.logo_base64}" style="width:100%;height:100%;object-fit:contain;"/>`;
+  }
 
-  updatePlanUI(STATE.subscription);
+  updatePlanUI();
   updateKPIs();
   renderChart();
   renderRecent();
 }
 
-function updatePlanUI(sub){
-  const box=document.getElementById('sb-plan-box');
-  const upg=document.getElementById('sb-upg-btn');
-  const nameEl=document.getElementById('set-plan-name');
-  const subEl=document.getElementById('set-plan-sub');
-  const limitEl=document.getElementById('kpi-limit');
-  const badge=document.getElementById('topbar-limit-badge');
-  const cancelBtn=document.getElementById('cancel-trial-btn');
+function updatePlanUI() {
+  const sub = STATE.subscription;
+  const box = document.getElementById('sb-plan-box');
+  const nameEl = document.getElementById('set-plan-name');
+  const subEl = document.getElementById('set-plan-sub');
+  const upgBtn = document.getElementById('sb-upg-btn');
+  const setUpgBtn = document.getElementById('set-upgrade-btn');
 
-  cancelBtn.style.display='none';
+  const used = monthlyUsed();
 
-  if(!sub){box.className='sb-plan starter';box.innerHTML='<div class="sb-plan-label">Brak planu</div><div class="sb-plan-val">—</div>';nameEl.textContent='Brak planu';subEl.textContent='Skontaktuj się z pomocą';return;}
+  if (!sub || isStarterOnly(sub)) {
+    // STARTER
+    const left = Math.max(0, STARTER_LIMIT - used);
+    const pct = Math.min(100, Math.round((used / STARTER_LIMIT) * 100));
+    const barColor = left === 0 ? 'linear-gradient(90deg,#EF4444,#DC2626)' : left === 1 ? 'linear-gradient(90deg,#F59E0B,#EF4444)' : 'linear-gradient(90deg,#F59E0B,#FCD34D)';
+    box.className = 'sb-plan starter';
+    box.innerHTML = `<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val">${used}/${STARTER_LIMIT}</div><div class="sb-plan-sub">wycen w tym miesiącu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:${barColor};width:${pct}%"></div></div>`;
+    nameEl.textContent = 'Plan Starter';
+    subEl.textContent = '5 wycen / miesiąc · Historia 30 dni';
+    upgBtn.style.display = 'block';
+    setUpgBtn.style.display = 'block';
 
-  if(sub.status==='trial'){
-    const daysLeft=Math.max(0,Math.round((new Date(sub.trial_ends_at)-new Date())/86400000));
-    const pct=Math.round((daysLeft/14)*100);
-    box.className='sb-plan trial';
-    box.innerHTML=`<div class="sb-plan-label">Trial aktywny</div><div class="sb-plan-val">${daysLeft} dni</div><div class="sb-plan-sub">do końca trialu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#10B981,#06B6D4);width:${pct}%"></div></div>`;
-    nameEl.textContent=`Trial ${sub.plan==='pro'?'Pro':'Starter'}`;
-    subEl.textContent=`${daysLeft} dni do końca trialu`;
-    limitEl.textContent='Trial — nielimitowane wyceny';limitEl.style.color='var(--green)';
-    badge.innerHTML='';
-    cancelBtn.style.display='block';
-  } else if(sub.plan==='pro'&&sub.status==='active'){
-    box.className='sb-plan pro';
-    box.innerHTML='<div class="sb-plan-label">Plan Pro</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
-    upg.style.display='none';
-    nameEl.textContent='Plan Pro';subEl.textContent='199 zł / miesiąc';
-    limitEl.textContent='Nielimitowane';limitEl.style.color='var(--green)';badge.innerHTML='';
-  } else if(sub.plan==='agencja'&&sub.status==='active'){
-    box.className='sb-plan agencja';
-    box.innerHTML='<div class="sb-plan-label">Plan Agencja</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Pełny dostęp</div>';
-    upg.style.display='none';
-    nameEl.textContent='Plan Agencja';subEl.textContent='Dedykowany plan';
-    limitEl.textContent='Nielimitowane';limitEl.style.color='var(--green)';badge.innerHTML='';
-  } else {
-    // Starter
-    const used=monthlyUsed();const left=Math.max(0,5-used);
-    box.className='sb-plan starter';
-    box.innerHTML=`<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val">${used}/5</div><div class="sb-plan-sub">wycen w tym miesiącu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#F59E0B,#EF4444);width:${Math.min(100,Math.round((used/5)*100))}%"></div></div>`;
-    nameEl.textContent='Plan Starter';subEl.textContent='5 wycen / miesiąc';
-    limitEl.textContent=`Starter: ${used}/5 wycen`;limitEl.style.color=left>1?'var(--amber)':'var(--red)';
-    const cls=left===0?'danger':left===1?'':' ok';
-    badge.innerHTML=`<span class="limit-badge${cls}">${left===0?'⚠ Limit wyczerpany':left+' wycen pozostało w tym miesiącu'}</span>`;
+    // Limit banners
+    renderLimitBanner(used, left);
+  } else if (sub.status === 'trial') {
+    const daysLeft = Math.max(0, Math.round((new Date(sub.trial_ends_at) - new Date()) / 86400000));
+    const pct = Math.round((daysLeft / 14) * 100);
+    box.className = 'sb-plan trial';
+    box.innerHTML = `<div class="sb-plan-label">Trial aktywny</div><div class="sb-plan-val">${daysLeft} dni</div><div class="sb-plan-sub">do końca trialu — ${sub.plan === 'pro' ? 'Pro' : 'Starter'}</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#10B981,#06B6D4);width:${pct}%"></div></div>`;
+    nameEl.textContent = `Trial ${sub.plan === 'pro' ? 'Pro' : 'Starter'}`;
+    subEl.textContent = `${daysLeft} dni do końca trialu`;
+    upgBtn.style.display = 'block';
+    setUpgBtn.style.display = 'block';
+    document.getElementById('overview-limit-banner').style.display = 'none';
+    document.getElementById('val-limit-banner').style.display = 'none';
+  } else if (sub.plan === 'pro' && sub.status === 'active') {
+    box.className = 'sb-plan pro';
+    box.innerHTML = '<div class="sb-plan-label">Plan Pro</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
+    nameEl.textContent = 'Plan Pro';
+    subEl.textContent = '199 zł / miesiąc · Nielimitowane';
+    upgBtn.style.display = 'none';
+    setUpgBtn.style.display = 'none';
+    document.getElementById('overview-limit-banner').style.display = 'none';
+    document.getElementById('val-limit-banner').style.display = 'none';
+  } else if (sub.plan === 'agencja' && sub.status === 'active') {
+    box.className = 'sb-plan agencja';
+    box.innerHTML = '<div class="sb-plan-label">Plan Agencja</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Pełny dostęp</div>';
+    nameEl.textContent = 'Plan Agencja';
+    subEl.textContent = '599 zł / miesiąc · Do 10 agentów';
+    upgBtn.style.display = 'none';
+    setUpgBtn.style.display = 'none';
+    document.getElementById('overview-limit-banner').style.display = 'none';
+    document.getElementById('val-limit-banner').style.display = 'none';
   }
 }
 
-function updateKPIs(){
-  const h=STATE.history;
-  document.getElementById('kpi-total').textContent=h.length;
-  document.getElementById('kpi-month').textContent=monthlyUsed();
-  if(h.length){
-    const avg=Math.round(h.reduce((s,v)=>s+(v.cena||0),0)/h.length);
-    // Format large numbers properly: 1 234 567 zł
-    document.getElementById('kpi-avg').textContent=avg.toLocaleString('pl-PL')+' zł';
-  }
-}
-
-function renderChart(){
-  const bars=document.getElementById('chart-bars');
-  const counts=Array(8).fill(0);
-  STATE.history.forEach(v=>{
-    const diff=Math.floor((Date.now()-new Date(v.created_at))/(86400000));
-    if(diff<8)counts[7-diff]++;
+function renderLimitBanner(used, left) {
+  const banners = ['overview-limit-banner', 'val-limit-banner'];
+  banners.forEach(id => {
+    const el = document.getElementById(id);
+    if (left === 0) {
+      el.style.display = 'block';
+      el.innerHTML = `<div class="limit-banner danger"><span class="lb-txt">⚠ Wykorzystałeś limit ${STARTER_LIMIT}/${STARTER_LIMIT} wycen w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade('limit')">Ulepsz do Pro</button></div>`;
+    } else if (left <= 2) {
+      el.style.display = 'block';
+      el.innerHTML = `<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz</button></div>`;
+    } else {
+      el.style.display = 'none';
+    }
   });
-  const labels=['T-7','T-6','T-5','T-4','T-3','T-2','T-1','Dziś'];
-  const max=Math.max(...counts,1);
-  bars.innerHTML=counts.map((v,i)=>`
+}
+
+function updateKPIs() {
+  const h = STATE.history;
+  const used = monthlyUsed();
+  document.getElementById('kpi-total').textContent = h.length;
+  document.getElementById('kpi-month').textContent = used;
+
+  if (isPro()) {
+    document.getElementById('kpi-limit-txt').textContent = 'nielimitowane';
+    document.getElementById('kpi-limit-txt').style.color = 'var(--green)';
+    document.getElementById('ku-nums').textContent = '∞';
+    document.getElementById('ku-fill').style.width = '0%';
+    document.getElementById('ku-fill').style.background = 'var(--green)';
+    document.getElementById('kpi-usage-box').style.display = 'block';
+  } else {
+    const left = Math.max(0, STARTER_LIMIT - used);
+    document.getElementById('kpi-limit-txt').textContent = `${used}/${STARTER_LIMIT} wycen (Starter)`;
+    document.getElementById('kpi-limit-txt').style.color = left === 0 ? 'var(--red)' : left <= 2 ? 'var(--amber)' : 'var(--tm)';
+    document.getElementById('ku-nums').textContent = `${used} / ${STARTER_LIMIT}`;
+    const pct = Math.min(100, Math.round((used / STARTER_LIMIT) * 100));
+    document.getElementById('ku-fill').style.width = pct + '%';
+    document.getElementById('ku-fill').style.background = left === 0 ? 'var(--red)' : left <= 1 ? 'var(--amber)' : 'var(--green)';
+  }
+
+  if (h.length) {
+    const avg = Math.round(h.reduce((s, v) => s + (v.cena || 0), 0) / h.length);
+    // kpi-avg doesn't exist in this version, skip
+  }
+}
+
+function renderChart() {
+  const bars = document.getElementById('chart-bars');
+  const counts = Array(8).fill(0);
+  STATE.history.forEach(v => {
+    const diff = Math.floor((Date.now() - new Date(v.created_at)) / 86400000);
+    if (diff < 8) counts[7 - diff]++;
+  });
+  const labels = ['T-7', 'T-6', 'T-5', 'T-4', 'T-3', 'T-2', 'T-1', 'Dziś'];
+  const max = Math.max(...counts, 1);
+  bars.innerHTML = counts.map((v, i) => `
     <div class="bar-col">
-      ${v>0?`<div class="bar-tooltip">${v} wycen${v===1?'a':v<5?'y':''}</div>`:''}
-      <div class="bar" style="height:${Math.max(3,Math.round((v/max)*90))}px;opacity:${i===7?1:.5}"></div>
+      <div class="bar" style="height:${Math.max(3, Math.round((v / max) * 90))}px;opacity:${i === 7 ? 1 : .5}"></div>
       <div class="bar-lbl">${labels[i]}</div>
     </div>`).join('');
 }
 
-function renderRecent(){
-  const el=document.getElementById('recent-list');
-  if(!STATE.history.length){el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';return;}
-  el.innerHTML=STATE.history.slice(0,5).map(v=>`
+function renderRecent() {
+  const el = document.getElementById('recent-list');
+  if (!STATE.history.length) {
+    el.innerHTML = '<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';
+    return;
+  }
+  el.innerHTML = STATE.history.slice(0, 5).map(v => `
     <div class="ri" onclick="openDetail(${v.id})">
       <div class="ri-l">
         <div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-        <div><div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
+        <div><div class="ri-addr">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
       </div>
-      <div><div class="ri-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div><div class="ri-m2">${(v.cena_za_m2||0).toLocaleString('pl-PL')} zł/m²</div></div>
+      <div><div class="ri-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</div><div class="ri-m2">${(v.cena_za_m2 || 0).toLocaleString('pl-PL')} zł/m²</div></div>
     </div>`).join('');
 }
 
 // ═══════════════════════════════════════
-// HISTORY TAB
+// HISTORY
 // ═══════════════════════════════════════
-function renderHistoryList(filter=''){
-  const el=document.getElementById('history-list');
-  const items=filter?STATE.history.filter(v=>`${v.miasto} ${v.dzielnica||''} ${v.stan||''}`.toLowerCase().includes(filter.toLowerCase())):STATE.history;
-  if(!items.length){el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wyników.</div>';return;}
-  const canPDF=isPro();
-  el.innerHTML=items.map(v=>`
+function renderHistoryList(filter = '') {
+  const el = document.getElementById('history-list');
+  const items = filter
+    ? STATE.history.filter(v => `${v.miasto} ${v.dzielnica || ''} ${v.stan || ''}`.toLowerCase().includes(filter.toLowerCase()))
+    : STATE.history;
+  if (!items.length) { el.innerHTML = '<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wyników.</div>'; return; }
+  el.innerHTML = items.map(v => `
     <div class="hist-item">
-      <div class="ri-l">
-        <input type="checkbox" class="hist-check" data-id="${v.id}" style="margin-right:4px;accent-color:#A78BFA;width:15px;height:15px;cursor:pointer;"/>
-        <div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-        <div><div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div><div class="ri-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div><div class="ri-m2">${(v.cena_za_m2||0).toLocaleString('pl-PL')} zł/m² · ${v.pewnosc||0}%</div></div>
-        <div style="display:flex;gap:6px;">
-          <button class="hist-btn" onclick="openDetail(${v.id})">👁 Pokaż</button>
-          ${canPDF?`<button class="hist-btn pdf-btn" onclick="generatePDF(getValById(${v.id}))">📄 PDF</button>`:`<button class="hist-btn" onclick="openUpgrade('pdf')" title="Plan Pro">🔒 PDF</button>`}
+      <div class="ri-l" style="gap:10px;">
+        <input type="checkbox" class="hist-check" data-id="${v.id}" style="accent-color:#A78BFA;width:15px;height:15px;cursor:pointer;flex-shrink:0;"/>
+        <div class="ri-ico" style="flex-shrink:0;"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+        <div>
+          <div class="ri-addr">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
+          <div class="ri-meta">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
         </div>
       </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="text-align:right;margin-right:6px;">
+          <div class="ri-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</div>
+          <div class="ri-m2">${(v.cena_za_m2 || 0).toLocaleString('pl-PL')} zł/m² · ${v.pewnosc || 0}%</div>
+        </div>
+        <button class="hist-btn primary" onclick="openDetail(${v.id})">👁 Pokaż</button>
+        ${isPro()
+          ? `<button class="hist-btn" onclick='generatePDF(${JSON.stringify(v)})' style="border-color:rgba(124,58,237,.3);color:var(--vl);">📄 PDF</button>`
+          : `<button class="hist-btn locked" onclick="openUpgrade('pdf')" title="Tylko plan Pro">🔒 PDF</button>`
+        }
+      </div>
     </div>`).join('');
 }
 
-function getValById(id){return STATE.history.find(v=>v.id===id)||null;}
-
-function bulkPDF(){
-  if(!isPro()){openUpgrade('pdf');return;}
-  const checked=[...document.querySelectorAll('.hist-check:checked')];
-  if(!checked.length){alert('Zaznacz przynajmniej jedną wycenę.');return;}
-  checked.forEach((cb,i)=>setTimeout(()=>generatePDF(getValById(+cb.dataset.id)),i*700));
+function bulkPDF() {
+  if (!isPro()) { openUpgrade('pdf'); return; }
+  const checked = [...document.querySelectorAll('.hist-check:checked')];
+  if (!checked.length) { alert('Zaznacz przynajmniej jedną wycenę.'); return; }
+  const ids = checked.map(c => +c.dataset.id);
+  ids.forEach((id, i) => {
+    const v = STATE.history.find(x => x.id === id);
+    if (v) setTimeout(() => generatePDF(v), i * 800);
+  });
 }
 
 // ═══════════════════════════════════════
 // DETAIL MODAL
 // ═══════════════════════════════════════
-function openDetail(id){
-  const v=STATE.history.find(x=>x.id===id);
-  if(!v)return;
-  detailVal=v;
-  document.getElementById('dm-price').textContent=(v.cena||0).toLocaleString('pl-PL')+' zł';
-  document.getElementById('dm-range').textContent=v.cena_min&&v.cena_max?`Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł`:'';
-  document.getElementById('dm-grid').innerHTML=[
-    ['Miasto',v.miasto||'—'],['Dzielnica',v.dzielnica||'—'],
-    ['Metraż',v.metraz?v.metraz+' m²':'—'],['Cena/m²',v.cena_za_m2?(v.cena_za_m2).toLocaleString('pl-PL')+' zł':'—'],
-    ['Stan',v.stan||'—'],['Typ budynku',v.typ||'—'],
-    ['Trafność',v.pewnosc?v.pewnosc+'%':'—'],['Trend',v.trend||'—'],
-    ['Data',new Date(v.created_at).toLocaleDateString('pl-PL')],['Rynek',v.rynek||'—']
-  ].map(([l,val])=>`<div class="dm-cell"><div class="dm-cell-l">${l}</div><div class="dm-cell-v">${val}</div></div>`).join('');
-  // Photos
-  const photosEl=document.getElementById('dm-photos');
-  if(v.photos&&v.photos.length){
-    photosEl.innerHTML=v.photos.map(url=>`<img src="${url}" class="dm-photo" onclick="window.open('${url}','_blank')" title="Kliknij aby powiększyć"/>`).join('');
-  } else photosEl.innerHTML='';
-  document.getElementById('dm-analysis').textContent=v.analiza||'';
-  document.getElementById('dm-src').innerHTML=`<strong style="color:var(--bl);">${v.rynek||''}</strong> · Dane NBP BaRN IV kw. 2025`;
-  const pdfBtn=document.getElementById('dm-pdf-btn');
-  if(isPro()){pdfBtn.textContent='📄 Pobierz PDF';pdfBtn.onclick=generatePDFFromDetail;}
-  else{pdfBtn.textContent='🔒 PDF — Plan Pro';pdfBtn.onclick=()=>openUpgrade('pdf');}
+function openDetail(id) {
+  const v = STATE.history.find(x => x.id === id);
+  if (!v) return;
+  document.getElementById('dm-price').textContent = (v.cena || 0).toLocaleString('pl-PL') + ' zł';
+  document.getElementById('dm-range').textContent = v.cena_min && v.cena_max
+    ? `Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł` : '';
+  document.getElementById('dm-grid').innerHTML = [
+    ['Miasto', v.miasto || '—'], ['Dzielnica', v.dzielnica || '—'],
+    ['Metraż', v.metraz ? v.metraz + ' m²' : '—'], ['Cena/m²', v.cena_za_m2 ? v.cena_za_m2.toLocaleString('pl-PL') + ' zł' : '—'],
+    ['Stan', v.stan || '—'], ['Typ budynku', v.typ || '—'],
+    ['Trafność', v.pewnosc ? v.pewnosc + '%' : '—'], ['Trend', v.trend || '—'],
+    ['Data', new Date(v.created_at).toLocaleDateString('pl-PL')], ['Rynek', v.rynek || '—']
+  ].map(([l, val]) => `<div class="dm-cell"><div class="dm-cell-l">${l}</div><div class="dm-cell-v">${val}</div></div>`).join('');
+  document.getElementById('dm-analysis').textContent = v.analiza || '';
+  document.getElementById('dm-src').innerHTML = `<strong style="color:var(--bl);">${v.rynek || ''}</strong> · Dane NBP BaRN IV kw. 2025`;
+  const pdfBtn = document.getElementById('dm-pdf-btn');
+  if (isPro()) {
+    pdfBtn.textContent = '📄 Pobierz PDF';
+    pdfBtn.onclick = () => generatePDF(v);
+  } else {
+    pdfBtn.textContent = '🔒 PDF — tylko Plan Pro';
+    pdfBtn.onclick = () => openUpgrade('pdf');
+    pdfBtn.style.background = 'rgba(124,58,237,.2)';
+  }
   openModal('modal-detail');
 }
 
-function generatePDFFromDetail(){if(detailVal)generatePDF(detailVal);}
+// ═══════════════════════════════════════
+// PDF GENERATOR
+// ═══════════════════════════════════════
+function generatePDF(v) {
+  if (!v || !v.cena) { alert('Brak danych wyceny.'); return; }
+  if (!isPro()) { openUpgrade('pdf'); return; }
+  const p = STATE.profile || {};
+  const agencja = p.agencja || p.name || 'Estivo';
+  const adres = p.adres || ''; const www = p.www || ''; const nip = p.nip || '';
+  const logo = logoBase64 || p.logo_base64 || null;
+  const logoHTML = logo
+    ? `<img src="${logo}" style="height:52px;object-fit:contain;max-width:160px;"/>`
+    : `<div style="font-size:22px;font-weight:800;color:#7C3AED;font-family:sans-serif;">estivo</div>`;
 
-// ═══════════════════════════════════════
-// PDF GENERATOR (Pro only)
-// ═══════════════════════════════════════
-function generatePDF(v){
-  if(!v){alert('Brak danych wyceny.');return;}
-  if(!isPro()){openUpgrade('pdf');return;}
-  const p=STATE.profile||{};
-  const agencja=p.agencja||p.name||'Estivo';
-  const adres=p.adres||'';const www=p.www||'';const nip=p.nip||'';
-  const logo=logoBase64||p.logo_base64||null;
-  const logoHTML=logo?`<img src="${logo}" style="height:52px;object-fit:contain;max-width:160px;"/>`:`<div style="font-size:22px;font-weight:800;color:#7C3AED;font-family:sans-serif;">estivo</div>`;
-  const photosHTML=v.photos&&v.photos.length?`<div style="margin:16px 0;"><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Zdjęcia nieruchomości</div><div style="display:flex;gap:8px;flex-wrap:wrap;">${v.photos.map(u=>`<img src="${u}" style="width:90px;height:70px;object-fit:cover;border-radius:6px;border:1px solid #e8e4ff;"/>`).join('')}</div></div>`:'';
-  const html=`
+  const html = `
   <div style="font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1a2e;width:100%;">
     <div style="background:linear-gradient(135deg,#7C3AED,#2563EB);padding:28px 32px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;">
       <div>${logoHTML}</div>
-      <div style="text-align:right;color:rgba(255,255,255,.75);font-size:12px;"><div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">Raport wyceny</div><div>${new Date(v.created_at||Date.now()).toLocaleDateString('pl-PL')}</div></div>
+      <div style="text-align:right;color:rgba(255,255,255,.75);font-size:12px;"><div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">Raport wyceny</div><div>${new Date(v.created_at || Date.now()).toLocaleDateString('pl-PL')}</div></div>
     </div>
     <div style="background:#f8f7ff;padding:20px 32px;border-left:4px solid #7C3AED;">
-      <div style="font-size:20px;font-weight:700;">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
-      <div style="font-size:13px;color:#666;margin-top:2px;">${v.metraz} m² · ${v.stan||''} · ${v.typ||''}</div>
+      <div style="font-size:20px;font-weight:700;">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
+      <div style="font-size:13px;color:#666;margin-top:2px;">${v.metraz} m² · ${v.stan || ''} · ${v.typ || ''}</div>
     </div>
     <div style="padding:28px 32px;text-align:center;border-bottom:1px solid #e8e4ff;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#7C3AED;margin-bottom:6px;">Szacowana wartość</div>
-      <div style="font-size:42px;font-weight:800;color:#7C3AED;">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
-      <div style="font-size:13px;color:#888;margin-top:4px;">${v.cena_min&&v.cena_max?`Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł`:''}</div>
+      <div style="font-size:42px;font-weight:800;color:#7C3AED;">${(v.cena || 0).toLocaleString('pl-PL')} zł</div>
+      <div style="font-size:13px;color:#888;margin-top:4px;">${v.cena_min && v.cena_max ? `Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł` : ''}</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #e8e4ff;">
-      ${[['Cena/m²',(v.cena_za_m2||0).toLocaleString('pl-PL')+' zł'],['Trafność',(v.pewnosc||0)+'%'],['Trend',v.trend||'—']].map(([l,val])=>`<div style="padding:16px 20px;text-align:center;border-right:1px solid #e8e4ff;"><div style="font-size:11px;color:#888;margin-bottom:4px;">${l}</div><div style="font-size:16px;font-weight:700;">${val}</div></div>`).join('')}
+      ${[['Cena/m²', (v.cena_za_m2 || 0).toLocaleString('pl-PL') + ' zł'], ['Trafność', (v.pewnosc || 0) + '%'], ['Trend', v.trend || '—']]
+        .map(([l, val]) => `<div style="padding:16px 20px;text-align:center;border-right:1px solid #e8e4ff;"><div style="font-size:11px;color:#888;margin-bottom:4px;">${l}</div><div style="font-size:16px;font-weight:700;">${val}</div></div>`).join('')}
     </div>
     <div style="padding:20px 32px;display:grid;grid-template-columns:1fr 1fr;gap:10px;border-bottom:1px solid #e8e4ff;">
-      ${[['Miasto',v.miasto||'—'],['Dzielnica',v.dzielnica||'—'],['Stan',v.stan||'—'],['Typ budynku',v.typ||'—'],['Rynek',v.rynek||'—'],['Data wyceny',new Date(v.created_at||Date.now()).toLocaleDateString('pl-PL')]].map(([l,val])=>`<div style="background:#f8f7ff;border-radius:8px;padding:10px 14px;"><div style="font-size:11px;color:#888;margin-bottom:3px;">${l}</div><div style="font-size:13px;font-weight:600;">${val}</div></div>`).join('')}
+      ${[['Miasto', v.miasto || '—'], ['Dzielnica', v.dzielnica || '—'], ['Stan', v.stan || '—'], ['Typ budynku', v.typ || '—'], ['Rynek', v.rynek || '—'], ['Data wyceny', new Date(v.created_at || Date.now()).toLocaleDateString('pl-PL')]]
+        .map(([l, val]) => `<div style="background:#f8f7ff;border-radius:8px;padding:10px 14px;"><div style="font-size:11px;color:#888;margin-bottom:3px;">${l}</div><div style="font-size:13px;font-weight:600;">${val}</div></div>`).join('')}
     </div>
-    ${photosHTML}
     <div style="padding:20px 32px;border-bottom:1px solid #e8e4ff;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:8px;">Analiza rynkowa</div>
-      <div style="font-size:13px;color:#444;line-height:1.7;">${v.analiza||'Brak opisu.'}</div>
+      <div style="font-size:13px;color:#444;line-height:1.7;">${v.analiza || 'Brak opisu.'}</div>
     </div>
     <div style="padding:14px 32px;background:#f0eeff;font-size:11px;color:#888;">Źródło: Dane NBP BaRN IV kw. 2025 · Wygenerowano przez estivo.pl</div>
     <div style="padding:18px 32px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#aaa;">
-      <div><strong style="color:#1a1a2e;">${agencja}</strong>${adres?' · '+adres:''}${nip?' · NIP: '+nip:''}</div>
+      <div><strong style="color:#1a1a2e;">${agencja}</strong>${adres ? ' · ' + adres : ''}${nip ? ' · NIP: ' + nip : ''}</div>
       <div>${www}</div>
     </div>
   </div>`;
-  const el=document.createElement('div');el.innerHTML=html;document.body.appendChild(el);
-  html2pdf().set({margin:0,filename:`wycena-${v.miasto||'nieruchomość'}-${new Date().toISOString().slice(0,10)}.pdf`,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(el).save().then(()=>document.body.removeChild(el));
+
+  const el = document.createElement('div');
+  el.innerHTML = html;
+  document.body.appendChild(el);
+  html2pdf().set({
+    margin: 0,
+    filename: `wycena-${v.miasto || 'nieruchomość'}-${new Date().toISOString().slice(0, 10)}.pdf`,
+    image: { type: 'jpeg', quality: .95 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  }).from(el).save().then(() => document.body.removeChild(el));
 }
 
 // ═══════════════════════════════════════
-// VALUATOR ENGINE
+// VALUATION ENGINE
 // ═══════════════════════════════════════
-const NBP={
-  'Warszawa':{rw:16750,rp:16294,d:{'Śródmieście':1.28,'Wilanów':1.20,'Mokotów':1.12,'Żoliborz':1.10,'Wola':1.05,'Ursynów':1.0,'Bemowo':.93,'Praga-Południe':.90,'Białołęka':.82}},
-  'Kraków':{rw:14898,rp:15641,d:{'Stare Miasto':1.35,'Kazimierz':1.22,'Krowodrza':1.08,'Podgórze':1.02,'Dębniki':1.0,'Bronowice':.97,'Nowa Huta':.80}},
-  'Wrocław':{rw:12546,rp:12284,d:{'Stare Miasto':1.28,'Śródmieście':1.18,'Krzyki':1.08,'Fabryczna':.97,'Psie Pole':.85}},
-  'Gdańsk':{rw:13392,rp:14190,d:{'Śródmieście':1.30,'Oliwa':1.22,'Wrzeszcz':1.14,'Zaspa':.95,'Chełm':.88,'Łostowice':.82}},
-  'Poznań':{rw:10636,rp:12405,d:{'Stare Miasto':1.22,'Jeżyce':1.10,'Grunwald':1.06,'Wilda':.97,'Nowe Miasto':.92}},
-  'Łódź':{rw:8038,rp:9500,d:{'Śródmieście':1.18,'Polesie':.95,'Górna':.90,'Widzew':.88,'Bałuty':.87}},
-  'Katowice':{rw:8188,rp:8500,d:{'Śródmieście':1.20,'Brynów':1.05,'Ligota':1.0,'Piotrowice':.92}},
-  'Lublin':{rw:7800,rp:8200,d:{'Śródmieście':1.18,'Wieniawa':1.08,'LSM':.95,'Czuby':.97}}
+const NBP = {
+  'Warszawa': { rw: 16750, rp: 16294, d: { 'Śródmieście': 1.28, 'Wilanów': 1.20, 'Mokotów': 1.12, 'Żoliborz': 1.10, 'Wola': 1.05, 'Ursynów': 1.0, 'Bemowo': .93, 'Praga-Południe': .90, 'Białołęka': .82 } },
+  'Kraków': { rw: 14898, rp: 15641, d: { 'Stare Miasto': 1.35, 'Kazimierz': 1.22, 'Krowodrza': 1.08, 'Podgórze': 1.02, 'Dębniki': 1.0, 'Bronowice': .97, 'Nowa Huta': .80 } },
+  'Wrocław': { rw: 12546, rp: 12284, d: { 'Stare Miasto': 1.28, 'Śródmieście': 1.18, 'Krzyki': 1.08, 'Fabryczna': .97, 'Psie Pole': .85 } },
+  'Gdańsk': { rw: 13392, rp: 14190, d: { 'Śródmieście': 1.30, 'Oliwa': 1.22, 'Wrzeszcz': 1.14, 'Zaspa': .95, 'Chełm': .88, 'Łostowice': .82 } },
+  'Poznań': { rw: 10636, rp: 12405, d: { 'Stare Miasto': 1.22, 'Jeżyce': 1.10, 'Grunwald': 1.06, 'Wilda': .97, 'Nowe Miasto': .92 } },
+  'Łódź': { rw: 8038, rp: 9500, d: { 'Śródmieście': 1.18, 'Polesie': .95, 'Górna': .90, 'Widzew': .88, 'Bałuty': .87 } },
+  'Katowice': { rw: 8188, rp: 8500, d: { 'Śródmieście': 1.20, 'Brynów': 1.05, 'Ligota': 1.0, 'Piotrowice': .92 } },
+  'Lublin': { rw: 7800, rp: 8200, d: { 'Śródmieście': 1.18, 'Wieniawa': 1.08, 'LSM': .95, 'Czuby': .97 } }
 };
-const STAN_M={'do remontu':.76,'do odświeżenia':.87,'dobry':1.0,'bardzo dobry':1.11,'deweloperski':1.06,'premium':1.32};
-const TYP_M={'wielka płyta':.87,'blok z cegły':.94,'kamienica':1.06,'nowe budownictwo':1.12,'apartamentowiec':1.22};
-const TRENDS={'Warszawa':'stabilny +1.85% kw/kw','Kraków':'stabilny +0.32%','Wrocław':'korekta −3.11% r/r','Gdańsk':'rosnący +9.5% r/r','Poznań':'korekta −2.66% r/r','Łódź':'rosnący +5.87% r/r','Katowice':'stabilny +2.46% r/r','Lublin':'stabilny'};
-const ANALYSES={'Warszawa':'Warszawa IV kw. 2025: rynek wtórny 16 750 zł/m². Ceny odbiły +1,85% kw/kw. Śródmieście i Wilanów powyżej 21 000 zł/m².','Kraków':'Kraków IV kw. 2025: rynek wtórny 14 898 zł/m². Stabilizacja po korekcie. Kazimierz i Stare Miasto 19–20 tys. zł/m².','Wrocław':'Wrocław IV kw. 2025: rynek wtórny 12 546 zł/m². Korekta roczna −3,11% r/r.','Gdańsk':'Gdańsk IV kw. 2025: lider wzrostu +9,5% r/r. Rynek pierwotny 14 190 zł/m².','Poznań':'Poznań IV kw. 2025: rynek wtórny 10 636 zł/m², korekta −2,66% r/r.','Łódź':'Łódź IV kw. 2025: 8 038 zł/m² (+5,87% r/r). Rewitalizacja centrum podnosi wartości.','Katowice':'Katowice IV kw. 2025: 8 188 zł/m², stabilny wzrost +2,46% r/r.','Lublin':'Lublin IV kw. 2025: ~7 800 zł/m². Rynek akademicki z umiarkowaną dynamiką.'};
+const STAN_M = { 'do remontu': .76, 'do odświeżenia': .87, 'dobry': 1.0, 'bardzo dobry': 1.11, 'deweloperski': 1.06, 'premium': 1.32 };
+const TYP_M = { 'wielka płyta': .87, 'blok z cegły': .94, 'kamienica': 1.06, 'nowe budownictwo': 1.12, 'apartamentowiec': 1.22 };
+const TRENDS = { 'Warszawa': 'stabilny +1.85% kw/kw', 'Kraków': 'stabilny +0.32%', 'Wrocław': 'korekta −3.11% r/r', 'Gdańsk': 'rosnący +9.5% r/r', 'Poznań': 'korekta −2.66% r/r', 'Łódź': 'rosnący +5.87% r/r', 'Katowice': 'stabilny +2.46% r/r', 'Lublin': 'stabilny' };
+const ANALYSES = { 'Warszawa': 'Warszawa IV kw. 2025: rynek wtórny 16 750 zł/m². Ceny odbiły +1,85% kw/kw. Śródmieście i Wilanów powyżej 21 000 zł/m².', 'Kraków': 'Kraków IV kw. 2025: rynek wtórny 14 898 zł/m². Stabilizacja po korekcie. Kazimierz i Stare Miasto 19–20 tys. zł/m².', 'Wrocław': 'Wrocław IV kw. 2025: rynek wtórny 12 546 zł/m². Korekta roczna −3,11% r/r.', 'Gdańsk': 'Gdańsk IV kw. 2025: lider wzrostu +9,5% r/r. Rynek pierwotny 14 190 zł/m².', 'Poznań': 'Poznań IV kw. 2025: rynek wtórny 10 636 zł/m², korekta −2,66% r/r.', 'Łódź': 'Łódź IV kw. 2025: 8 038 zł/m² (+5,87% r/r). Rewitalizacja centrum podnosi wartości.', 'Katowice': 'Katowice IV kw. 2025: 8 188 zł/m², stabilny wzrost +2,46% r/r.', 'Lublin': 'Lublin IV kw. 2025: ~7 800 zł/m². Rynek akademicki z umiarkowaną dynamiką.' };
 
-// Photo handling
-function handlePhotos(e){
-  Array.from(e.target.files).forEach(f=>{
-    if(uploadedPhotos.length>=8)return;
-    const r=new FileReader();
-    r.onload=ev=>{uploadedPhotos.push({file:f,preview:ev.target.result});renderPhotoPreviews();};
-    r.readAsDataURL(f);
-  });
-}
+async function runValuation() {
+  const miasto = document.getElementById('v-miasto').value;
+  const metraz = document.getElementById('v-metraz').value;
+  const stan = document.getElementById('v-stan').value;
+  if (!miasto || !metraz || !stan) { alert('Podaj przynajmniej miasto, metraż i stan.'); return; }
 
-function renderPhotoPreviews(){
-  const el=document.getElementById('photo-previews');
-  el.innerHTML=uploadedPhotos.map((p,i)=>`
-    <div class="prev-w">
-      <img src="${p.preview}" class="prev-i"/>
-      <button class="prev-rm" onclick="removePhoto(${i})">✕</button>
-    </div>`).join('');
-}
+  // HARD LIMIT CHECK for Starter
+  if (!canValuate()) { openUpgrade('limit'); return; }
 
-function removePhoto(i){uploadedPhotos.splice(i,1);renderPhotoPreviews();}
+  const btn = document.getElementById('val-btn');
+  btn.disabled = true; btn.textContent = 'Analizuję...';
+  document.getElementById('result-empty').style.display = 'none';
+  document.getElementById('result-data').style.display = 'none';
+  document.getElementById('val-loading').style.display = 'flex';
 
-async function uploadPhotos(){
-  if(!uploadedPhotos.length)return[];
-  const urls=[];
-  for(const p of uploadedPhotos){
-    const ext=p.file.name.split('.').pop();
-    const path=`${STATE.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const {data,error}=await sb.storage.from('valuation-photos').upload(path,p.file,{upsert:false});
-    if(!error){
-      const {data:pub}=sb.storage.from('valuation-photos').getPublicUrl(path);
-      urls.push(pub.publicUrl);
-    }
-  }
-  return urls;
-}
+  await new Promise(r => setTimeout(r, 1100 + Math.random() * 500));
 
-async function runValuation(){
-  const miasto=document.getElementById('v-miasto').value;
-  const metraz=document.getElementById('v-metraz').value;
-  const stan=document.getElementById('v-stan').value;
-  if(!miasto||!metraz||!stan){alert('Podaj przynajmniej miasto, metraż i stan.');return;}
+  const dzielnica = document.getElementById('v-dzielnica').value;
+  const typ = document.getElementById('v-typ').value;
+  const rok = document.getElementById('v-rok').value;
+  const isNowe = typ === 'nowe budownictwo' || typ === 'apartamentowiec' || (rok && (2025 - parseInt(rok)) < 5);
+  const cd = NBP[miasto] || { rw: 9000, rp: 9500, d: {} };
+  let m2 = isNowe ? cd.rp : cd.rw;
+  const dz = dzielnica ? Object.keys(cd.d).find(k => dzielnica.toLowerCase().includes(k.toLowerCase())) : null;
+  if (dz) m2 *= cd.d[dz];
+  m2 *= (STAN_M[stan] || 1.0);
+  m2 *= (TYP_M[typ] || 1.0);
+  if (rok) { const age = 2025 - parseInt(rok); if (age > 30) m2 *= .91; else if (age > 15) m2 *= .96; }
+  m2 = Math.round(m2 / 50) * 50;
+  const cena = Math.round(m2 * parseFloat(metraz) / 1000) * 1000;
+  const spread = Math.round(cena * .065 / 1000) * 1000;
+  const pewnosc = Math.min(93, 66 + (dzielnica ? 7 : 0) + (stan ? 5 : 0) + (typ ? 4 : 0) + (rok ? 4 : 0));
+  const plus = [], minus = [];
+  if ((STAN_M[stan] || 1) >= 1.1) plus.push('Wysoki standard');
+  if ((STAN_M[stan] || 1) < .9) minus.push('Stan wymaga nakładów');
+  if ((TYP_M[typ] || 1) >= 1.1) plus.push('Prestiżowy typ budynku');
+  if ((TYP_M[typ] || 1) < .9) minus.push('Budownictwo wielkopłytowe');
+  if (rok && (2025 - parseInt(rok)) < 10) plus.push('Nowe budownictwo');
+  if (rok && (2025 - parseInt(rok)) > 35) minus.push('Stary rok budowy');
+  if (dz && cd.d[dz] > 1.1) plus.push('Prestiżowa dzielnica');
+  const rynek = isNowe ? 'rynek pierwotny' : 'rynek wtórny';
 
-  const sub=STATE.subscription;
-  const isStarter=sub&&sub.plan==='starter'&&sub.status!=='trial';
-  if(isStarter&&monthlyUsed()>=5){openUpgrade('limit');return;}
+  document.getElementById('r-price').textContent = cena.toLocaleString('pl-PL') + ' zł';
+  document.getElementById('r-range').textContent = `Przedział: ${(cena - spread).toLocaleString('pl-PL')} – ${(cena + spread).toLocaleString('pl-PL')} zł`;
+  setTimeout(() => document.getElementById('r-bar-fill').style.width = pewnosc + '%', 100);
+  document.getElementById('r-bar-lbl').textContent = `Trafność: ${pewnosc}%`;
+  document.getElementById('r-m2').textContent = m2.toLocaleString('pl-PL') + ' zł';
+  document.getElementById('r-pewnosc').textContent = pewnosc + '%';
+  document.getElementById('r-trend').textContent = TRENDS[miasto] || 'stabilny';
+  document.getElementById('r-analysis').textContent = ANALYSES[miasto] || '';
+  document.getElementById('r-tags').innerHTML = plus.map(t => `<span class="rtag rtag-p">+ ${t}</span>`).join('') + minus.map(t => `<span class="rtag rtag-m">− ${t}</span>`).join('');
+  document.getElementById('r-src').innerHTML = `<strong style="color:var(--bl);">${rynek}</strong> · Dane NBP BaRN IV kw. 2025`;
 
-  const btn=document.getElementById('val-btn');
-  btn.disabled=true;btn.textContent='Analizuję...';
-  document.getElementById('result-empty').style.display='none';
-  document.getElementById('result-data').style.display='none';
-  document.getElementById('val-loading').style.display='flex';
+  // Save to DB
+  const valObj = { miasto, dzielnica, metraz: parseFloat(metraz), stan, typ, cena, cena_min: cena - spread, cena_max: cena + spread, cena_za_m2: m2, pewnosc, trend: TRENDS[miasto] || '', analiza: ANALYSES[miasto] || '', rynek, created_at: new Date().toISOString() };
+  let savedId = null;
+  try {
+    const { data: saved, error } = await sb.from('valuations').insert({ user_id: STATE.user.id, ...valObj }).select().single();
+    if (!error && saved) { savedId = saved.id; valObj.id = saved.id; STATE.history.unshift(saved); }
+  } catch(e) { console.warn('Save error:', e); }
+  STATE.lastResult = { ...valObj, id: savedId };
+  STATE.lastSavedId = savedId;
 
-  await new Promise(r=>setTimeout(r,1100+Math.random()*500));
-
-  const dzielnica=document.getElementById('v-dzielnica').value;
-  const typ=document.getElementById('v-typ').value;
-  const rok=document.getElementById('v-rok').value;
-  const isNowe=typ==='nowe budownictwo'||typ==='apartamentowiec'||(rok&&(2025-parseInt(rok))<5);
-  const cd=NBP[miasto]||{rw:9000,rp:9500,d:{}};
-  let m2=isNowe?cd.rp:cd.rw;
-  const dz=dzielnica?Object.keys(cd.d).find(k=>dzielnica.toLowerCase().includes(k.toLowerCase())):null;
-  if(dz)m2*=cd.d[dz];
-  m2*=(STAN_M[stan]||1.0);m2*=(TYP_M[typ]||1.0);
-  if(rok){const age=2025-parseInt(rok);if(age>30)m2*=.91;else if(age>15)m2*=.96;}
-  if(uploadedPhotos.length>=3)m2*=1.02; // slight boost for photos
-  m2=Math.round(m2/50)*50;
-  const cena=Math.round(m2*parseFloat(metraz)/1000)*1000;
-  const spread=Math.round(cena*.065/1000)*1000;
-  const pewnosc=Math.min(93,66+(dzielnica?7:0)+(stan?5:0)+(typ?4:0)+(rok?4:0)+(uploadedPhotos.length>0?3:0));
-  const plus=[],minus=[];
-  if((STAN_M[stan]||1)>=1.1)plus.push('Wysoki standard');
-  if((STAN_M[stan]||1)<.9)minus.push('Stan wymaga nakładów');
-  if((TYP_M[typ]||1)>=1.1)plus.push('Prestiżowy typ budynku');
-  if((TYP_M[typ]||1)<.9)minus.push('Budownictwo wielkopłytowe');
-  if(rok&&(2025-parseInt(rok))<10)plus.push('Nowe budownictwo');
-  if(rok&&(2025-parseInt(rok))>35)minus.push('Stary rok budowy');
-  if(dz&&cd.d[dz]>1.1)plus.push('Prestiżowa dzielnica');
-  if(uploadedPhotos.length>0)plus.push(`Analiza ${uploadedPhotos.length} zdjęć`);
-  const rynek=isNowe?'rynek pierwotny':'rynek wtórny';
-
-  document.getElementById('r-price').textContent=cena.toLocaleString('pl-PL')+' zł';
-  document.getElementById('r-range').textContent=`Przedział: ${(cena-spread).toLocaleString('pl-PL')} – ${(cena+spread).toLocaleString('pl-PL')} zł`;
-  setTimeout(()=>document.getElementById('r-bar-fill').style.width=pewnosc+'%',100);
-  document.getElementById('r-bar-lbl').textContent=`Trafność: ${pewnosc}%`;
-  document.getElementById('r-m2').textContent=m2.toLocaleString('pl-PL')+' zł';
-  document.getElementById('r-pewnosc').textContent=pewnosc+'%';
-  document.getElementById('r-trend').textContent=TRENDS[miasto]||'stabilny';
-  document.getElementById('r-analysis').textContent=ANALYSES[miasto]||'';
-  document.getElementById('r-tags').innerHTML=plus.map(t=>`<span class="rtag rtag-p">+ ${t}</span>`).join('')+minus.map(t=>`<span class="rtag rtag-m">− ${t}</span>`).join('');
-  document.getElementById('r-src').innerHTML=`<strong style="color:var(--bl);">${rynek}</strong> · Dane NBP BaRN IV kw. 2025`;
-
-  // Actions — PDF only for Pro
-  const actBox=document.getElementById('r-actions-box');
-  if(isPro()){
-    actBox.innerHTML=`<button class="r-btn" onclick="generatePDF(STATE.lastResult)">📄 Raport PDF</button><button class="r-btn fill" onclick="openAssignClient()">👤 Przypisz klienta</button>`;
+  // Action buttons — Pro: real PDF, Starter: locked PDF
+  const actDiv = document.getElementById('r-actions');
+  if (isPro()) {
+    actDiv.innerHTML = `<button class="r-btn" onclick="generatePDF(STATE.lastResult)">📄 Raport PDF</button><button class="r-btn fill" onclick="switchTab('history')">📋 Historia</button>`;
   } else {
-    actBox.innerHTML=`<button class="r-btn" onclick="openUpgrade('pdf')">🔒 PDF — Plan Pro</button><button class="r-btn fill" onclick="openAssignClient()">👤 Przypisz klienta</button>`;
+    actDiv.innerHTML = `<button class="r-btn" onclick="openUpgrade('pdf')">🔒 PDF — Plan Pro</button><button class="r-btn fill" onclick="switchTab('history')">📋 Historia</button>`;
   }
 
-  // Upload photos & auto-save
-  btn.textContent='Zapisuję...';
-  let photoUrls=[];
-  try{photoUrls=await uploadPhotos();}catch(e){console.warn('Photo upload:',e);}
-
-  STATE.lastResult={miasto,dzielnica,metraz:parseFloat(metraz),stan,typ,cena,cena_min:cena-spread,cena_max:cena+spread,cena_za_m2:m2,pewnosc,trend:TRENDS[miasto]||'',analiza:ANALYSES[miasto]||'',rynek,photos:photoUrls,created_at:new Date().toISOString()};
-
-  // Auto-save to DB
-  try{
-    const {data:saved,error}=await sb.from('valuations').insert({user_id:STATE.user.id,...STATE.lastResult}).select().single();
-    if(!error&&saved){STATE.lastResult.id=saved.id;STATE.history.unshift(saved);}
-    if(error)console.warn('Auto-save error:',error.message);
-  }catch(e){console.warn('Auto-save:',e);}
-
-  document.getElementById('val-loading').style.display='none';
-  document.getElementById('result-data').style.display='block';
-  btn.disabled=false;btn.textContent='Wycen nieruchomość';
-  updateKPIs();updatePlanUI(STATE.subscription);renderChart();
-  // Reset photos
-  uploadedPhotos=[];renderPhotoPreviews();document.getElementById('photo-input').value='';
+  document.getElementById('val-loading').style.display = 'none';
+  document.getElementById('result-data').style.display = 'block';
+  btn.disabled = false; btn.textContent = 'Wycen nieruchomość';
+  updateKPIs();
+  updatePlanUI();
+  renderChart();
 }
 
 // ═══════════════════════════════════════
-// ASSIGN CLIENT
+// CLIENTS / CRM
 // ═══════════════════════════════════════
-function openAssignClient(){
-  // Quick modal inline — pick client from list
-  const clients=clientsData;
-  if(!clients.length){alert('Brak klientów. Najpierw dodaj klienta w zakładce Klienci.');return;}
-  const opts=clients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
-  const sel=prompt(`Przypisz wycenę do klienta.\n\nKlienci:\n${clients.map((c,i)=>`${i+1}. ${c.name}`).join('\n')}\n\nWpisz numer lub imię klienta:`);
-  if(!sel)return;
-  const idx=parseInt(sel)-1;
-  let client=null;
-  if(!isNaN(idx)&&clients[idx])client=clients[idx];
-  else client=clients.find(c=>c.name.toLowerCase().includes(sel.toLowerCase()));
-  if(!client){alert('Nie znaleziono klienta.');return;}
-  assignValuationToClient(STATE.lastResult?.id,client.id,client.name);
-}
-
-async function assignValuationToClient(valId,clientId,clientName){
-  if(!valId){alert('Wycena nie została jeszcze zapisana.');return;}
-  const{error}=await sb.from('valuations').update({client_id:clientId}).eq('id',valId);
-  if(error){alert('Błąd przypisania: '+error.message);return;}
-  // Update local state
-  const v=STATE.history.find(x=>x.id===valId);
-  if(v)v.client_id=clientId;
-  alert(`✅ Wycena przypisana do: ${clientName}`);
-}
-
-// ═══════════════════════════════════════
-// CRM CLIENTS
-// ═══════════════════════════════════════
-async function loadClients(){
-  const{data,error}=await sb.from('clients').select('*').eq('user_id',STATE.user.id).order('created_at',{ascending:false});
-  clientsData=data||[];
+async function loadClients() {
+  const { data, error } = await sb.from('clients').select('*').eq('user_id', STATE.user.id).order('created_at', { ascending: false });
+  clientsData = data || [];
   renderClients();
 }
 
-function renderClients(filter=''){
-  const grid=document.getElementById('crm-grid');
-  const items=filter?clientsData.filter(c=>`${c.name} ${c.email||''} ${c.city||''}`.toLowerCase().includes(filter.toLowerCase())):clientsData;
-  if(!items.length){grid.innerHTML='<div style="text-align:center;padding:48px;color:var(--tf);grid-column:1/-1;font-size:14px;">Brak klientów · kliknij <strong style="color:var(--vl);">+ Dodaj klienta</strong></div>';return;}
-  const statusColors={nowy:'cc-tag-b',aktywny:'cc-tag-g',negocjacje:'cc-tag-a','zamknięty':'cc-tag-g',nieaktywny:'cc-tag-r'};
-  const icoMap={kupno:'🏠',sprzedaż:'💰',wynajem:'🔑',inwestycja:'📈'};
-  grid.innerHTML=items.map(c=>{
-    const initials=(c.name||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    // Wyceny przypisane do tego klienta
-    const clientVals=STATE.history.filter(v=>v.client_id===c.id);
-    const valsHTML=clientVals.length?`<div class="cc-valuations"><div style="font-size:11px;color:var(--tf);margin-bottom:4px;">Przypisane wyceny (${clientVals.length})</div>${clientVals.slice(0,3).map(v=>`<div class="cc-val-item"><span>${v.miasto}${v.dzielnica?', '+v.dzielnica:''} · ${v.metraz}m²</span><span style="color:var(--vl);font-weight:500;">${(v.cena||0).toLocaleString('pl-PL')} zł</span></div>`).join('')}${clientVals.length>3?`<div style="font-size:11px;color:var(--tf);margin-top:2px;">+${clientVals.length-3} więcej</div>`:''}</div>`:'';
+function renderClients(filter = '') {
+  const grid = document.getElementById('crm-grid');
+  const items = filter
+    ? clientsData.filter(c => `${c.name} ${c.email || ''} ${c.city || ''}`.toLowerCase().includes(filter.toLowerCase()))
+    : clientsData;
+  if (!items.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:48px;color:var(--tf);grid-column:1/-1;font-size:14px;">Brak klientów · kliknij <strong style="color:var(--vl);">+ Dodaj klienta</strong></div>';
+    return;
+  }
+  const statusColors = { nowy: 'cc-tag-b', aktywny: 'cc-tag-g', negocjacje: 'cc-tag-a', 'zamknięty': 'cc-tag-g', nieaktywny: 'cc-tag-r' };
+  const icoMap = { kupno: '🏠', sprzedaż: '💰', wynajem: '🔑', inwestycja: '📈' };
+
+  grid.innerHTML = items.map(c => {
+    const initials = (c.name || '?').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    const assignedVals = STATE.history.filter(v => v.client_id === c.id);
+    const valsHTML = assignedVals.length ? `
+      <div class="cc-assigned-vals">
+        <div style="font-size:11px;color:var(--tf);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Przypisane wyceny (${assignedVals.length})</div>
+        ${assignedVals.slice(0, 5).map(v => `
+          <div class="cc-val-pill">
+            <div class="cc-val-pill-info">
+              <div style="font-weight:500;">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
+              <div style="font-size:11px;color:var(--tf);">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="cc-val-pill-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</span>
+              <button class="cc-val-pill-rm" onclick="unassignVal(${v.id},'${c.id}')" title="Odepnij">✕</button>
+            </div>
+          </div>`).join('')}
+      </div>` : '';
+
     return `<div class="client-card">
-      <div class="cc-top"><div class="cc-av">${initials}</div><div><div class="cc-name">${c.name}</div><div class="cc-email">${c.email||c.phone||''}</div></div></div>
+      <div class="cc-top">
+        <div class="cc-av">${initials}</div>
+        <div><div class="cc-name">${c.name}</div><div class="cc-email">${c.email || c.phone || ''}</div></div>
+      </div>
       <div class="cc-tags">
-        ${c.status?`<span class="cc-tag ${statusColors[c.status]||'cc-tag-b'}">${c.status}</span>`:''}
-        ${c.interest?`<span class="cc-tag cc-tag-b">${icoMap[c.interest]||''} ${c.interest}</span>`:''}
-        ${c.city?`<span class="cc-tag cc-tag-b">📍 ${c.city}</span>`:''}
-        ${c.budget?`<span class="cc-tag cc-tag-a">💵 ${c.budget}</span>`:''}
+        ${c.status ? `<span class="cc-tag ${statusColors[c.status] || 'cc-tag-b'}">${c.status}</span>` : ''}
+        ${c.interest ? `<span class="cc-tag cc-tag-b">${icoMap[c.interest] || ''} ${c.interest}</span>` : ''}
+        ${c.city ? `<span class="cc-tag cc-tag-b">📍 ${c.city}</span>` : ''}
+        ${c.budget ? `<span class="cc-tag cc-tag-a">💵 ${c.budget}</span>` : ''}
       </div>
       ${valsHTML}
-      ${c.note?`<div class="cc-note">${c.note}</div>`:''}
+      ${c.note ? `<div class="cc-note">${c.note}</div>` : ''}
       <div class="cc-date">Dodany ${new Date(c.created_at).toLocaleDateString('pl-PL')}</div>
       <div class="cc-actions">
+        <button class="cc-btn assign" onclick="openAssignModal('${c.id}','${c.name.replace(/'/g, "\\'")}')">
+          <svg width="12" height="12" fill="none" viewBox="0 0 12 12" style="display:inline;margin-right:4px;vertical-align:middle;"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Przypisz wycenę
+        </button>
         <button class="cc-btn" onclick="openClientModal('${c.id}')">✏ Edytuj</button>
-        <button class="cc-btn del" onclick="deleteClient('${c.id}')">🗑 Usuń</button>
+        <button class="cc-btn del" onclick="deleteClient('${c.id}')">🗑</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function openClientModal(id){
-  const isEdit=!!id;
-  document.getElementById('client-modal-title').textContent=isEdit?'Edytuj klienta':'Nowy klient';
-  document.getElementById('client-edit-id').value=id||'';
-  if(isEdit){
-    const c=clientsData.find(x=>x.id===id)||{};
-    document.getElementById('cl-name').value=c.name||'';
-    document.getElementById('cl-tel').value=c.phone||'';
-    document.getElementById('cl-email').value=c.email||'';
-    document.getElementById('cl-status').value=c.status||'nowy';
-    document.getElementById('cl-interest').value=c.interest||'';
-    document.getElementById('cl-city').value=c.city||'';
-    document.getElementById('cl-budget').value=c.budget||'';
-    document.getElementById('cl-note').value=c.note||'';
-  } else {
-    ['cl-name','cl-tel','cl-email','cl-city','cl-budget','cl-note'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('cl-status').value='nowy';
-    document.getElementById('cl-interest').value='';
+// ── Assign modal ──
+function openAssignModal(clientId, clientName) {
+  assignCurrentClientId = clientId;
+  assignSelectedValId = null;
+  document.getElementById('assign-client-name-label').textContent = `do klienta: ${clientName}`;
+
+  // Show only valuations NOT yet assigned to any client (or assigned to this client already handled via unassign)
+  const available = STATE.history.filter(v => !v.client_id || v.client_id === clientId);
+
+  if (!available.length) {
+    document.getElementById('assign-val-list').innerHTML = `
+      <div style="text-align:center;padding:28px;color:var(--tf);font-size:14px;">
+        Wszystkie wyceny są już przypisane do klientów.<br/>
+        <span style="color:var(--tm);font-size:12px;margin-top:4px;display:block;">Odepnij wycenę od klienta, aby móc ją przypisać tutaj.</span>
+      </div>`;
+    openModal('modal-assign');
+    return;
   }
-  // Populate valuations list for assignment
-  const valList=document.getElementById('cl-valuations-list');
-  const unassigned=STATE.history.filter(v=>!v.client_id||v.client_id===(isEdit?id:null));
-  const assigned=isEdit?STATE.history.filter(v=>v.client_id===id):[];
-  if(!STATE.history.length){valList.innerHTML='<div style="font-size:13px;color:var(--tf);padding:8px;">Brak zapisanych wycen</div>';
+
+  document.getElementById('assign-val-list').innerHTML = available.map(v => `
+    <div class="av-item" id="av-${v.id}" onclick="selectAssignVal(${v.id})">
+      <div class="av-ico">
+        <svg width="16" height="16" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="av-city">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
+        <div class="av-meta">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+      </div>
+      <div class="av-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</div>
+      <div class="av-check" id="avck-${v.id}">
+        <svg width="8" height="6" fill="none" viewBox="0 0 8 6" style="display:none;" id="avck-icon-${v.id}"><path d="M1 3l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+    </div>`).join('');
+
+  openModal('modal-assign');
+}
+
+function selectAssignVal(valId) {
+  // Deselect previous
+  if (assignSelectedValId) {
+    document.getElementById(`av-${assignSelectedValId}`)?.classList.remove('selected');
+    const icon = document.getElementById(`avck-icon-${assignSelectedValId}`);
+    if (icon) icon.style.display = 'none';
+  }
+  // Toggle
+  if (assignSelectedValId === valId) { assignSelectedValId = null; return; }
+  assignSelectedValId = valId;
+  document.getElementById(`av-${valId}`)?.classList.add('selected');
+  const icon = document.getElementById(`avck-icon-${valId}`);
+  if (icon) icon.style.display = 'block';
+}
+
+async function saveAssignment() {
+  if (!assignSelectedValId) { alert('Wybierz wycenę do przypisania.'); return; }
+  const { error } = await sb.from('valuations').update({ client_id: assignCurrentClientId }).eq('id', assignSelectedValId);
+  if (error) { alert('Błąd: ' + error.message); return; }
+  const v = STATE.history.find(x => x.id === assignSelectedValId);
+  if (v) v.client_id = assignCurrentClientId;
+  closeModal('modal-assign');
+  renderClients();
+}
+
+async function unassignVal(valId, clientId) {
+  const { error } = await sb.from('valuations').update({ client_id: null }).eq('id', valId);
+  if (error) { alert('Błąd: ' + error.message); return; }
+  const v = STATE.history.find(x => x.id === valId);
+  if (v) v.client_id = null;
+  renderClients();
+}
+
+function openClientModal(id) {
+  const isEdit = !!id;
+  document.getElementById('client-modal-title').textContent = isEdit ? 'Edytuj klienta' : 'Nowy klient';
+  document.getElementById('client-edit-id').value = id || '';
+  if (isEdit) {
+    const c = clientsData.find(x => x.id === id) || {};
+    document.getElementById('cl-name').value = c.name || '';
+    document.getElementById('cl-tel').value = c.phone || '';
+    document.getElementById('cl-email').value = c.email || '';
+    document.getElementById('cl-status').value = c.status || 'nowy';
+    document.getElementById('cl-interest').value = c.interest || '';
+    document.getElementById('cl-city').value = c.city || '';
+    document.getElementById('cl-budget').value = c.budget || '';
+    document.getElementById('cl-note').value = c.note || '';
   } else {
-    valList.innerHTML=STATE.history.map(v=>{
-      const isAssignedToThis=v.client_id===id;
-      return `<label style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--tm);" onmouseover="this.style.background='rgba(124,58,237,.08)'" onmouseout="this.style.background=''">
-        <input type="checkbox" class="val-assign-cb" data-val-id="${v.id}" ${isAssignedToThis?'checked':''} style="accent-color:#A78BFA;cursor:pointer;"/>
-        <span>${v.miasto}${v.dzielnica?', '+v.dzielnica:''} · ${v.metraz}m² · ${(v.cena||0).toLocaleString('pl-PL')} zł · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</span>
-      </label>`;
-    }).join('');
+    ['cl-name', 'cl-tel', 'cl-email', 'cl-city', 'cl-budget', 'cl-note'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('cl-status').value = 'nowy';
+    document.getElementById('cl-interest').value = '';
   }
   openModal('modal-client');
 }
 
-async function saveClient(){
-  const name=document.getElementById('cl-name').value.trim();
-  if(!name){alert('Podaj imię i nazwisko.');return;}
-  const id=document.getElementById('client-edit-id').value;
-  const payload={user_id:STATE.user.id,name,phone:document.getElementById('cl-tel').value.trim(),email:document.getElementById('cl-email').value.trim(),status:document.getElementById('cl-status').value,interest:document.getElementById('cl-interest').value,city:document.getElementById('cl-city').value.trim(),budget:document.getElementById('cl-budget').value.trim(),note:document.getElementById('cl-note').value.trim()};
-  let clientId=id;
-  if(id){
-    const{error}=await sb.from('clients').update(payload).eq('id',id);
-    if(error){alert('Błąd: '+error.message);return;}
+async function saveClient() {
+  const name = document.getElementById('cl-name').value.trim();
+  if (!name) { alert('Podaj imię i nazwisko.'); return; }
+  const id = document.getElementById('client-edit-id').value;
+  const payload = { user_id: STATE.user.id, name, phone: document.getElementById('cl-tel').value.trim(), email: document.getElementById('cl-email').value.trim(), status: document.getElementById('cl-status').value, interest: document.getElementById('cl-interest').value, city: document.getElementById('cl-city').value.trim(), budget: document.getElementById('cl-budget').value.trim(), note: document.getElementById('cl-note').value.trim() };
+  if (id) {
+    const { error } = await sb.from('clients').update(payload).eq('id', id);
+    if (error) { alert('Błąd: ' + error.message); return; }
   } else {
-    payload.created_at=new Date().toISOString();
-    const{data,error}=await sb.from('clients').insert(payload).select().single();
-    if(error){alert('Błąd: '+error.message);return;}
-    clientId=data.id;
-  }
-  // Handle valuation assignments
-  const checked=[...document.querySelectorAll('.val-assign-cb:checked')].map(c=>c.dataset.valId);
-  const unchecked=[...document.querySelectorAll('.val-assign-cb:not(:checked)')].map(c=>c.dataset.valId);
-  for(const vid of checked) await sb.from('valuations').update({client_id:clientId}).eq('id',vid);
-  for(const vid of unchecked){
-    // Only unassign if it was assigned to THIS client
-    const v=STATE.history.find(x=>x.id==vid);
-    if(v&&v.client_id===clientId) await sb.from('valuations').update({client_id:null}).eq('id',vid);
+    payload.created_at = new Date().toISOString();
+    const { error } = await sb.from('clients').insert(payload);
+    if (error) { alert('Błąd: ' + error.message); return; }
   }
   closeModal('modal-client');
-  await loadUserData();
   await loadClients();
 }
 
-async function deleteClient(id){
-  if(!confirm('Usunąć tego klienta?'))return;
-  await sb.from('clients').delete().eq('id',id);
+async function deleteClient(id) {
+  if (!confirm('Usunąć tego klienta? Wyceny pozostaną, ale zostaną odpięte.')) return;
+  // Unassign valuations
+  await sb.from('valuations').update({ client_id: null }).eq('client_id', id).catch(() => {});
+  STATE.history.forEach(v => { if (v.client_id === id) v.client_id = null; });
+  await sb.from('clients').delete().eq('id', id);
   await loadClients();
 }
 
 // ═══════════════════════════════════════
 // LEADY
 // ═══════════════════════════════════════
-async function loadLeady(){
-  const tbody=document.getElementById('leady-tbody');
-  tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);">Ładowanie...</td></tr>';
-  const{data,error}=await sb.from('leady').select('*').order('created_at',{ascending:false});
-  if(error||!data?.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Brak leadów</td></tr>';document.getElementById('kpi-leads').textContent='0';return;}
-  leadyData=data;document.getElementById('kpi-leads').textContent=data.length;
-  tbody.innerHTML=data.map((l,i)=>`
+async function loadLeady() {
+  const tbody = document.getElementById('leady-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);">Ładowanie...</td></tr>';
+  const { data, error } = await sb.from('leady').select('*').order('created_at', { ascending: false });
+  if (error || !data?.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Brak leadów</td></tr>';
+    document.getElementById('kpi-leads').textContent = '0';
+    return;
+  }
+  leadyData = data;
+  document.getElementById('kpi-leads').textContent = data.length;
+  tbody.innerHTML = data.map((l, i) => `
     <tr style="border-bottom:1px solid rgba(124,58,237,.08);" onmouseover="this.style.background='rgba(124,58,237,.05)'" onmouseout="this.style.background=''">
       <td style="padding:12px 16px;"><input type="checkbox" class="lead-cb" data-i="${i}" style="cursor:pointer;accent-color:#A78BFA;"/></td>
-      <td style="padding:12px 16px;font-size:14px;font-weight:500;">${l.imie_nazwisko||'—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.email||'—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.telefon||'—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.miasto||'—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.metraz?l.metraz+' m²':'—'}</td>
+      <td style="padding:12px 16px;font-size:14px;font-weight:500;">${l.imie_nazwisko || '—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.email || '—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.telefon || '—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.miasto || '—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.metraz ? l.metraz + ' m²' : '—'}</td>
       <td style="padding:12px 16px;font-size:12px;color:var(--tf);">${new Date(l.created_at).toLocaleDateString('pl-PL')}</td>
     </tr>`).join('');
 }
 
-function toggleAllLeady(cb){document.querySelectorAll('.lead-cb').forEach(c=>c.checked=cb.checked);}
-function selectAllLeady(){const a=document.getElementById('lead-select-all');a.checked=true;toggleAllLeady(a);}
+function toggleAllLeady(cb) { document.querySelectorAll('.lead-cb').forEach(c => c.checked = cb.checked); }
+function selectAllLeady() { const a = document.getElementById('lead-select-all'); a.checked = true; toggleAllLeady(a); }
 
-function downloadLeadyCSV(){
-  const sel=[...document.querySelectorAll('.lead-cb:checked')].map(c=>leadyData[+c.dataset.i]);
-  const rows=sel.length?sel:leadyData;
-  if(!rows.length){alert('Brak leadów.');return;}
-  const hdrs=['Imię i nazwisko','Email','Telefon','Miasto','Dzielnica','Metraż','Stan','Typ','Data'];
-  const csv='\uFEFF'+[hdrs.join(','),...rows.map(l=>[l.imie_nazwisko,l.email,l.telefon,l.miasto,l.dzielnica||'',l.metraz||'',l.stan||'',l.typ||'',new Date(l.created_at).toLocaleDateString('pl-PL')].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','))].join('\n');
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),download:`leady-estivo-${new Date().toISOString().slice(0,10)}.csv`});a.click();
+function downloadLeadyCSV() {
+  const sel = [...document.querySelectorAll('.lead-cb:checked')].map(c => leadyData[+c.dataset.i]);
+  const rows = sel.length ? sel : leadyData;
+  if (!rows.length) { alert('Brak leadów.'); return; }
+  const hdrs = ['Imię i nazwisko', 'Email', 'Telefon', 'Miasto', 'Dzielnica', 'Metraż', 'Stan', 'Typ', 'Data'];
+  const csv = '\uFEFF' + [hdrs.join(','), ...rows.map(l => [l.imie_nazwisko, l.email, l.telefon, l.miasto, l.dzielnica || '', l.metraz || '', l.stan || '', l.typ || '', new Date(l.created_at).toLocaleDateString('pl-PL')].map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(','))].join('\n');
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })), download: `leady-estivo-${new Date().toISOString().slice(0, 10)}.csv` });
+  a.click();
 }
 
 // ═══════════════════════════════════════
 // SETTINGS
 // ═══════════════════════════════════════
-async function saveSettings(){
-  const name=document.getElementById('set-name-input').value.trim();
-  const tel=document.getElementById('set-tel-input').value.trim();
-  const agencja=document.getElementById('set-agencja-input').value.trim();
-  const nip=document.getElementById('set-nip-input').value.trim();
-  const www=document.getElementById('set-www-input').value.trim();
-  const adres=document.getElementById('set-adres-input').value.trim();
-  const msg=document.getElementById('set-save-msg');
-  const payload={id:STATE.user.id,name,phone:tel,agencja,nip,www,adres};
-  if(logoBase64)payload.logo_base64=logoBase64;
-  const{error}=await sb.from('profiles').upsert(payload,{onConflict:'id'});
-  msg.style.display='block';
-  if(error){Object.assign(msg.style,{background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.2)',color:'#F87171'});msg.textContent='Błąd: '+error.message;}
-  else{Object.assign(msg.style,{background:'rgba(16,185,129,.1)',border:'1px solid rgba(16,185,129,.2)',color:'#34D399'});msg.textContent='✅ Zapisano pomyślnie';STATE.profile={...STATE.profile,name,phone:tel,agencja,nip,www,adres,logo_base64:logoBase64};document.getElementById('sb-uname').textContent=name;setTimeout(()=>msg.style.display='none',3000);}
+async function saveSettings() {
+  const name = document.getElementById('set-name-input').value.trim();
+  const tel = document.getElementById('set-tel-input').value.trim();
+  const agencja = document.getElementById('set-agencja-input').value.trim();
+  const nip = document.getElementById('set-nip-input').value.trim();
+  const www = document.getElementById('set-www-input').value.trim();
+  const adres = document.getElementById('set-adres-input').value.trim();
+  const msg = document.getElementById('set-save-msg');
+  const payload = { id: STATE.user.id, name, phone: tel, agencja, nip, www, adres };
+  if (logoBase64) payload.logo_base64 = logoBase64;
+  const { error } = await sb.from('profiles').upsert(payload, { onConflict: 'id' });
+  msg.style.display = 'block';
+  if (error) {
+    Object.assign(msg.style, { background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.2)', color: '#F87171' });
+    msg.textContent = 'Błąd: ' + error.message;
+  } else {
+    Object.assign(msg.style, { background: 'rgba(16,185,129,.1)', border: '1px solid rgba(16,185,129,.2)', color: '#34D399' });
+    msg.textContent = '✅ Zapisano pomyślnie';
+    STATE.profile = { ...STATE.profile, name, phone: tel, agencja, nip, www, adres, logo_base64: logoBase64 };
+    document.getElementById('sb-uname').textContent = name;
+    setTimeout(() => msg.style.display = 'none', 3000);
+  }
 }
 
-function handleLogoUpload(e){
-  const file=e.target.files[0];if(!file)return;
-  if(file.size>2*1024*1024){alert('Plik za duży. Max 2MB.');return;}
-  const r=new FileReader();r.onload=ev=>{logoBase64=ev.target.result;document.getElementById('logo-preview').innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;"/>`;};r.readAsDataURL(file);
-}
-
-// ═══════════════════════════════════════
-// CANCEL TRIAL
-// ═══════════════════════════════════════
-function openCancelModal(){openModal('modal-cancel');document.getElementById('cancel-msg').style.display='none';}
-
-async function submitCancelAndRedirect(){
-  const reason=document.querySelector('input[name="cancel-reason"]:checked')?.value||'';
-  const comment=document.getElementById('cancel-comment').value.trim();
-  const msg=document.getElementById('cancel-msg');
-  if(!reason){msg.style.cssText='display:block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#F87171;';msg.textContent='Wybierz powód anulowania.';return;}
-  // Save reason to Supabase
-  await sb.from('cancellation_reasons').insert({user_id:STATE.user.id,reason:reason+(comment?' — '+comment:''),created_at:new Date().toISOString()});
-  msg.style.cssText='display:block;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#34D399;';
-  msg.textContent='Dziękujemy za opinię. Przekierowuję do Stripe...';
-  setTimeout(()=>{
-    // Redirect to Stripe Customer Portal
-    window.location.href='https://billing.stripe.com/p/login/test_yourPortalLink'; // zastąp swoim linkiem
-  },1500);
+function handleLogoUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { alert('Plik za duży. Max 2MB.'); return; }
+  const r = new FileReader();
+  r.onload = ev => { logoBase64 = ev.target.result; document.getElementById('logo-preview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;"/>`; };
+  r.readAsDataURL(file);
 }
 
 // ═══════════════════════════════════════
-// UPGRADE / AGENCJA
+// UPGRADE
 // ═══════════════════════════════════════
-function openUpgrade(reason){
-  const title=document.getElementById('upg-title');
-  const sub=document.getElementById('upg-sub');
-  const btn=document.getElementById('upg-main-btn');
-  const abtn=document.getElementById('upg-agencja-btn');
-  const fn=document.getElementById('upg-footnote');
-  const feats=document.getElementById('upg-feats');
-  abtn.style.display='none';btn.style.display='block';
-  feats.innerHTML='<div class="uf"><div class="uf-dot"></div>Nielimitowane wyceny AI</div><div class="uf"><div class="uf-dot"></div>Raport PDF z logo agencji</div><div class="uf"><div class="uf-dot"></div>CRM klientów</div><div class="uf"><div class="uf-dot"></div>Historia wycen bez limitu</div>';
-  fn.textContent='14 dni za darmo · anuluj kiedy chcesz';
-  if(reason==='limit'){title.textContent='Limit wycen wyczerpany';sub.textContent='Plan Starter: 5 wycen/miesiąc. Przejdź na Pro — bez limitów.';}
-  else if(reason==='pdf'){title.textContent='Raport PDF — plan Pro';sub.textContent='Generowanie brandowanych raportów PDF jest dostępne w planie Pro.';}
-  else{title.textContent='Ulepsz do Pro';sub.textContent='Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.';}
+function openUpgrade(reason) {
+  const title = document.getElementById('upg-title');
+  const sub = document.getElementById('upg-sub');
+  if (reason === 'limit') { title.textContent = 'Limit wycen wyczerpany'; sub.textContent = `Plan Starter: ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro — bez limitów.`; }
+  else if (reason === 'pdf') { title.textContent = 'Raport PDF — plan Pro'; sub.textContent = 'Generowanie brandowanych raportów PDF jest dostępne w planie Pro lub Agencja.'; }
+  else { title.textContent = 'Ulepsz do Pro'; sub.textContent = 'Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.'; }
   openModal('modal-upgrade');
 }
 
-function openAgencjaModal(){
+async function goToStripe(plan = 'pro') {
   closeModal('modal-upgrade');
-  const p=STATE.profile||{};
-  document.getElementById('ag-name').value=p.name||'';
-  document.getElementById('ag-email').value=STATE.user?.email||'';
-  document.getElementById('ag-msg-status').style.display='none';
-  openModal('modal-agencja');
-}
-
-async function submitAgencja(){
-  const name=document.getElementById('ag-name').value.trim();
-  const email=document.getElementById('ag-email').value.trim();
-  const tel=document.getElementById('ag-tel').value.trim();
-  const msg=document.getElementById('ag-msg').value.trim();
-  const checks=[...document.querySelectorAll('#modal-agencja input[type=checkbox]:checked')].map(c=>c.value);
-  if(!name||!email){alert('Podaj imię i email.');return;}
-  const st=document.getElementById('ag-msg-status');
-  const{error}=await sb.from('agencja_leads').insert({name,email,telefon:tel,wiadomosc:msg,mozliwosci:checks.join(', '),user_id:STATE.user?.id||null,created_at:new Date().toISOString()});
-  st.style.display='block';
-  if(error){Object.assign(st.style,{background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.2)',color:'#F87171'});st.textContent='Błąd. Spróbuj ponownie.';}
-  else{Object.assign(st.style,{background:'rgba(16,185,129,.1)',border:'1px solid rgba(16,185,129,.2)',color:'#34D399'});st.textContent='✅ Dziękujemy! Skontaktujemy się w ciągu 24h.';setTimeout(()=>closeModal('modal-agencja'),2500);}
-}
-
-async function goToStripe(plan='pro'){
-  closeModal('modal-upgrade');
-  try{const res=await fetch('/.netlify/functions/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan})});const data=await res.json();if(data.url)window.location.href=data.url;else alert('Błąd Stripe. Spróbuj ponownie.');}
-  catch(e){alert('Błąd połączenia.');}
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan }) });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else alert('Błąd Stripe. Spróbuj ponownie.');
+  } catch(e) { alert('Błąd połączenia.'); }
 }
 
 // ═══════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════
-function switchTab(tab){
-  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  document.getElementById('tab-'+tab)?.classList.add('active');
+function switchTab(tab) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('tab-' + tab)?.classList.add('active');
   document.querySelector(`.sb-item[data-tab="${tab}"]`)?.classList.add('active');
-  const titles={overview:'Przegląd',valuator:'Nowa wycena',history:'Historia wycen',klienci:'Klienci',leady:'Leady',settings:'Ustawienia'};
-  document.getElementById('topbar-title').textContent=titles[tab]||tab;
-  if(tab==='history')renderHistoryList();
-  if(tab==='leady')loadLeady();
-  if(tab==='klienci')loadClients();
+  const titles = { overview: 'Przegląd', valuator: 'Nowa wycena', history: 'Historia wycen', klienci: 'Klienci', leady: 'Leady', settings: 'Ustawienia' };
+  document.getElementById('topbar-title').textContent = titles[tab] || tab;
+  if (tab === 'history') renderHistoryList();
+  if (tab === 'leady') loadLeady();
+  if (tab === 'klienci') loadClients();
 }
 
-function openModal(id){document.getElementById(id)?.classList.add('open');}
-function closeModal(id){document.getElementById(id)?.classList.remove('open');}
-document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+function openModal(id) { document.getElementById(id)?.classList.add('open'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-bg.open').forEach(m => m.classList.remove('open')); });
 
-async function doLogout(){await sb.auth.signOut();window.location.replace('/index.html');}
+async function doLogout() { await sb.auth.signOut(); window.location.replace('/index.html'); }
 </script>
 </body>
 </html>
