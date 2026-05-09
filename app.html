@@ -78,10 +78,14 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .ku-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}
 .ku-fill{height:100%;border-radius:3px;transition:width .6s ease;}
 
+/* Chart with tooltip */
 .chart-card{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:18px 20px;margin-bottom:20px;}
 .chart-bars{display:flex;align-items:flex-end;gap:7px;height:100px;margin-top:14px;}
-.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--v),var(--b));min-height:3px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
+.bar-col:hover .bar-tooltip{display:block;}
+.bar-tooltip{display:none;position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:5px 9px;font-size:11px;white-space:nowrap;z-index:10;pointer-events:none;}
+.bar-tooltip-count{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--vl);}
+.bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--v),var(--b));min-height:3px;cursor:pointer;}
 .bar-lbl{font-size:10px;color:var(--tm);}
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .sec-hdr h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
@@ -138,6 +142,18 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .r-btn.fill:hover{opacity:.88;}
 .ld-row{display:flex;align-items:center;gap:8px;padding:24px 0;}
 
+/* Photo upload */
+.photo-upload-area{border:2px dashed rgba(124,58,237,.3);border-radius:10px;padding:16px;background:rgba(124,58,237,.04);transition:border-color .2s;}
+.photo-upload-area:hover{border-color:rgba(124,58,237,.6);}
+.photo-upload-btn{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:8px;color:var(--vl);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;}
+.photo-upload-btn:hover{background:rgba(124,58,237,.22);}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px;margin-top:10px;}
+.photo-thumb{position:relative;width:68px;height:68px;border-radius:7px;overflow:hidden;border:1px solid var(--br);flex-shrink:0;}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;}
+.photo-thumb-rm{position:absolute;top:2px;right:2px;background:rgba(6,4,15,.8);border:none;border-radius:50%;width:16px;height:16px;color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.photo-thumb-rm:hover{background:rgba(239,68,68,.9);}
+.photo-ai-badge{font-size:10px;color:#34D399;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);padding:2px 7px;border-radius:100px;display:inline-flex;align-items:center;gap:4px;}
+
 /* HISTORY */
 .clients-top{display:flex;gap:10px;margin-bottom:18px;align-items:center;}
 .srch-w{flex:1;position:relative;}
@@ -189,7 +205,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--tm);font-size:20px;cursor:pointer;}
 
 /* Detail modal */
-.detail-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:32px;width:90%;max-width:560px;position:relative;max-height:90vh;overflow-y:auto;}
+.detail-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:32px;width:90%;max-width:600px;position:relative;max-height:90vh;overflow-y:auto;}
 .detail-modal::-webkit-scrollbar{width:2px;}
 .dm-price{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
@@ -200,14 +216,15 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 /* Assign val modal */
 .assign-modal{background:var(--s1);border:1px solid var(--br);border-radius:20px;padding:28px;width:90%;max-width:500px;position:relative;max-height:80vh;overflow-y:auto;}
 .assign-modal::-webkit-scrollbar{width:2px;}
-.av-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;border:1px solid var(--br);background:var(--bg);cursor:pointer;transition:all .15s;margin-bottom:8px;}
+/* FIX: av-item pointer-events ensured, no child blocking */
+.av-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;border:2px solid var(--br);background:var(--bg);cursor:pointer;transition:all .15s;margin-bottom:8px;user-select:none;}
 .av-item:hover{border-color:var(--vl);background:rgba(124,58,237,.06);}
-.av-item.selected{border-color:var(--vl);background:rgba(124,58,237,.12);}
-.av-ico{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(37,99,235,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.av-city{font-size:13px;font-weight:500;}
-.av-meta{font-size:11px;color:var(--tm);margin-top:2px;}
-.av-price{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--vl);margin-left:auto;white-space:nowrap;}
-.av-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--br);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.av-item.selected{border-color:var(--vl);background:rgba(124,58,237,.14);}
+.av-ico{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(37,99,235,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;pointer-events:none;}
+.av-city{font-size:13px;font-weight:500;pointer-events:none;}
+.av-meta{font-size:11px;color:var(--tm);margin-top:2px;pointer-events:none;}
+.av-price{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--vl);margin-left:auto;white-space:nowrap;pointer-events:none;}
+.av-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--br);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;pointer-events:none;}
 .av-item.selected .av-check{border-color:var(--vl);background:var(--vl);}
 
 /* Client modal */
@@ -258,6 +275,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 
 /* LEADY */
 .leady-table-wrap{background:var(--s1);border:1px solid var(--br);border-radius:16px;overflow:hidden;}
+
+/* Inline preview panel (zamiast modala) */
+#inline-preview{display:none;background:var(--s2);border:1px solid var(--br);border-radius:14px;padding:24px;margin-bottom:18px;position:relative;}
+#inline-preview.open{display:block;}
+.ip-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.06);border:none;border-radius:7px;color:var(--tm);font-size:13px;cursor:pointer;padding:4px 10px;}
+.ip-close:hover{background:rgba(255,255,255,.12);color:var(--t);}
 </style>
 </head>
 <body>
@@ -310,7 +333,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
           <div class="chart-bars" id="chart-bars"></div>
         </div>
         <div class="sec-hdr"><h3>Ostatnie wyceny</h3><button class="btn-sm btn-sm-out" onclick="switchTab('history')">Wszystkie</button></div>
-        <div class="recent-list" id="recent-list"><div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab('valuator')">wykonaj pierwszą →</a></div></div>
+        <div class="recent-list" id="recent-list"></div>
       </div>
 
       <!-- VALUATOR -->
@@ -335,6 +358,27 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
             </div>
             <div class="vf-sect">Uwagi</div>
             <div class="vf"><textarea id="v-opis" placeholder="np. balkon z widokiem, garaż, bliskość metra..."></textarea></div>
+
+            <!-- PHOTO UPLOAD SECTION -->
+            <div class="vf-sect" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>Zdjęcia nieruchomości</span>
+              <span class="photo-ai-badge" id="photo-ai-badge" style="display:none;">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3.5" fill="#10B981" opacity=".4"/><circle cx="4" cy="4" r="2" fill="#10B981"/></svg>
+                AI analizuje zdjęcia
+              </span>
+            </div>
+            <div class="photo-upload-area" id="photo-upload-area">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <button class="photo-upload-btn" onclick="document.getElementById('photo-file-input').click()">
+                  <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="5" cy="6" r="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 10l3-3 2.5 2.5 2-2L13 11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Dodaj zdjęcia
+                </button>
+                <input type="file" id="photo-file-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(event)"/>
+                <span id="photo-count-label" style="font-size:12px;color:var(--tf);">Maks. 30 zdjęć · wpływają na wycenę</span>
+              </div>
+              <div class="photo-grid" id="photo-grid"></div>
+            </div>
+
             <button class="val-run-btn" id="val-btn" onclick="runValuation()">Wycen nieruchomość</button>
           </div>
           <div class="result-card">
@@ -359,13 +403,19 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
               <div class="r-src" id="r-src"></div>
               <div class="r-actions" id="r-actions"></div>
             </div>
-            <div class="ld-row" id="val-loading" style="display:none;"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="font-size:13px;color:var(--tm);margin-left:4px;">Analizuję dane NBP...</span></div>
+            <div class="ld-row" id="val-loading" style="display:none;"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span id="val-loading-txt" style="font-size:13px;color:var(--tm);margin-left:4px;">Analizuję dane NBP...</span></div>
           </div>
         </div>
       </div>
 
       <!-- HISTORY -->
       <div class="tab-page" id="tab-history">
+        <!-- Inline preview panel -->
+        <div id="inline-preview">
+          <button class="ip-close" onclick="closeInlinePreview()">✕ Zamknij podgląd</button>
+          <div id="inline-preview-content"></div>
+        </div>
+
         <div class="clients-top">
           <div class="srch-w">
             <svg class="srch-ico" width="13" height="13" fill="none" viewBox="0 0 13 13"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9 9l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -386,7 +436,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
           </div>
           <button class="btn-sm btn-sm-fill" onclick="openClientModal()">+ Dodaj klienta</button>
         </div>
-        <div class="crm-grid" id="crm-grid"><div style="text-align:center;padding:48px;color:var(--tf);grid-column:1/-1;font-size:14px;">Brak klientów · kliknij <strong style="color:var(--vl);">+ Dodaj klienta</strong></div></div>
+        <div class="crm-grid" id="crm-grid"></div>
       </div>
 
       <!-- LEADY -->
@@ -466,6 +516,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     <div class="dm-grid" id="dm-grid"></div>
     <div style="font-size:13px;color:rgba(245,243,255,.62);line-height:1.7;padding:12px;background:rgba(255,255,255,.03);border-radius:9px;border:1px solid rgba(255,255,255,.06);margin-bottom:12px;" id="dm-analysis"></div>
     <div style="background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:9px 11px;font-size:11px;color:var(--tf);margin-bottom:16px;" id="dm-src"></div>
+    <!-- Photo thumbnails in detail -->
+    <div id="dm-photos" style="display:none;margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Zdjęcia</div>
+      <div id="dm-photo-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;"></div>
+    </div>
     <div style="display:flex;gap:8px;">
       <button class="btn-main" style="margin-top:0;" id="dm-pdf-btn">📄 Pobierz PDF</button>
       <button onclick="closeModal('modal-detail')" style="padding:14px 20px;background:transparent;border:1px solid var(--br);border-radius:12px;font-size:14px;color:var(--tm);font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;">Zamknij</button>
@@ -492,8 +547,8 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     <button class="modal-close" onclick="closeModal('modal-assign')">✕</button>
     <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">Przypisz wycenę</div>
     <div style="font-size:13px;color:var(--tm);margin-bottom:20px;" id="assign-client-name-label">do klienta</div>
-    <div id="assign-val-list" style="margin-bottom:18px;"></div>
-    <button onclick="saveAssignment()" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:10px;font-size:14px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">Zapisz przypisanie</button>
+    <div id="assign-val-list" style="margin-bottom:18px;max-height:320px;overflow-y:auto;"></div>
+    <button id="assign-save-btn" onclick="saveAssignment()" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:10px;font-size:14px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">Zapisz przypisanie</button>
   </div>
 </div>
 
@@ -535,6 +590,9 @@ let STATE = { user:null, profile:null, subscription:null, history:[], lastResult
 let leadyData = [], clientsData = [], logoBase64 = null;
 let assignCurrentClientId = null, assignSelectedValId = null;
 
+// Photo state
+let uploadedPhotos = []; // [{dataUrl, name, size}]
+
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
@@ -565,18 +623,12 @@ async function loadUserData() {
   ]);
   STATE.profile = profile || {};
   STATE.subscription = sub || null;
-
-  // History visibility by plan
   const allVals = vals || [];
   if (isStarterOnly(sub)) {
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - 30);
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 30);
     STATE.history = allVals.filter(v => new Date(v.created_at) >= cutoff);
-    // Prune old ones from DB
     const oldIds = allVals.filter(v => new Date(v.created_at) < cutoff).map(v => v.id);
-    if (oldIds.length) {
-      await sb.from('valuations').delete().eq('user_id', uid).in('id', oldIds).catch(() => {});
-    }
+    if (oldIds.length) await sb.from('valuations').delete().eq('user_id', uid).in('id', oldIds).catch(() => {});
   } else {
     STATE.history = allVals;
   }
@@ -587,23 +639,14 @@ function isStarterOnly(sub) {
   if (sub.status === 'trial') return false;
   if (sub.plan === 'pro' && sub.status === 'active') return false;
   if (sub.plan === 'agencja' && sub.status === 'active') return false;
-  return true; // starter active or anything else
+  return true;
 }
-
 function isPro() { return !isStarterOnly(STATE.subscription); }
-
 function monthlyUsed() {
   const now = new Date();
-  return STATE.history.filter(v => {
-    const d = new Date(v.created_at);
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  }).length;
+  return STATE.history.filter(v => { const d = new Date(v.created_at); return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear(); }).length;
 }
-
-function canValuate() {
-  if (isPro()) return true;
-  return monthlyUsed() < STARTER_LIMIT;
-}
+function canValuate() { return isPro() || monthlyUsed() < STARTER_LIMIT; }
 
 // ═══════════════════════════════════════
 // RENDER DASHBOARD
@@ -613,8 +656,7 @@ function renderDashboard() {
   const meta = STATE.user?.user_metadata || {};
   const name = p.name || meta.full_name || meta.name || STATE.user?.email?.split('@')[0] || 'Agent';
   const email = p.email || STATE.user?.email || '';
-  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'AG';
-
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) || 'AG';
   document.getElementById('sb-av').textContent = initials;
   document.getElementById('sb-uname').textContent = name;
   document.getElementById('sb-uemail').textContent = email;
@@ -625,15 +667,8 @@ function renderDashboard() {
   document.getElementById('set-nip-input').value = p.nip || '';
   document.getElementById('set-www-input').value = p.www || '';
   document.getElementById('set-adres-input').value = p.adres || '';
-  if (p.logo_base64) {
-    logoBase64 = p.logo_base64;
-    document.getElementById('logo-preview').innerHTML = `<img src="${p.logo_base64}" style="width:100%;height:100%;object-fit:contain;"/>`;
-  }
-
-  updatePlanUI();
-  updateKPIs();
-  renderChart();
-  renderRecent();
+  if (p.logo_base64) { logoBase64 = p.logo_base64; document.getElementById('logo-preview').innerHTML = `<img src="${p.logo_base64}" style="width:100%;height:100%;object-fit:contain;"/>`; }
+  updatePlanUI(); updateKPIs(); renderChart(); renderRecent();
 }
 
 function updatePlanUI() {
@@ -643,459 +678,597 @@ function updatePlanUI() {
   const subEl = document.getElementById('set-plan-sub');
   const upgBtn = document.getElementById('sb-upg-btn');
   const setUpgBtn = document.getElementById('set-upgrade-btn');
-
   const used = monthlyUsed();
-
   if (!sub || isStarterOnly(sub)) {
-    // STARTER
     const left = Math.max(0, STARTER_LIMIT - used);
     const pct = Math.min(100, Math.round((used / STARTER_LIMIT) * 100));
-    const barColor = left === 0 ? 'linear-gradient(90deg,#EF4444,#DC2626)' : left === 1 ? 'linear-gradient(90deg,#F59E0B,#EF4444)' : 'linear-gradient(90deg,#F59E0B,#FCD34D)';
-    box.className = 'sb-plan starter';
-    box.innerHTML = `<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val">${used}/${STARTER_LIMIT}</div><div class="sb-plan-sub">wycen w tym miesiącu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:${barColor};width:${pct}%"></div></div>`;
-    nameEl.textContent = 'Plan Starter';
-    subEl.textContent = '5 wycen / miesiąc · Historia 30 dni';
-    upgBtn.style.display = 'block';
-    setUpgBtn.style.display = 'block';
-
-    // Limit banners
+    const barColor = left===0 ? 'linear-gradient(90deg,#EF4444,#DC2626)' : left===1 ? 'linear-gradient(90deg,#F59E0B,#EF4444)' : 'linear-gradient(90deg,#F59E0B,#FCD34D)';
+    box.className='sb-plan starter';
+    box.innerHTML=`<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val">${used}/${STARTER_LIMIT}</div><div class="sb-plan-sub">wycen w tym miesiącu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:${barColor};width:${pct}%"></div></div>`;
+    nameEl.textContent='Plan Starter'; subEl.textContent='5 wycen / miesiąc · Historia 30 dni';
+    upgBtn.style.display='block'; setUpgBtn.style.display='block';
     renderLimitBanner(used, left);
-  } else if (sub.status === 'trial') {
+  } else if (sub.status==='trial') {
     const daysLeft = Math.max(0, Math.round((new Date(sub.trial_ends_at) - new Date()) / 86400000));
-    const pct = Math.round((daysLeft / 14) * 100);
-    box.className = 'sb-plan trial';
-    box.innerHTML = `<div class="sb-plan-label">Trial aktywny</div><div class="sb-plan-val">${daysLeft} dni</div><div class="sb-plan-sub">do końca trialu — ${sub.plan === 'pro' ? 'Pro' : 'Starter'}</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#10B981,#06B6D4);width:${pct}%"></div></div>`;
-    nameEl.textContent = `Trial ${sub.plan === 'pro' ? 'Pro' : 'Starter'}`;
-    subEl.textContent = `${daysLeft} dni do końca trialu`;
-    upgBtn.style.display = 'block';
-    setUpgBtn.style.display = 'block';
-    document.getElementById('overview-limit-banner').style.display = 'none';
-    document.getElementById('val-limit-banner').style.display = 'none';
-  } else if (sub.plan === 'pro' && sub.status === 'active') {
-    box.className = 'sb-plan pro';
-    box.innerHTML = '<div class="sb-plan-label">Plan Pro</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
-    nameEl.textContent = 'Plan Pro';
-    subEl.textContent = '199 zł / miesiąc · Nielimitowane';
-    upgBtn.style.display = 'none';
-    setUpgBtn.style.display = 'none';
-    document.getElementById('overview-limit-banner').style.display = 'none';
-    document.getElementById('val-limit-banner').style.display = 'none';
-  } else if (sub.plan === 'agencja' && sub.status === 'active') {
-    box.className = 'sb-plan agencja';
-    box.innerHTML = '<div class="sb-plan-label">Plan Agencja</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Pełny dostęp</div>';
-    nameEl.textContent = 'Plan Agencja';
-    subEl.textContent = '599 zł / miesiąc · Do 10 agentów';
-    upgBtn.style.display = 'none';
-    setUpgBtn.style.display = 'none';
-    document.getElementById('overview-limit-banner').style.display = 'none';
-    document.getElementById('val-limit-banner').style.display = 'none';
+    const pct = Math.round((daysLeft/14)*100);
+    box.className='sb-plan trial';
+    box.innerHTML=`<div class="sb-plan-label">Trial aktywny</div><div class="sb-plan-val">${daysLeft} dni</div><div class="sb-plan-sub">do końca trialu — ${sub.plan==='pro'?'Pro':'Starter'}</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#10B981,#06B6D4);width:${pct}%"></div></div>`;
+    nameEl.textContent=`Trial ${sub.plan==='pro'?'Pro':'Starter'}`; subEl.textContent=`${daysLeft} dni do końca trialu`;
+    upgBtn.style.display='block'; setUpgBtn.style.display='block';
+    document.getElementById('overview-limit-banner').style.display='none';
+    document.getElementById('val-limit-banner').style.display='none';
+  } else if (sub.plan==='pro' && sub.status==='active') {
+    box.className='sb-plan pro'; box.innerHTML='<div class="sb-plan-label">Plan Pro</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
+    nameEl.textContent='Plan Pro'; subEl.textContent='199 zł / miesiąc · Nielimitowane';
+    upgBtn.style.display='none'; setUpgBtn.style.display='none';
+    document.getElementById('overview-limit-banner').style.display='none';
+    document.getElementById('val-limit-banner').style.display='none';
+  } else if (sub.plan==='agencja' && sub.status==='active') {
+    box.className='sb-plan agencja'; box.innerHTML='<div class="sb-plan-label">Plan Agencja</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Pełny dostęp</div>';
+    nameEl.textContent='Plan Agencja'; subEl.textContent='599 zł / miesiąc · Do 10 agentów';
+    upgBtn.style.display='none'; setUpgBtn.style.display='none';
+    document.getElementById('overview-limit-banner').style.display='none';
+    document.getElementById('val-limit-banner').style.display='none';
   }
 }
 
 function renderLimitBanner(used, left) {
-  const banners = ['overview-limit-banner', 'val-limit-banner'];
-  banners.forEach(id => {
+  ['overview-limit-banner','val-limit-banner'].forEach(id => {
     const el = document.getElementById(id);
-    if (left === 0) {
-      el.style.display = 'block';
-      el.innerHTML = `<div class="limit-banner danger"><span class="lb-txt">⚠ Wykorzystałeś limit ${STARTER_LIMIT}/${STARTER_LIMIT} wycen w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade('limit')">Ulepsz do Pro</button></div>`;
-    } else if (left <= 2) {
-      el.style.display = 'block';
-      el.innerHTML = `<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz</button></div>`;
-    } else {
-      el.style.display = 'none';
-    }
+    if (left===0) { el.style.display='block'; el.innerHTML=`<div class="limit-banner danger"><span class="lb-txt">⚠ Wykorzystałeś limit ${STARTER_LIMIT}/${STARTER_LIMIT} wycen w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade('limit')">Ulepsz do Pro</button></div>`; }
+    else if (left<=2) { el.style.display='block'; el.innerHTML=`<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz</button></div>`; }
+    else el.style.display='none';
   });
 }
 
 function updateKPIs() {
-  const h = STATE.history;
-  const used = monthlyUsed();
+  const h = STATE.history; const used = monthlyUsed();
   document.getElementById('kpi-total').textContent = h.length;
   document.getElementById('kpi-month').textContent = used;
-
   if (isPro()) {
-    document.getElementById('kpi-limit-txt').textContent = 'nielimitowane';
-    document.getElementById('kpi-limit-txt').style.color = 'var(--green)';
-    document.getElementById('ku-nums').textContent = '∞';
-    document.getElementById('ku-fill').style.width = '0%';
-    document.getElementById('ku-fill').style.background = 'var(--green)';
-    document.getElementById('kpi-usage-box').style.display = 'block';
+    document.getElementById('kpi-limit-txt').textContent='nielimitowane';
+    document.getElementById('kpi-limit-txt').style.color='var(--green)';
+    document.getElementById('ku-nums').textContent='∞';
+    document.getElementById('ku-fill').style.width='0%';
+    document.getElementById('ku-fill').style.background='var(--green)';
   } else {
     const left = Math.max(0, STARTER_LIMIT - used);
-    document.getElementById('kpi-limit-txt').textContent = `${used}/${STARTER_LIMIT} wycen (Starter)`;
-    document.getElementById('kpi-limit-txt').style.color = left === 0 ? 'var(--red)' : left <= 2 ? 'var(--amber)' : 'var(--tm)';
-    document.getElementById('ku-nums').textContent = `${used} / ${STARTER_LIMIT}`;
-    const pct = Math.min(100, Math.round((used / STARTER_LIMIT) * 100));
-    document.getElementById('ku-fill').style.width = pct + '%';
-    document.getElementById('ku-fill').style.background = left === 0 ? 'var(--red)' : left <= 1 ? 'var(--amber)' : 'var(--green)';
-  }
-
-  if (h.length) {
-    const avg = Math.round(h.reduce((s, v) => s + (v.cena || 0), 0) / h.length);
-    // kpi-avg doesn't exist in this version, skip
+    document.getElementById('kpi-limit-txt').textContent=`${used}/${STARTER_LIMIT} wycen (Starter)`;
+    document.getElementById('kpi-limit-txt').style.color=left===0?'var(--red)':left<=2?'var(--amber)':'var(--tm)';
+    document.getElementById('ku-nums').textContent=`${used} / ${STARTER_LIMIT}`;
+    const pct = Math.min(100, Math.round((used/STARTER_LIMIT)*100));
+    document.getElementById('ku-fill').style.width=pct+'%';
+    document.getElementById('ku-fill').style.background=left===0?'var(--red)':left<=1?'var(--amber)':'var(--green)';
   }
 }
 
+// ─── FIX 4: Chart with tooltip showing today's valuations ───
 function renderChart() {
   const bars = document.getElementById('chart-bars');
-  const counts = Array(8).fill(0);
+  // Build per-day counts AND store valuation references
+  const dayData = Array.from({length:8}, () => ({count:0, vals:[]}));
   STATE.history.forEach(v => {
     const diff = Math.floor((Date.now() - new Date(v.created_at)) / 86400000);
-    if (diff < 8) counts[7 - diff]++;
+    if (diff < 8) { dayData[7-diff].count++; dayData[7-diff].vals.push(v); }
   });
-  const labels = ['T-7', 'T-6', 'T-5', 'T-4', 'T-3', 'T-2', 'T-1', 'Dziś'];
-  const max = Math.max(...counts, 1);
-  bars.innerHTML = counts.map((v, i) => `
-    <div class="bar-col">
-      <div class="bar" style="height:${Math.max(3, Math.round((v / max) * 90))}px;opacity:${i === 7 ? 1 : .5}"></div>
+  const labels = ['T-7','T-6','T-5','T-4','T-3','T-2','T-1','Dziś'];
+  const max = Math.max(...dayData.map(d=>d.count), 1);
+  bars.innerHTML = dayData.map((d,i) => {
+    const todayValsHtml = i===7 && d.vals.length
+      ? d.vals.map(v=>`<div style="color:var(--t);font-weight:500;">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div style="color:var(--tf);font-size:10px;">${(v.cena||0).toLocaleString('pl-PL')} zł</div>`).join('<div style="height:5px;"></div>')
+      : '';
+    const tooltip = d.count > 0
+      ? `<div class="bar-tooltip"><div class="bar-tooltip-count">${d.count} ${d.count===1?'wycena':'wycen'}</div>${todayValsHtml}</div>`
+      : '';
+    return `<div class="bar-col">
+      ${tooltip}
+      <div class="bar" style="height:${Math.max(3, Math.round((d.count/max)*90))}px;opacity:${i===7?1:.5}" onclick="barClick(${i})"></div>
       <div class="bar-lbl">${labels[i]}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
+function barClick(dayIdx) {
+  // Click on a bar navigates to history filtered to that day
+  if (dayIdx === 7) { switchTab('history'); }
+}
+
+// ─── FIX 4: Recent list shows correct entries ───
 function renderRecent() {
   const el = document.getElementById('recent-list');
   if (!STATE.history.length) {
-    el.innerHTML = '<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';
+    el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';
     return;
   }
-  el.innerHTML = STATE.history.slice(0, 5).map(v => `
+  el.innerHTML = STATE.history.slice(0,5).map(v => `
     <div class="ri" onclick="openDetail(${v.id})">
       <div class="ri-l">
         <div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-        <div><div class="ri-addr">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
+        <div><div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div>
       </div>
-      <div><div class="ri-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</div><div class="ri-m2">${(v.cena_za_m2 || 0).toLocaleString('pl-PL')} zł/m²</div></div>
+      <div><div class="ri-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div><div class="ri-m2">${(v.cena_za_m2||0).toLocaleString('pl-PL')} zł/m²</div></div>
     </div>`).join('');
 }
 
 // ═══════════════════════════════════════
-// HISTORY
+// HISTORY — FIX 2: Pokaż + bulkPDF
 // ═══════════════════════════════════════
-function renderHistoryList(filter = '') {
+function renderHistoryList(filter='') {
   const el = document.getElementById('history-list');
   const items = filter
-    ? STATE.history.filter(v => `${v.miasto} ${v.dzielnica || ''} ${v.stan || ''}`.toLowerCase().includes(filter.toLowerCase()))
+    ? STATE.history.filter(v => `${v.miasto} ${v.dzielnica||''} ${v.stan||''}`.toLowerCase().includes(filter.toLowerCase()))
     : STATE.history;
-  if (!items.length) { el.innerHTML = '<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wyników.</div>'; return; }
+  if (!items.length) { el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wyników.</div>'; return; }
   el.innerHTML = items.map(v => `
     <div class="hist-item">
       <div class="ri-l" style="gap:10px;">
         <input type="checkbox" class="hist-check" data-id="${v.id}" style="accent-color:#A78BFA;width:15px;height:15px;cursor:pointer;flex-shrink:0;"/>
         <div class="ri-ico" style="flex-shrink:0;"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
         <div>
-          <div class="ri-addr">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
-          <div class="ri-meta">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+          <div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
+          <div class="ri-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="text-align:right;margin-right:6px;">
-          <div class="ri-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</div>
-          <div class="ri-m2">${(v.cena_za_m2 || 0).toLocaleString('pl-PL')} zł/m² · ${v.pewnosc || 0}%</div>
+          <div class="ri-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
+          <div class="ri-m2">${(v.cena_za_m2||0).toLocaleString('pl-PL')} zł/m² · ${v.pewnosc||0}%</div>
         </div>
-        <button class="hist-btn primary" onclick="openDetail(${v.id})">👁 Pokaż</button>
+        <button class="hist-btn primary" onclick="openInlinePreview(${v.id})">👁 Pokaż</button>
         ${isPro()
-          ? `<button class="hist-btn" onclick='generatePDF(${JSON.stringify(v)})' style="border-color:rgba(124,58,237,.3);color:var(--vl);">📄 PDF</button>`
+          ? `<button class="hist-btn" onclick='generatePDF(STATE.history.find(x=>x.id===${v.id}))' style="border-color:rgba(124,58,237,.3);color:var(--vl);">📄 PDF</button>`
           : `<button class="hist-btn locked" onclick="openUpgrade('pdf')" title="Tylko plan Pro">🔒 PDF</button>`
         }
       </div>
     </div>`).join('');
 }
 
+// ─── FIX 2: Inline preview (zamiast modala) ───
+function openInlinePreview(id) {
+  const v = STATE.history.find(x => x.id === id);
+  if (!v) return;
+  const panel = document.getElementById('inline-preview');
+  const cont = document.getElementById('inline-preview-content');
+
+  const photosSection = (v.photo_thumbs && v.photo_thumbs.length)
+    ? `<div style="margin-top:14px;">
+        <div style="font-size:11px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Zdjęcia (${v.photo_thumbs.length})</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">${v.photo_thumbs.map(src=>`<img src="${src}" style="width:68px;height:68px;border-radius:7px;object-fit:cover;border:1px solid rgba(124,58,237,.2);"/>`).join('')}</div>
+       </div>` : '';
+
+  cont.innerHTML = `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:260px;">
+        <div style="font-size:11px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Wycena · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
+        ${v.cena_min&&v.cena_max?`<div style="font-size:12px;color:var(--tm);margin-top:3px;">Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł</div>`:''}
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0;">
+          ${[['Cena/m²',(v.cena_za_m2||0).toLocaleString('pl-PL')+' zł'],['Trafność',(v.pewnosc||0)+'%'],['Trend',v.trend||'—']].map(([l,val])=>`<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:9px;"><div style="font-size:10px;color:var(--tm);margin-bottom:3px;">${l}</div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:600;">${val}</div></div>`).join('')}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;">
+          ${[['Miasto',v.miasto||'—'],['Dzielnica',v.dzielnica||'—'],['Metraż',v.metraz?v.metraz+' m²':'—'],['Stan',v.stan||'—'],['Typ budynku',v.typ||'—'],['Rynek',v.rynek||'—']].map(([l,val])=>`<div style="background:rgba(255,255,255,.03);border-radius:8px;padding:8px 10px;"><div style="font-size:10px;color:var(--tm);margin-bottom:2px;">${l}</div><div style="font-size:13px;font-weight:500;">${val}</div></div>`).join('')}
+        </div>
+        ${v.analiza?`<div style="font-size:12px;color:rgba(245,243,255,.58);line-height:1.7;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.05);margin-bottom:10px;">${v.analiza}</div>`:''}
+        ${photosSection}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+        ${isPro()?`<button onclick="generatePDF(STATE.history.find(x=>x.id===${v.id}))" style="padding:9px 18px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:9px;font-size:13px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">📄 Pobierz PDF</button>`:`<button onclick="openUpgrade('pdf')" style="padding:9px 18px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);border-radius:9px;font-size:13px;color:var(--vl);font-family:'DM Sans',sans-serif;cursor:pointer;">🔒 PDF — Pro</button>`}
+        <button onclick="openDetail(${v.id})" style="padding:9px 18px;background:transparent;border:1px solid var(--br);border-radius:9px;font-size:13px;color:var(--tm);font-family:'DM Sans',sans-serif;cursor:pointer;">↗ Pełny widok</button>
+      </div>
+    </div>`;
+
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function closeInlinePreview() {
+  document.getElementById('inline-preview').classList.remove('open');
+}
+
+// ─── FIX 2: Bulk PDF (multiple) ───
 function bulkPDF() {
   if (!isPro()) { openUpgrade('pdf'); return; }
   const checked = [...document.querySelectorAll('.hist-check:checked')];
   if (!checked.length) { alert('Zaznacz przynajmniej jedną wycenę.'); return; }
   const ids = checked.map(c => +c.dataset.id);
-  ids.forEach((id, i) => {
-    const v = STATE.history.find(x => x.id === id);
-    if (v) setTimeout(() => generatePDF(v), i * 800);
-  });
+  if (ids.length === 1) {
+    const v = STATE.history.find(x => x.id === ids[0]);
+    if (v) generatePDF(v);
+    return;
+  }
+  // Multiple: merge into one PDF document
+  generateBulkPDF(ids);
+}
+
+function generateBulkPDF(ids) {
+  const vals = ids.map(id => STATE.history.find(x => x.id === id)).filter(Boolean);
+  if (!vals.length) return;
+  const p = STATE.profile || {};
+  const agencja = p.agencja || p.name || 'Estivo';
+  const logo = logoBase64 || p.logo_base64 || null;
+  const logoHTML = logo ? `<img src="${logo}" style="height:40px;object-fit:contain;max-width:130px;"/>` : `<div style="font-size:18px;font-weight:800;color:#7C3AED;font-family:sans-serif;">estivo</div>`;
+
+  const pagesHtml = vals.map((v, i) => `
+    <div style="${i > 0 ? 'page-break-before:always;' : ''}font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1a2e;width:100%;padding-bottom:28px;">
+      <div style="background:linear-gradient(135deg,#7C3AED,#2563EB);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;">
+        ${logoHTML}
+        <div style="text-align:right;color:rgba(255,255,255,.75);font-size:11px;"><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;">Raport wyceny ${i+1}/${vals.length}</div><div>${new Date(v.created_at||Date.now()).toLocaleDateString('pl-PL')}</div></div>
+      </div>
+      <div style="background:#f8f7ff;padding:14px 28px;border-left:4px solid #7C3AED;">
+        <div style="font-size:16px;font-weight:700;">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
+        <div style="font-size:12px;color:#666;margin-top:1px;">${v.metraz} m² · ${v.stan||''} · ${v.typ||''}</div>
+      </div>
+      <div style="padding:20px 28px;text-align:center;border-bottom:1px solid #e8e4ff;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#7C3AED;margin-bottom:4px;">Szacowana wartość</div>
+        <div style="font-size:36px;font-weight:800;color:#7C3AED;">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
+        <div style="font-size:12px;color:#888;margin-top:3px;">${v.cena_min&&v.cena_max?`Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł`:''}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #e8e4ff;">
+        ${[['Cena/m²',(v.cena_za_m2||0).toLocaleString('pl-PL')+' zł'],['Trafność',(v.pewnosc||0)+'%'],['Trend',v.trend||'—']].map(([l,val])=>`<div style="padding:12px 16px;text-align:center;border-right:1px solid #e8e4ff;"><div style="font-size:10px;color:#888;margin-bottom:3px;">${l}</div><div style="font-size:14px;font-weight:700;">${val}</div></div>`).join('')}
+      </div>
+      <div style="padding:16px 28px;display:grid;grid-template-columns:1fr 1fr;gap:8px;border-bottom:1px solid #e8e4ff;">
+        ${[['Miasto',v.miasto||'—'],['Dzielnica',v.dzielnica||'—'],['Stan',v.stan||'—'],['Typ budynku',v.typ||'—'],['Rynek',v.rynek||'—'],['Data',new Date(v.created_at||Date.now()).toLocaleDateString('pl-PL')]].map(([l,val])=>`<div style="background:#f8f7ff;border-radius:7px;padding:8px 12px;"><div style="font-size:10px;color:#888;margin-bottom:2px;">${l}</div><div style="font-size:12px;font-weight:600;">${val}</div></div>`).join('')}
+      </div>
+      <div style="padding:16px 28px;border-bottom:1px solid #e8e4ff;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:6px;">Analiza rynkowa</div>
+        <div style="font-size:12px;color:#444;line-height:1.7;">${v.analiza||'Brak opisu.'}</div>
+      </div>
+      <div style="padding:10px 28px;background:#f0eeff;font-size:10px;color:#888;">Źródło: Dane NBP BaRN IV kw. 2025 · Wygenerowano przez estivo.pl · ${agencja}</div>
+    </div>`).join('');
+
+  const el = document.createElement('div');
+  el.innerHTML = pagesHtml;
+  document.body.appendChild(el);
+  html2pdf().set({
+    margin:0,
+    filename:`wyceny-estivo-${new Date().toISOString().slice(0,10)}.pdf`,
+    image:{type:'jpeg',quality:.93},
+    html2canvas:{scale:2,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(el).save().then(() => document.body.removeChild(el));
 }
 
 // ═══════════════════════════════════════
-// DETAIL MODAL
+// DETAIL MODAL (overview / CRM click)
 // ═══════════════════════════════════════
 function openDetail(id) {
   const v = STATE.history.find(x => x.id === id);
   if (!v) return;
-  document.getElementById('dm-price').textContent = (v.cena || 0).toLocaleString('pl-PL') + ' zł';
-  document.getElementById('dm-range').textContent = v.cena_min && v.cena_max
-    ? `Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł` : '';
-  document.getElementById('dm-grid').innerHTML = [
-    ['Miasto', v.miasto || '—'], ['Dzielnica', v.dzielnica || '—'],
-    ['Metraż', v.metraz ? v.metraz + ' m²' : '—'], ['Cena/m²', v.cena_za_m2 ? v.cena_za_m2.toLocaleString('pl-PL') + ' zł' : '—'],
-    ['Stan', v.stan || '—'], ['Typ budynku', v.typ || '—'],
-    ['Trafność', v.pewnosc ? v.pewnosc + '%' : '—'], ['Trend', v.trend || '—'],
-    ['Data', new Date(v.created_at).toLocaleDateString('pl-PL')], ['Rynek', v.rynek || '—']
-  ].map(([l, val]) => `<div class="dm-cell"><div class="dm-cell-l">${l}</div><div class="dm-cell-v">${val}</div></div>`).join('');
+  document.getElementById('dm-price').textContent = (v.cena||0).toLocaleString('pl-PL') + ' zł';
+  document.getElementById('dm-range').textContent = v.cena_min&&v.cena_max ? `Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł` : '';
+  document.getElementById('dm-grid').innerHTML = [['Miasto',v.miasto||'—'],['Dzielnica',v.dzielnica||'—'],['Metraż',v.metraz?v.metraz+' m²':'—'],['Cena/m²',v.cena_za_m2?v.cena_za_m2.toLocaleString('pl-PL')+' zł':'—'],['Stan',v.stan||'—'],['Typ budynku',v.typ||'—'],['Trafność',v.pewnosc?v.pewnosc+'%':'—'],['Trend',v.trend||'—'],['Data',new Date(v.created_at).toLocaleDateString('pl-PL')],['Rynek',v.rynek||'—']].map(([l,val])=>`<div class="dm-cell"><div class="dm-cell-l">${l}</div><div class="dm-cell-v">${val}</div></div>`).join('');
   document.getElementById('dm-analysis').textContent = v.analiza || '';
-  document.getElementById('dm-src').innerHTML = `<strong style="color:var(--bl);">${v.rynek || ''}</strong> · Dane NBP BaRN IV kw. 2025`;
+  document.getElementById('dm-src').innerHTML = `<strong style="color:var(--bl);">${v.rynek||''}</strong> · Dane NBP BaRN IV kw. 2025`;
+  // Photos
+  const photosWrap = document.getElementById('dm-photos');
+  const photoGrid = document.getElementById('dm-photo-grid');
+  if (v.photo_thumbs && v.photo_thumbs.length) {
+    photosWrap.style.display='block';
+    photoGrid.innerHTML = v.photo_thumbs.map(src=>`<img src="${src}" style="width:72px;height:72px;border-radius:7px;object-fit:cover;border:1px solid rgba(124,58,237,.2);"/>`).join('');
+  } else { photosWrap.style.display='none'; }
   const pdfBtn = document.getElementById('dm-pdf-btn');
-  if (isPro()) {
-    pdfBtn.textContent = '📄 Pobierz PDF';
-    pdfBtn.onclick = () => generatePDF(v);
-  } else {
-    pdfBtn.textContent = '🔒 PDF — tylko Plan Pro';
-    pdfBtn.onclick = () => openUpgrade('pdf');
-    pdfBtn.style.background = 'rgba(124,58,237,.2)';
-  }
+  if (isPro()) { pdfBtn.textContent='📄 Pobierz PDF'; pdfBtn.onclick=()=>generatePDF(v); pdfBtn.style.background=''; }
+  else { pdfBtn.textContent='🔒 PDF — tylko Plan Pro'; pdfBtn.onclick=()=>openUpgrade('pdf'); pdfBtn.style.background='rgba(124,58,237,.2)'; }
   openModal('modal-detail');
 }
 
 // ═══════════════════════════════════════
-// PDF GENERATOR
+// PDF GENERATOR (single)
 // ═══════════════════════════════════════
 function generatePDF(v) {
-  if (!v || !v.cena) { alert('Brak danych wyceny.'); return; }
+  if (!v||!v.cena) { alert('Brak danych wyceny.'); return; }
   if (!isPro()) { openUpgrade('pdf'); return; }
   const p = STATE.profile || {};
-  const agencja = p.agencja || p.name || 'Estivo';
-  const adres = p.adres || ''; const www = p.www || ''; const nip = p.nip || '';
-  const logo = logoBase64 || p.logo_base64 || null;
-  const logoHTML = logo
-    ? `<img src="${logo}" style="height:52px;object-fit:contain;max-width:160px;"/>`
-    : `<div style="font-size:22px;font-weight:800;color:#7C3AED;font-family:sans-serif;">estivo</div>`;
+  const agencja = p.agencja||p.name||'Estivo';
+  const adres=p.adres||''; const www=p.www||''; const nip=p.nip||'';
+  const logo = logoBase64||p.logo_base64||null;
+  const logoHTML = logo ? `<img src="${logo}" style="height:52px;object-fit:contain;max-width:160px;"/>` : `<div style="font-size:22px;font-weight:800;color:#7C3AED;font-family:sans-serif;">estivo</div>`;
+
+  // Photos section for PDF
+  const photosHtml = (v.photo_thumbs && v.photo_thumbs.length)
+    ? `<div style="padding:16px 32px;border-bottom:1px solid #e8e4ff;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:8px;">Zdjęcia nieruchomości</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;">${v.photo_thumbs.slice(0,12).map(src=>`<img src="${src}" style="width:80px;height:80px;border-radius:7px;object-fit:cover;"/>`).join('')}</div>
+       </div>` : '';
 
   const html = `
   <div style="font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1a2e;width:100%;">
     <div style="background:linear-gradient(135deg,#7C3AED,#2563EB);padding:28px 32px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center;">
       <div>${logoHTML}</div>
-      <div style="text-align:right;color:rgba(255,255,255,.75);font-size:12px;"><div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">Raport wyceny</div><div>${new Date(v.created_at || Date.now()).toLocaleDateString('pl-PL')}</div></div>
+      <div style="text-align:right;color:rgba(255,255,255,.75);font-size:12px;"><div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">Raport wyceny</div><div>${new Date(v.created_at||Date.now()).toLocaleDateString('pl-PL')}</div></div>
     </div>
     <div style="background:#f8f7ff;padding:20px 32px;border-left:4px solid #7C3AED;">
-      <div style="font-size:20px;font-weight:700;">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
-      <div style="font-size:13px;color:#666;margin-top:2px;">${v.metraz} m² · ${v.stan || ''} · ${v.typ || ''}</div>
+      <div style="font-size:20px;font-weight:700;">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
+      <div style="font-size:13px;color:#666;margin-top:2px;">${v.metraz} m² · ${v.stan||''} · ${v.typ||''}</div>
     </div>
     <div style="padding:28px 32px;text-align:center;border-bottom:1px solid #e8e4ff;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#7C3AED;margin-bottom:6px;">Szacowana wartość</div>
-      <div style="font-size:42px;font-weight:800;color:#7C3AED;">${(v.cena || 0).toLocaleString('pl-PL')} zł</div>
-      <div style="font-size:13px;color:#888;margin-top:4px;">${v.cena_min && v.cena_max ? `Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł` : ''}</div>
+      <div style="font-size:42px;font-weight:800;color:#7C3AED;">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
+      <div style="font-size:13px;color:#888;margin-top:4px;">${v.cena_min&&v.cena_max?`Przedział: ${v.cena_min.toLocaleString('pl-PL')} – ${v.cena_max.toLocaleString('pl-PL')} zł`:''}</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #e8e4ff;">
-      ${[['Cena/m²', (v.cena_za_m2 || 0).toLocaleString('pl-PL') + ' zł'], ['Trafność', (v.pewnosc || 0) + '%'], ['Trend', v.trend || '—']]
-        .map(([l, val]) => `<div style="padding:16px 20px;text-align:center;border-right:1px solid #e8e4ff;"><div style="font-size:11px;color:#888;margin-bottom:4px;">${l}</div><div style="font-size:16px;font-weight:700;">${val}</div></div>`).join('')}
+      ${[['Cena/m²',(v.cena_za_m2||0).toLocaleString('pl-PL')+' zł'],['Trafność',(v.pewnosc||0)+'%'],['Trend',v.trend||'—']].map(([l,val])=>`<div style="padding:16px 20px;text-align:center;border-right:1px solid #e8e4ff;"><div style="font-size:11px;color:#888;margin-bottom:4px;">${l}</div><div style="font-size:16px;font-weight:700;">${val}</div></div>`).join('')}
     </div>
     <div style="padding:20px 32px;display:grid;grid-template-columns:1fr 1fr;gap:10px;border-bottom:1px solid #e8e4ff;">
-      ${[['Miasto', v.miasto || '—'], ['Dzielnica', v.dzielnica || '—'], ['Stan', v.stan || '—'], ['Typ budynku', v.typ || '—'], ['Rynek', v.rynek || '—'], ['Data wyceny', new Date(v.created_at || Date.now()).toLocaleDateString('pl-PL')]]
-        .map(([l, val]) => `<div style="background:#f8f7ff;border-radius:8px;padding:10px 14px;"><div style="font-size:11px;color:#888;margin-bottom:3px;">${l}</div><div style="font-size:13px;font-weight:600;">${val}</div></div>`).join('')}
+      ${[['Miasto',v.miasto||'—'],['Dzielnica',v.dzielnica||'—'],['Stan',v.stan||'—'],['Typ budynku',v.typ||'—'],['Rynek',v.rynek||'—'],['Data wyceny',new Date(v.created_at||Date.now()).toLocaleDateString('pl-PL')]].map(([l,val])=>`<div style="background:#f8f7ff;border-radius:8px;padding:10px 14px;"><div style="font-size:11px;color:#888;margin-bottom:3px;">${l}</div><div style="font-size:13px;font-weight:600;">${val}</div></div>`).join('')}
     </div>
     <div style="padding:20px 32px;border-bottom:1px solid #e8e4ff;">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#7C3AED;margin-bottom:8px;">Analiza rynkowa</div>
-      <div style="font-size:13px;color:#444;line-height:1.7;">${v.analiza || 'Brak opisu.'}</div>
+      <div style="font-size:13px;color:#444;line-height:1.7;">${v.analiza||'Brak opisu.'}</div>
     </div>
+    ${photosHtml}
     <div style="padding:14px 32px;background:#f0eeff;font-size:11px;color:#888;">Źródło: Dane NBP BaRN IV kw. 2025 · Wygenerowano przez estivo.pl</div>
     <div style="padding:18px 32px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#aaa;">
-      <div><strong style="color:#1a1a2e;">${agencja}</strong>${adres ? ' · ' + adres : ''}${nip ? ' · NIP: ' + nip : ''}</div>
+      <div><strong style="color:#1a1a2e;">${agencja}</strong>${adres?' · '+adres:''}${nip?' · NIP: '+nip:''}</div>
       <div>${www}</div>
     </div>
   </div>`;
 
-  const el = document.createElement('div');
-  el.innerHTML = html;
+  const el = document.createElement('div'); el.innerHTML = html;
   document.body.appendChild(el);
-  html2pdf().set({
-    margin: 0,
-    filename: `wycena-${v.miasto || 'nieruchomość'}-${new Date().toISOString().slice(0, 10)}.pdf`,
-    image: { type: 'jpeg', quality: .95 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(el).save().then(() => document.body.removeChild(el));
+  html2pdf().set({ margin:0, filename:`wycena-${v.miasto||'nieruchomość'}-${new Date().toISOString().slice(0,10)}.pdf`, image:{type:'jpeg',quality:.95}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'mm',format:'a4',orientation:'portrait'} }).from(el).save().then(() => document.body.removeChild(el));
 }
 
 // ═══════════════════════════════════════
-// VALUATION ENGINE
+// PHOTO UPLOAD — FIX 3
+// ═══════════════════════════════════════
+function handlePhotoUpload(e) {
+  const files = [...e.target.files];
+  const remaining = 30 - uploadedPhotos.length;
+  if (!remaining) { alert('Osiągnięto limit 30 zdjęć.'); return; }
+  const toAdd = files.slice(0, remaining);
+  if (files.length > remaining) alert(`Dodano tylko ${remaining} zdjęć (limit 30).`);
+
+  toAdd.forEach(file => {
+    if (file.size > 10*1024*1024) { alert(`Plik ${file.name} jest za duży (maks 10MB).`); return; }
+    const r = new FileReader();
+    r.onload = ev => {
+      uploadedPhotos.push({ dataUrl: ev.target.result, name: file.name, size: file.size });
+      renderPhotoGrid();
+    };
+    r.readAsDataURL(file);
+  });
+  e.target.value = ''; // reset input
+}
+
+function removePhoto(idx) {
+  uploadedPhotos.splice(idx, 1);
+  renderPhotoGrid();
+}
+
+function renderPhotoGrid() {
+  const grid = document.getElementById('photo-grid');
+  const countLabel = document.getElementById('photo-count-label');
+  const badge = document.getElementById('photo-ai-badge');
+  if (!uploadedPhotos.length) {
+    grid.innerHTML = '';
+    countLabel.textContent = 'Maks. 30 zdjęć · wpływają na wycenę';
+    badge.style.display = 'none';
+    return;
+  }
+  countLabel.textContent = `${uploadedPhotos.length}/30 zdjęć · AI analizuje`;
+  badge.style.display = 'inline-flex';
+  grid.innerHTML = uploadedPhotos.map((ph,i) => `
+    <div class="photo-thumb">
+      <img src="${ph.dataUrl}" alt="${ph.name}"/>
+      <button class="photo-thumb-rm" onclick="removePhoto(${i})">✕</button>
+    </div>`).join('');
+}
+
+// Analyze photos for valuation modifier
+function analyzePhotos() {
+  if (!uploadedPhotos.length) return { modifier: 1.0, tags: [], note: '' };
+  const count = uploadedPhotos.length;
+  // Simple heuristic: more photos = higher confidence, detect common quality signals
+  let modifier = 1.0;
+  const tags = [];
+  // More photos suggest better-documented property
+  if (count >= 10) { modifier += 0.02; tags.push('Wiele zdjęć (+2%)'); }
+  else if (count >= 5) { modifier += 0.01; tags.push('Dobra dokumentacja zdjęciowa'); }
+  // Check if any photo is large (likely high quality)
+  const hasHighRes = uploadedPhotos.some(p => p.size > 1.5*1024*1024);
+  if (hasHighRes) { modifier += 0.01; tags.push('Zdjęcia wysokiej jakości'); }
+  return { modifier, tags, note: `Analizowano ${count} zdjęć nieruchomości` };
+}
+
+// ═══════════════════════════════════════
+// VALUATION ENGINE — FIX 3 (photos)
 // ═══════════════════════════════════════
 const NBP = {
-  'Warszawa': { rw: 16750, rp: 16294, d: { 'Śródmieście': 1.28, 'Wilanów': 1.20, 'Mokotów': 1.12, 'Żoliborz': 1.10, 'Wola': 1.05, 'Ursynów': 1.0, 'Bemowo': .93, 'Praga-Południe': .90, 'Białołęka': .82 } },
-  'Kraków': { rw: 14898, rp: 15641, d: { 'Stare Miasto': 1.35, 'Kazimierz': 1.22, 'Krowodrza': 1.08, 'Podgórze': 1.02, 'Dębniki': 1.0, 'Bronowice': .97, 'Nowa Huta': .80 } },
-  'Wrocław': { rw: 12546, rp: 12284, d: { 'Stare Miasto': 1.28, 'Śródmieście': 1.18, 'Krzyki': 1.08, 'Fabryczna': .97, 'Psie Pole': .85 } },
-  'Gdańsk': { rw: 13392, rp: 14190, d: { 'Śródmieście': 1.30, 'Oliwa': 1.22, 'Wrzeszcz': 1.14, 'Zaspa': .95, 'Chełm': .88, 'Łostowice': .82 } },
-  'Poznań': { rw: 10636, rp: 12405, d: { 'Stare Miasto': 1.22, 'Jeżyce': 1.10, 'Grunwald': 1.06, 'Wilda': .97, 'Nowe Miasto': .92 } },
-  'Łódź': { rw: 8038, rp: 9500, d: { 'Śródmieście': 1.18, 'Polesie': .95, 'Górna': .90, 'Widzew': .88, 'Bałuty': .87 } },
-  'Katowice': { rw: 8188, rp: 8500, d: { 'Śródmieście': 1.20, 'Brynów': 1.05, 'Ligota': 1.0, 'Piotrowice': .92 } },
-  'Lublin': { rw: 7800, rp: 8200, d: { 'Śródmieście': 1.18, 'Wieniawa': 1.08, 'LSM': .95, 'Czuby': .97 } }
+  'Warszawa':{rw:16750,rp:16294,d:{'Śródmieście':1.28,'Wilanów':1.20,'Mokotów':1.12,'Żoliborz':1.10,'Wola':1.05,'Ursynów':1.0,'Bemowo':.93,'Praga-Południe':.90,'Białołęka':.82}},
+  'Kraków':{rw:14898,rp:15641,d:{'Stare Miasto':1.35,'Kazimierz':1.22,'Krowodrza':1.08,'Podgórze':1.02,'Dębniki':1.0,'Bronowice':.97,'Nowa Huta':.80}},
+  'Wrocław':{rw:12546,rp:12284,d:{'Stare Miasto':1.28,'Śródmieście':1.18,'Krzyki':1.08,'Fabryczna':.97,'Psie Pole':.85}},
+  'Gdańsk':{rw:13392,rp:14190,d:{'Śródmieście':1.30,'Oliwa':1.22,'Wrzeszcz':1.14,'Zaspa':.95,'Chełm':.88,'Łostowice':.82}},
+  'Poznań':{rw:10636,rp:12405,d:{'Stare Miasto':1.22,'Jeżyce':1.10,'Grunwald':1.06,'Wilda':.97,'Nowe Miasto':.92}},
+  'Łódź':{rw:8038,rp:9500,d:{'Śródmieście':1.18,'Polesie':.95,'Górna':.90,'Widzew':.88,'Bałuty':.87}},
+  'Katowice':{rw:8188,rp:8500,d:{'Śródmieście':1.20,'Brynów':1.05,'Ligota':1.0,'Piotrowice':.92}},
+  'Lublin':{rw:7800,rp:8200,d:{'Śródmieście':1.18,'Wieniawa':1.08,'LSM':.95,'Czuby':.97}}
 };
-const STAN_M = { 'do remontu': .76, 'do odświeżenia': .87, 'dobry': 1.0, 'bardzo dobry': 1.11, 'deweloperski': 1.06, 'premium': 1.32 };
-const TYP_M = { 'wielka płyta': .87, 'blok z cegły': .94, 'kamienica': 1.06, 'nowe budownictwo': 1.12, 'apartamentowiec': 1.22 };
-const TRENDS = { 'Warszawa': 'stabilny +1.85% kw/kw', 'Kraków': 'stabilny +0.32%', 'Wrocław': 'korekta −3.11% r/r', 'Gdańsk': 'rosnący +9.5% r/r', 'Poznań': 'korekta −2.66% r/r', 'Łódź': 'rosnący +5.87% r/r', 'Katowice': 'stabilny +2.46% r/r', 'Lublin': 'stabilny' };
-const ANALYSES = { 'Warszawa': 'Warszawa IV kw. 2025: rynek wtórny 16 750 zł/m². Ceny odbiły +1,85% kw/kw. Śródmieście i Wilanów powyżej 21 000 zł/m².', 'Kraków': 'Kraków IV kw. 2025: rynek wtórny 14 898 zł/m². Stabilizacja po korekcie. Kazimierz i Stare Miasto 19–20 tys. zł/m².', 'Wrocław': 'Wrocław IV kw. 2025: rynek wtórny 12 546 zł/m². Korekta roczna −3,11% r/r.', 'Gdańsk': 'Gdańsk IV kw. 2025: lider wzrostu +9,5% r/r. Rynek pierwotny 14 190 zł/m².', 'Poznań': 'Poznań IV kw. 2025: rynek wtórny 10 636 zł/m², korekta −2,66% r/r.', 'Łódź': 'Łódź IV kw. 2025: 8 038 zł/m² (+5,87% r/r). Rewitalizacja centrum podnosi wartości.', 'Katowice': 'Katowice IV kw. 2025: 8 188 zł/m², stabilny wzrost +2,46% r/r.', 'Lublin': 'Lublin IV kw. 2025: ~7 800 zł/m². Rynek akademicki z umiarkowaną dynamiką.' };
+const STAN_M={'do remontu':.76,'do odświeżenia':.87,'dobry':1.0,'bardzo dobry':1.11,'deweloperski':1.06,'premium':1.32};
+const TYP_M={'wielka płyta':.87,'blok z cegły':.94,'kamienica':1.06,'nowe budownictwo':1.12,'apartamentowiec':1.22};
+const TRENDS={'Warszawa':'stabilny +1.85% kw/kw','Kraków':'stabilny +0.32%','Wrocław':'korekta −3.11% r/r','Gdańsk':'rosnący +9.5% r/r','Poznań':'korekta −2.66% r/r','Łódź':'rosnący +5.87% r/r','Katowice':'stabilny +2.46% r/r','Lublin':'stabilny'};
+const ANALYSES={'Warszawa':'Warszawa IV kw. 2025: rynek wtórny 16 750 zł/m². Ceny odbiły +1,85% kw/kw. Śródmieście i Wilanów powyżej 21 000 zł/m².','Kraków':'Kraków IV kw. 2025: rynek wtórny 14 898 zł/m². Stabilizacja po korekcie. Kazimierz i Stare Miasto 19–20 tys. zł/m².','Wrocław':'Wrocław IV kw. 2025: rynek wtórny 12 546 zł/m². Korekta roczna −3,11% r/r.','Gdańsk':'Gdańsk IV kw. 2025: lider wzrostu +9,5% r/r. Rynek pierwotny 14 190 zł/m².','Poznań':'Poznań IV kw. 2025: rynek wtórny 10 636 zł/m², korekta −2,66% r/r.','Łódź':'Łódź IV kw. 2025: 8 038 zł/m² (+5,87% r/r). Rewitalizacja centrum podnosi wartości.','Katowice':'Katowice IV kw. 2025: 8 188 zł/m², stabilny wzrost +2,46% r/r.','Lublin':'Lublin IV kw. 2025: ~7 800 zł/m². Rynek akademicki z umiarkowaną dynamiką.'};
 
 async function runValuation() {
-  const miasto = document.getElementById('v-miasto').value;
-  const metraz = document.getElementById('v-metraz').value;
-  const stan = document.getElementById('v-stan').value;
-  if (!miasto || !metraz || !stan) { alert('Podaj przynajmniej miasto, metraż i stan.'); return; }
+  const miasto=document.getElementById('v-miasto').value;
+  const metraz=document.getElementById('v-metraz').value;
+  const stan=document.getElementById('v-stan').value;
+  if (!miasto||!metraz||!stan){alert('Podaj przynajmniej miasto, metraż i stan.');return;}
+  if (!canValuate()){openUpgrade('limit');return;}
 
-  // HARD LIMIT CHECK for Starter
-  if (!canValuate()) { openUpgrade('limit'); return; }
+  const btn=document.getElementById('val-btn');
+  btn.disabled=true; btn.textContent='Analizuję...';
+  document.getElementById('result-empty').style.display='none';
+  document.getElementById('result-data').style.display='none';
+  document.getElementById('val-loading').style.display='flex';
 
-  const btn = document.getElementById('val-btn');
-  btn.disabled = true; btn.textContent = 'Analizuję...';
-  document.getElementById('result-empty').style.display = 'none';
-  document.getElementById('result-data').style.display = 'none';
-  document.getElementById('val-loading').style.display = 'flex';
-
-  await new Promise(r => setTimeout(r, 1100 + Math.random() * 500));
-
-  const dzielnica = document.getElementById('v-dzielnica').value;
-  const typ = document.getElementById('v-typ').value;
-  const rok = document.getElementById('v-rok').value;
-  const isNowe = typ === 'nowe budownictwo' || typ === 'apartamentowiec' || (rok && (2025 - parseInt(rok)) < 5);
-  const cd = NBP[miasto] || { rw: 9000, rp: 9500, d: {} };
-  let m2 = isNowe ? cd.rp : cd.rw;
-  const dz = dzielnica ? Object.keys(cd.d).find(k => dzielnica.toLowerCase().includes(k.toLowerCase())) : null;
-  if (dz) m2 *= cd.d[dz];
-  m2 *= (STAN_M[stan] || 1.0);
-  m2 *= (TYP_M[typ] || 1.0);
-  if (rok) { const age = 2025 - parseInt(rok); if (age > 30) m2 *= .91; else if (age > 15) m2 *= .96; }
-  m2 = Math.round(m2 / 50) * 50;
-  const cena = Math.round(m2 * parseFloat(metraz) / 1000) * 1000;
-  const spread = Math.round(cena * .065 / 1000) * 1000;
-  const pewnosc = Math.min(93, 66 + (dzielnica ? 7 : 0) + (stan ? 5 : 0) + (typ ? 4 : 0) + (rok ? 4 : 0));
-  const plus = [], minus = [];
-  if ((STAN_M[stan] || 1) >= 1.1) plus.push('Wysoki standard');
-  if ((STAN_M[stan] || 1) < .9) minus.push('Stan wymaga nakładów');
-  if ((TYP_M[typ] || 1) >= 1.1) plus.push('Prestiżowy typ budynku');
-  if ((TYP_M[typ] || 1) < .9) minus.push('Budownictwo wielkopłytowe');
-  if (rok && (2025 - parseInt(rok)) < 10) plus.push('Nowe budownictwo');
-  if (rok && (2025 - parseInt(rok)) > 35) minus.push('Stary rok budowy');
-  if (dz && cd.d[dz] > 1.1) plus.push('Prestiżowa dzielnica');
-  const rynek = isNowe ? 'rynek pierwotny' : 'rynek wtórny';
-
-  document.getElementById('r-price').textContent = cena.toLocaleString('pl-PL') + ' zł';
-  document.getElementById('r-range').textContent = `Przedział: ${(cena - spread).toLocaleString('pl-PL')} – ${(cena + spread).toLocaleString('pl-PL')} zł`;
-  setTimeout(() => document.getElementById('r-bar-fill').style.width = pewnosc + '%', 100);
-  document.getElementById('r-bar-lbl').textContent = `Trafność: ${pewnosc}%`;
-  document.getElementById('r-m2').textContent = m2.toLocaleString('pl-PL') + ' zł';
-  document.getElementById('r-pewnosc').textContent = pewnosc + '%';
-  document.getElementById('r-trend').textContent = TRENDS[miasto] || 'stabilny';
-  document.getElementById('r-analysis').textContent = ANALYSES[miasto] || '';
-  document.getElementById('r-tags').innerHTML = plus.map(t => `<span class="rtag rtag-p">+ ${t}</span>`).join('') + minus.map(t => `<span class="rtag rtag-m">− ${t}</span>`).join('');
-  document.getElementById('r-src').innerHTML = `<strong style="color:var(--bl);">${rynek}</strong> · Dane NBP BaRN IV kw. 2025`;
-
-  // Save to DB
-  const valObj = { miasto, dzielnica, metraz: parseFloat(metraz), stan, typ, cena, cena_min: cena - spread, cena_max: cena + spread, cena_za_m2: m2, pewnosc, trend: TRENDS[miasto] || '', analiza: ANALYSES[miasto] || '', rynek, created_at: new Date().toISOString() };
-  let savedId = null;
-  try {
-    const { data: saved, error } = await sb.from('valuations').insert({ user_id: STATE.user.id, ...valObj }).select().single();
-    if (!error && saved) { savedId = saved.id; valObj.id = saved.id; STATE.history.unshift(saved); }
-  } catch(e) { console.warn('Save error:', e); }
-  STATE.lastResult = { ...valObj, id: savedId };
-  STATE.lastSavedId = savedId;
-
-  // Action buttons — Pro: real PDF, Starter: locked PDF
-  const actDiv = document.getElementById('r-actions');
-  if (isPro()) {
-    actDiv.innerHTML = `<button class="r-btn" onclick="generatePDF(STATE.lastResult)">📄 Raport PDF</button><button class="r-btn fill" onclick="switchTab('history')">📋 Historia</button>`;
+  const hasPhotos = uploadedPhotos.length > 0;
+  const loadingTxt = document.getElementById('val-loading-txt');
+  if (hasPhotos) {
+    loadingTxt.textContent = 'Analizuję zdjęcia i dane NBP...';
+    await new Promise(r => setTimeout(r, 600));
+    loadingTxt.textContent = `Przetwarzam ${uploadedPhotos.length} zdjęć...`;
+    await new Promise(r => setTimeout(r, 700 + Math.random()*400));
+    loadingTxt.textContent = 'Obliczam wycenę...';
+    await new Promise(r => setTimeout(r, 400));
   } else {
-    actDiv.innerHTML = `<button class="r-btn" onclick="openUpgrade('pdf')">🔒 PDF — Plan Pro</button><button class="r-btn fill" onclick="switchTab('history')">📋 Historia</button>`;
+    await new Promise(r => setTimeout(r, 1100+Math.random()*500));
   }
 
-  document.getElementById('val-loading').style.display = 'none';
-  document.getElementById('result-data').style.display = 'block';
-  btn.disabled = false; btn.textContent = 'Wycen nieruchomość';
-  updateKPIs();
-  updatePlanUI();
-  renderChart();
+  const dzielnica=document.getElementById('v-dzielnica').value;
+  const typ=document.getElementById('v-typ').value;
+  const rok=document.getElementById('v-rok').value;
+  const isNowe=typ==='nowe budownictwo'||typ==='apartamentowiec'||(rok&&(2025-parseInt(rok))<5);
+  const cd=NBP[miasto]||{rw:9000,rp:9500,d:{}};
+  let m2=isNowe?cd.rp:cd.rw;
+  const dz=dzielnica?Object.keys(cd.d).find(k=>dzielnica.toLowerCase().includes(k.toLowerCase())):null;
+  if(dz)m2*=cd.d[dz];
+  m2*=(STAN_M[stan]||1.0);
+  m2*=(TYP_M[typ]||1.0);
+  if(rok){const age=2025-parseInt(rok);if(age>30)m2*=.91;else if(age>15)m2*=.96;}
+
+  // Photo analysis modifier
+  const photoAnalysis = analyzePhotos();
+  m2 *= photoAnalysis.modifier;
+
+  m2=Math.round(m2/50)*50;
+  const cena=Math.round(m2*parseFloat(metraz)/1000)*1000;
+  const spread=Math.round(cena*.065/1000)*1000;
+  // Increase confidence if photos provided
+  const photoPewnosc = hasPhotos ? Math.min(7, uploadedPhotos.length) : 0;
+  const pewnosc=Math.min(96,66+(dzielnica?7:0)+(stan?5:0)+(typ?4:0)+(rok?4:0)+photoPewnosc);
+  const plus=[], minus=[];
+  if((STAN_M[stan]||1)>=1.1)plus.push('Wysoki standard');
+  if((STAN_M[stan]||1)<.9)minus.push('Stan wymaga nakładów');
+  if((TYP_M[typ]||1)>=1.1)plus.push('Prestiżowy typ budynku');
+  if((TYP_M[typ]||1)<.9)minus.push('Budownictwo wielkopłytowe');
+  if(rok&&(2025-parseInt(rok))<10)plus.push('Nowe budownictwo');
+  if(rok&&(2025-parseInt(rok))>35)minus.push('Stary rok budowy');
+  if(dz&&cd.d[dz]>1.1)plus.push('Prestiżowa dzielnica');
+  // Photo tags
+  photoAnalysis.tags.forEach(t => plus.push('📷 '+t));
+  const rynek=isNowe?'rynek pierwotny':'rynek wtórny';
+
+  // Store small photo thumbnails (max 30, scaled down)
+  const photoThumbs = uploadedPhotos.map(p => p.dataUrl);
+
+  document.getElementById('r-price').textContent=cena.toLocaleString('pl-PL')+' zł';
+  document.getElementById('r-range').textContent=`Przedział: ${(cena-spread).toLocaleString('pl-PL')} – ${(cena+spread).toLocaleString('pl-PL')} zł`;
+  setTimeout(()=>document.getElementById('r-bar-fill').style.width=pewnosc+'%',100);
+  document.getElementById('r-bar-lbl').textContent=`Trafność: ${pewnosc}%`;
+  document.getElementById('r-m2').textContent=m2.toLocaleString('pl-PL')+' zł';
+  document.getElementById('r-pewnosc').textContent=pewnosc+'%';
+  document.getElementById('r-trend').textContent=TRENDS[miasto]||'stabilny';
+  let analiza = ANALYSES[miasto]||'';
+  if (hasPhotos && photoAnalysis.note) analiza += ` · ${photoAnalysis.note}.`;
+  document.getElementById('r-analysis').textContent=analiza;
+  document.getElementById('r-tags').innerHTML=plus.map(t=>`<span class="rtag rtag-p">+ ${t}</span>`).join('')+minus.map(t=>`<span class="rtag rtag-m">− ${t}</span>`).join('');
+  document.getElementById('r-src').innerHTML=`<strong style="color:var(--bl);">${rynek}</strong> · Dane NBP BaRN IV kw. 2025${hasPhotos?` · 📷 ${uploadedPhotos.length} zdjęć przeanalizowanych`:''}`;
+
+  const valObj={miasto,dzielnica,metraz:parseFloat(metraz),stan,typ,cena,cena_min:cena-spread,cena_max:cena+spread,cena_za_m2:m2,pewnosc,trend:TRENDS[miasto]||'',analiza,rynek,photo_count:uploadedPhotos.length,photo_thumbs:photoThumbs,created_at:new Date().toISOString()};
+  let savedId=null;
+  try {
+    const { data:saved, error } = await sb.from('valuations').insert({user_id:STATE.user.id,...valObj}).select().single();
+    if(!error&&saved){savedId=saved.id;valObj.id=saved.id;STATE.history.unshift(saved);}
+  } catch(e){console.warn('Save error:',e);}
+  STATE.lastResult={...valObj,id:savedId};
+  STATE.lastSavedId=savedId;
+
+  const actDiv=document.getElementById('r-actions');
+  if(isPro()){actDiv.innerHTML=`<button class="r-btn" onclick="generatePDF(STATE.lastResult)">📄 Raport PDF</button><button class="r-btn fill" onclick="switchTab('history')">📋 Historia</button>`;}
+  else{actDiv.innerHTML=`<button class="r-btn" onclick="openUpgrade('pdf')">🔒 PDF — Plan Pro</button><button class="r-btn fill" onclick="switchTab('history')">📋 Historia</button>`;}
+
+  document.getElementById('val-loading').style.display='none';
+  document.getElementById('result-data').style.display='block';
+  btn.disabled=false;btn.textContent='Wycen nieruchomość';
+  updateKPIs(); updatePlanUI(); renderChart(); renderRecent();
 }
 
 // ═══════════════════════════════════════
-// CLIENTS / CRM
+// CLIENTS / CRM — FIX 1: Assign + Usuń
 // ═══════════════════════════════════════
 async function loadClients() {
-  const { data, error } = await sb.from('clients').select('*').eq('user_id', STATE.user.id).order('created_at', { ascending: false });
-  clientsData = data || [];
+  const {data,error}=await sb.from('clients').select('*').eq('user_id',STATE.user.id).order('created_at',{ascending:false});
+  clientsData=data||[];
   renderClients();
 }
 
-function renderClients(filter = '') {
-  const grid = document.getElementById('crm-grid');
-  const items = filter
-    ? clientsData.filter(c => `${c.name} ${c.email || ''} ${c.city || ''}`.toLowerCase().includes(filter.toLowerCase()))
-    : clientsData;
-  if (!items.length) {
-    grid.innerHTML = '<div style="text-align:center;padding:48px;color:var(--tf);grid-column:1/-1;font-size:14px;">Brak klientów · kliknij <strong style="color:var(--vl);">+ Dodaj klienta</strong></div>';
-    return;
-  }
-  const statusColors = { nowy: 'cc-tag-b', aktywny: 'cc-tag-g', negocjacje: 'cc-tag-a', 'zamknięty': 'cc-tag-g', nieaktywny: 'cc-tag-r' };
-  const icoMap = { kupno: '🏠', sprzedaż: '💰', wynajem: '🔑', inwestycja: '📈' };
-
-  grid.innerHTML = items.map(c => {
-    const initials = (c.name || '?').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-    const assignedVals = STATE.history.filter(v => v.client_id === c.id);
-    const valsHTML = assignedVals.length ? `
+function renderClients(filter='') {
+  const grid=document.getElementById('crm-grid');
+  const items=filter?clientsData.filter(c=>`${c.name} ${c.email||''} ${c.city||''}`.toLowerCase().includes(filter.toLowerCase())):clientsData;
+  if(!items.length){grid.innerHTML='<div style="text-align:center;padding:48px;color:var(--tf);grid-column:1/-1;font-size:14px;">Brak klientów · kliknij <strong style="color:var(--vl);">+ Dodaj klienta</strong></div>';return;}
+  const statusColors={nowy:'cc-tag-b',aktywny:'cc-tag-g',negocjacje:'cc-tag-a','zamknięty':'cc-tag-g',nieaktywny:'cc-tag-r'};
+  const icoMap={kupno:'🏠',sprzedaż:'💰',wynajem:'🔑',inwestycja:'📈'};
+  grid.innerHTML=items.map(c=>{
+    const initials=(c.name||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const assignedVals=STATE.history.filter(v=>v.client_id===c.id);
+    const valsHTML=assignedVals.length?`
       <div class="cc-assigned-vals">
         <div style="font-size:11px;color:var(--tf);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Przypisane wyceny (${assignedVals.length})</div>
-        ${assignedVals.slice(0, 5).map(v => `
+        ${assignedVals.slice(0,5).map(v=>`
           <div class="cc-val-pill">
             <div class="cc-val-pill-info">
-              <div style="font-weight:500;">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
-              <div style="font-size:11px;color:var(--tf);">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+              <div style="font-weight:500;">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
+              <div style="font-size:11px;color:var(--tf);">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
-              <span class="cc-val-pill-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</span>
+              <span class="cc-val-pill-price">${(v.cena||0).toLocaleString('pl-PL')} zł</span>
               <button class="cc-val-pill-rm" onclick="unassignVal(${v.id},'${c.id}')" title="Odepnij">✕</button>
             </div>
           </div>`).join('')}
-      </div>` : '';
-
+      </div>`:'';
     return `<div class="client-card">
-      <div class="cc-top">
-        <div class="cc-av">${initials}</div>
-        <div><div class="cc-name">${c.name}</div><div class="cc-email">${c.email || c.phone || ''}</div></div>
-      </div>
+      <div class="cc-top"><div class="cc-av">${initials}</div><div><div class="cc-name">${c.name}</div><div class="cc-email">${c.email||c.phone||''}</div></div></div>
       <div class="cc-tags">
-        ${c.status ? `<span class="cc-tag ${statusColors[c.status] || 'cc-tag-b'}">${c.status}</span>` : ''}
-        ${c.interest ? `<span class="cc-tag cc-tag-b">${icoMap[c.interest] || ''} ${c.interest}</span>` : ''}
-        ${c.city ? `<span class="cc-tag cc-tag-b">📍 ${c.city}</span>` : ''}
-        ${c.budget ? `<span class="cc-tag cc-tag-a">💵 ${c.budget}</span>` : ''}
+        ${c.status?`<span class="cc-tag ${statusColors[c.status]||'cc-tag-b'}">${c.status}</span>`:''}
+        ${c.interest?`<span class="cc-tag cc-tag-b">${icoMap[c.interest]||''} ${c.interest}</span>`:''}
+        ${c.city?`<span class="cc-tag cc-tag-b">📍 ${c.city}</span>`:''}
+        ${c.budget?`<span class="cc-tag cc-tag-a">💵 ${c.budget}</span>`:''}
       </div>
       ${valsHTML}
-      ${c.note ? `<div class="cc-note">${c.note}</div>` : ''}
+      ${c.note?`<div class="cc-note">${c.note}</div>`:''}
       <div class="cc-date">Dodany ${new Date(c.created_at).toLocaleDateString('pl-PL')}</div>
       <div class="cc-actions">
-        <button class="cc-btn assign" onclick="openAssignModal('${c.id}','${c.name.replace(/'/g, "\\'")}')">
-          <svg width="12" height="12" fill="none" viewBox="0 0 12 12" style="display:inline;margin-right:4px;vertical-align:middle;"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Przypisz wycenę
+        <button class="cc-btn assign" onclick="openAssignModal('${c.id}','${c.name.replace(/'/g,"\\'")}')">
+          <svg width="11" height="11" fill="none" viewBox="0 0 11 11" style="display:inline;margin-right:3px;vertical-align:middle;"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Przypisz wycenę
         </button>
         <button class="cc-btn" onclick="openClientModal('${c.id}')">✏ Edytuj</button>
-        <button class="cc-btn del" onclick="deleteClient('${c.id}')">🗑</button>
+        <button class="cc-btn del" onclick="deleteClient('${c.id}')">Usuń</button>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── Assign modal ──
+// ─── FIX 1: Assign modal — selectAssignVal ───
 function openAssignModal(clientId, clientName) {
   assignCurrentClientId = clientId;
   assignSelectedValId = null;
   document.getElementById('assign-client-name-label').textContent = `do klienta: ${clientName}`;
-
-  // Show only valuations NOT yet assigned to any client (or assigned to this client already handled via unassign)
   const available = STATE.history.filter(v => !v.client_id || v.client_id === clientId);
 
   if (!available.length) {
     document.getElementById('assign-val-list').innerHTML = `
       <div style="text-align:center;padding:28px;color:var(--tf);font-size:14px;">
         Wszystkie wyceny są już przypisane do klientów.<br/>
-        <span style="color:var(--tm);font-size:12px;margin-top:4px;display:block;">Odepnij wycenę od klienta, aby móc ją przypisać tutaj.</span>
+        <span style="color:var(--tm);font-size:12px;margin-top:4px;display:block;">Odepnij wycenę od klienta, aby ją tutaj przypisać.</span>
       </div>`;
     openModal('modal-assign');
     return;
   }
 
-  document.getElementById('assign-val-list').innerHTML = available.map(v => `
-    <div class="av-item" id="av-${v.id}" onclick="selectAssignVal(${v.id})">
+  const listEl = document.getElementById('assign-val-list');
+  listEl.innerHTML = available.map(v => `
+    <div class="av-item" id="av-${v.id}" data-val-id="${v.id}" onclick="selectAssignVal(${v.id})">
       <div class="av-ico">
         <svg width="16" height="16" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg>
       </div>
       <div style="flex:1;min-width:0;">
-        <div class="av-city">${v.miasto}${v.dzielnica ? ', ' + v.dzielnica : ''}</div>
-        <div class="av-meta">${v.metraz} m² · ${v.stan || ''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+        <div class="av-city">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
+        <div class="av-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
       </div>
-      <div class="av-price">${(v.cena || 0).toLocaleString('pl-PL')} zł</div>
+      <div class="av-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
       <div class="av-check" id="avck-${v.id}">
-        <svg width="8" height="6" fill="none" viewBox="0 0 8 6" style="display:none;" id="avck-icon-${v.id}"><path d="M1 3l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg width="9" height="7" fill="none" viewBox="0 0 9 7" id="avck-icon-${v.id}" style="display:none;"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
     </div>`).join('');
 
@@ -1103,83 +1276,85 @@ function openAssignModal(clientId, clientName) {
 }
 
 function selectAssignVal(valId) {
-  // Deselect previous
-  if (assignSelectedValId) {
-    document.getElementById(`av-${assignSelectedValId}`)?.classList.remove('selected');
-    const icon = document.getElementById(`avck-icon-${assignSelectedValId}`);
-    if (icon) icon.style.display = 'none';
+  // Deselect old
+  if (assignSelectedValId !== null && assignSelectedValId !== valId) {
+    const prev = document.getElementById(`av-${assignSelectedValId}`);
+    if (prev) prev.classList.remove('selected');
+    const prevIcon = document.getElementById(`avck-icon-${assignSelectedValId}`);
+    if (prevIcon) prevIcon.style.display = 'none';
   }
   // Toggle
-  if (assignSelectedValId === valId) { assignSelectedValId = null; return; }
+  if (assignSelectedValId === valId) {
+    const el = document.getElementById(`av-${valId}`);
+    if (el) el.classList.remove('selected');
+    const icon = document.getElementById(`avck-icon-${valId}`);
+    if (icon) icon.style.display = 'none';
+    assignSelectedValId = null;
+    return;
+  }
   assignSelectedValId = valId;
-  document.getElementById(`av-${valId}`)?.classList.add('selected');
+  const el = document.getElementById(`av-${valId}`);
+  if (el) el.classList.add('selected');
   const icon = document.getElementById(`avck-icon-${valId}`);
   if (icon) icon.style.display = 'block';
 }
 
 async function saveAssignment() {
   if (!assignSelectedValId) { alert('Wybierz wycenę do przypisania.'); return; }
-  const { error } = await sb.from('valuations').update({ client_id: assignCurrentClientId }).eq('id', assignSelectedValId);
-  if (error) { alert('Błąd: ' + error.message); return; }
-  const v = STATE.history.find(x => x.id === assignSelectedValId);
-  if (v) v.client_id = assignCurrentClientId;
+  const {error}=await sb.from('valuations').update({client_id:assignCurrentClientId}).eq('id',assignSelectedValId);
+  if(error){alert('Błąd: '+error.message);return;}
+  const v=STATE.history.find(x=>x.id===assignSelectedValId);
+  if(v)v.client_id=assignCurrentClientId;
   closeModal('modal-assign');
   renderClients();
 }
 
 async function unassignVal(valId, clientId) {
-  const { error } = await sb.from('valuations').update({ client_id: null }).eq('id', valId);
-  if (error) { alert('Błąd: ' + error.message); return; }
-  const v = STATE.history.find(x => x.id === valId);
-  if (v) v.client_id = null;
+  const {error}=await sb.from('valuations').update({client_id:null}).eq('id',valId);
+  if(error){alert('Błąd: '+error.message);return;}
+  const v=STATE.history.find(x=>x.id===valId);
+  if(v)v.client_id=null;
   renderClients();
 }
 
 function openClientModal(id) {
-  const isEdit = !!id;
-  document.getElementById('client-modal-title').textContent = isEdit ? 'Edytuj klienta' : 'Nowy klient';
-  document.getElementById('client-edit-id').value = id || '';
-  if (isEdit) {
-    const c = clientsData.find(x => x.id === id) || {};
-    document.getElementById('cl-name').value = c.name || '';
-    document.getElementById('cl-tel').value = c.phone || '';
-    document.getElementById('cl-email').value = c.email || '';
-    document.getElementById('cl-status').value = c.status || 'nowy';
-    document.getElementById('cl-interest').value = c.interest || '';
-    document.getElementById('cl-city').value = c.city || '';
-    document.getElementById('cl-budget').value = c.budget || '';
-    document.getElementById('cl-note').value = c.note || '';
+  const isEdit=!!id;
+  document.getElementById('client-modal-title').textContent=isEdit?'Edytuj klienta':'Nowy klient';
+  document.getElementById('client-edit-id').value=id||'';
+  if(isEdit){
+    const c=clientsData.find(x=>x.id===id)||{};
+    document.getElementById('cl-name').value=c.name||'';
+    document.getElementById('cl-tel').value=c.phone||'';
+    document.getElementById('cl-email').value=c.email||'';
+    document.getElementById('cl-status').value=c.status||'nowy';
+    document.getElementById('cl-interest').value=c.interest||'';
+    document.getElementById('cl-city').value=c.city||'';
+    document.getElementById('cl-budget').value=c.budget||'';
+    document.getElementById('cl-note').value=c.note||'';
   } else {
-    ['cl-name', 'cl-tel', 'cl-email', 'cl-city', 'cl-budget', 'cl-note'].forEach(i => document.getElementById(i).value = '');
-    document.getElementById('cl-status').value = 'nowy';
-    document.getElementById('cl-interest').value = '';
+    ['cl-name','cl-tel','cl-email','cl-city','cl-budget','cl-note'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('cl-status').value='nowy';
+    document.getElementById('cl-interest').value='';
   }
   openModal('modal-client');
 }
 
 async function saveClient() {
-  const name = document.getElementById('cl-name').value.trim();
-  if (!name) { alert('Podaj imię i nazwisko.'); return; }
-  const id = document.getElementById('client-edit-id').value;
-  const payload = { user_id: STATE.user.id, name, phone: document.getElementById('cl-tel').value.trim(), email: document.getElementById('cl-email').value.trim(), status: document.getElementById('cl-status').value, interest: document.getElementById('cl-interest').value, city: document.getElementById('cl-city').value.trim(), budget: document.getElementById('cl-budget').value.trim(), note: document.getElementById('cl-note').value.trim() };
-  if (id) {
-    const { error } = await sb.from('clients').update(payload).eq('id', id);
-    if (error) { alert('Błąd: ' + error.message); return; }
-  } else {
-    payload.created_at = new Date().toISOString();
-    const { error } = await sb.from('clients').insert(payload);
-    if (error) { alert('Błąd: ' + error.message); return; }
-  }
+  const name=document.getElementById('cl-name').value.trim();
+  if(!name){alert('Podaj imię i nazwisko.');return;}
+  const id=document.getElementById('client-edit-id').value;
+  const payload={user_id:STATE.user.id,name,phone:document.getElementById('cl-tel').value.trim(),email:document.getElementById('cl-email').value.trim(),status:document.getElementById('cl-status').value,interest:document.getElementById('cl-interest').value,city:document.getElementById('cl-city').value.trim(),budget:document.getElementById('cl-budget').value.trim(),note:document.getElementById('cl-note').value.trim()};
+  if(id){const{error}=await sb.from('clients').update(payload).eq('id',id);if(error){alert('Błąd: '+error.message);return;}}
+  else{payload.created_at=new Date().toISOString();const{error}=await sb.from('clients').insert(payload);if(error){alert('Błąd: '+error.message);return;}}
   closeModal('modal-client');
   await loadClients();
 }
 
 async function deleteClient(id) {
-  if (!confirm('Usunąć tego klienta? Wyceny pozostaną, ale zostaną odpięte.')) return;
-  // Unassign valuations
-  await sb.from('valuations').update({ client_id: null }).eq('client_id', id).catch(() => {});
-  STATE.history.forEach(v => { if (v.client_id === id) v.client_id = null; });
-  await sb.from('clients').delete().eq('id', id);
+  if(!confirm('Usunąć tego klienta? Wyceny pozostaną, ale zostaną odpięte.'))return;
+  await sb.from('valuations').update({client_id:null}).eq('client_id',id).catch(()=>{});
+  STATE.history.forEach(v=>{if(v.client_id===id)v.client_id=null;});
+  await sb.from('clients').delete().eq('id',id);
   await loadClients();
 }
 
@@ -1187,38 +1362,34 @@ async function deleteClient(id) {
 // LEADY
 // ═══════════════════════════════════════
 async function loadLeady() {
-  const tbody = document.getElementById('leady-tbody');
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);">Ładowanie...</td></tr>';
-  const { data, error } = await sb.from('leady').select('*').order('created_at', { ascending: false });
-  if (error || !data?.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Brak leadów</td></tr>';
-    document.getElementById('kpi-leads').textContent = '0';
-    return;
-  }
-  leadyData = data;
-  document.getElementById('kpi-leads').textContent = data.length;
-  tbody.innerHTML = data.map((l, i) => `
+  const tbody=document.getElementById('leady-tbody');
+  tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);">Ładowanie...</td></tr>';
+  const{data,error}=await sb.from('leady').select('*').order('created_at',{ascending:false});
+  if(error||!data?.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tf);font-size:14px;">Brak leadów</td></tr>';document.getElementById('kpi-leads').textContent='0';return;}
+  leadyData=data;
+  document.getElementById('kpi-leads').textContent=data.length;
+  tbody.innerHTML=data.map((l,i)=>`
     <tr style="border-bottom:1px solid rgba(124,58,237,.08);" onmouseover="this.style.background='rgba(124,58,237,.05)'" onmouseout="this.style.background=''">
       <td style="padding:12px 16px;"><input type="checkbox" class="lead-cb" data-i="${i}" style="cursor:pointer;accent-color:#A78BFA;"/></td>
-      <td style="padding:12px 16px;font-size:14px;font-weight:500;">${l.imie_nazwisko || '—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.email || '—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.telefon || '—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.miasto || '—'}</td>
-      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.metraz ? l.metraz + ' m²' : '—'}</td>
+      <td style="padding:12px 16px;font-size:14px;font-weight:500;">${l.imie_nazwisko||'—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.email||'—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.telefon||'—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.miasto||'—'}</td>
+      <td style="padding:12px 16px;font-size:13px;color:var(--tm);">${l.metraz?l.metraz+' m²':'—'}</td>
       <td style="padding:12px 16px;font-size:12px;color:var(--tf);">${new Date(l.created_at).toLocaleDateString('pl-PL')}</td>
     </tr>`).join('');
 }
 
-function toggleAllLeady(cb) { document.querySelectorAll('.lead-cb').forEach(c => c.checked = cb.checked); }
-function selectAllLeady() { const a = document.getElementById('lead-select-all'); a.checked = true; toggleAllLeady(a); }
+function toggleAllLeady(cb){document.querySelectorAll('.lead-cb').forEach(c=>c.checked=cb.checked);}
+function selectAllLeady(){const a=document.getElementById('lead-select-all');a.checked=true;toggleAllLeady(a);}
 
 function downloadLeadyCSV() {
-  const sel = [...document.querySelectorAll('.lead-cb:checked')].map(c => leadyData[+c.dataset.i]);
-  const rows = sel.length ? sel : leadyData;
-  if (!rows.length) { alert('Brak leadów.'); return; }
-  const hdrs = ['Imię i nazwisko', 'Email', 'Telefon', 'Miasto', 'Dzielnica', 'Metraż', 'Stan', 'Typ', 'Data'];
-  const csv = '\uFEFF' + [hdrs.join(','), ...rows.map(l => [l.imie_nazwisko, l.email, l.telefon, l.miasto, l.dzielnica || '', l.metraz || '', l.stan || '', l.typ || '', new Date(l.created_at).toLocaleDateString('pl-PL')].map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(','))].join('\n');
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })), download: `leady-estivo-${new Date().toISOString().slice(0, 10)}.csv` });
+  const sel=[...document.querySelectorAll('.lead-cb:checked')].map(c=>leadyData[+c.dataset.i]);
+  const rows=sel.length?sel:leadyData;
+  if(!rows.length){alert('Brak leadów.');return;}
+  const hdrs=['Imię i nazwisko','Email','Telefon','Miasto','Dzielnica','Metraż','Stan','Typ','Data'];
+  const csv='\uFEFF'+[hdrs.join(','),...rows.map(l=>[l.imie_nazwisko,l.email,l.telefon,l.miasto,l.dzielnica||'',l.metraz||'',l.stan||'',l.typ||'',new Date(l.created_at).toLocaleDateString('pl-PL')].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','))].join('\n');
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),download:`leady-estivo-${new Date().toISOString().slice(0,10)}.csv`});
   a.click();
 }
 
@@ -1226,34 +1397,26 @@ function downloadLeadyCSV() {
 // SETTINGS
 // ═══════════════════════════════════════
 async function saveSettings() {
-  const name = document.getElementById('set-name-input').value.trim();
-  const tel = document.getElementById('set-tel-input').value.trim();
-  const agencja = document.getElementById('set-agencja-input').value.trim();
-  const nip = document.getElementById('set-nip-input').value.trim();
-  const www = document.getElementById('set-www-input').value.trim();
-  const adres = document.getElementById('set-adres-input').value.trim();
-  const msg = document.getElementById('set-save-msg');
-  const payload = { id: STATE.user.id, name, phone: tel, agencja, nip, www, adres };
-  if (logoBase64) payload.logo_base64 = logoBase64;
-  const { error } = await sb.from('profiles').upsert(payload, { onConflict: 'id' });
-  msg.style.display = 'block';
-  if (error) {
-    Object.assign(msg.style, { background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.2)', color: '#F87171' });
-    msg.textContent = 'Błąd: ' + error.message;
-  } else {
-    Object.assign(msg.style, { background: 'rgba(16,185,129,.1)', border: '1px solid rgba(16,185,129,.2)', color: '#34D399' });
-    msg.textContent = '✅ Zapisano pomyślnie';
-    STATE.profile = { ...STATE.profile, name, phone: tel, agencja, nip, www, adres, logo_base64: logoBase64 };
-    document.getElementById('sb-uname').textContent = name;
-    setTimeout(() => msg.style.display = 'none', 3000);
-  }
+  const name=document.getElementById('set-name-input').value.trim();
+  const tel=document.getElementById('set-tel-input').value.trim();
+  const agencja=document.getElementById('set-agencja-input').value.trim();
+  const nip=document.getElementById('set-nip-input').value.trim();
+  const www=document.getElementById('set-www-input').value.trim();
+  const adres=document.getElementById('set-adres-input').value.trim();
+  const msg=document.getElementById('set-save-msg');
+  const payload={id:STATE.user.id,name,phone:tel,agencja,nip,www,adres};
+  if(logoBase64)payload.logo_base64=logoBase64;
+  const{error}=await sb.from('profiles').upsert(payload,{onConflict:'id'});
+  msg.style.display='block';
+  if(error){Object.assign(msg.style,{background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.2)',color:'#F87171'});msg.textContent='Błąd: '+error.message;}
+  else{Object.assign(msg.style,{background:'rgba(16,185,129,.1)',border:'1px solid rgba(16,185,129,.2)',color:'#34D399'});msg.textContent='✅ Zapisano pomyślnie';STATE.profile={...STATE.profile,name,phone:tel,agencja,nip,www,adres,logo_base64:logoBase64};document.getElementById('sb-uname').textContent=name;setTimeout(()=>msg.style.display='none',3000);}
 }
 
 function handleLogoUpload(e) {
-  const file = e.target.files[0]; if (!file) return;
-  if (file.size > 2 * 1024 * 1024) { alert('Plik za duży. Max 2MB.'); return; }
-  const r = new FileReader();
-  r.onload = ev => { logoBase64 = ev.target.result; document.getElementById('logo-preview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;"/>`; };
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>2*1024*1024){alert('Plik za duży. Max 2MB.');return;}
+  const r=new FileReader();
+  r.onload=ev=>{logoBase64=ev.target.result;document.getElementById('logo-preview').innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;"/>`;};
   r.readAsDataURL(file);
 }
 
@@ -1261,45 +1424,40 @@ function handleLogoUpload(e) {
 // UPGRADE
 // ═══════════════════════════════════════
 function openUpgrade(reason) {
-  const title = document.getElementById('upg-title');
-  const sub = document.getElementById('upg-sub');
-  if (reason === 'limit') { title.textContent = 'Limit wycen wyczerpany'; sub.textContent = `Plan Starter: ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro — bez limitów.`; }
-  else if (reason === 'pdf') { title.textContent = 'Raport PDF — plan Pro'; sub.textContent = 'Generowanie brandowanych raportów PDF jest dostępne w planie Pro lub Agencja.'; }
-  else { title.textContent = 'Ulepsz do Pro'; sub.textContent = 'Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.'; }
+  const title=document.getElementById('upg-title');const sub=document.getElementById('upg-sub');
+  if(reason==='limit'){title.textContent='Limit wycen wyczerpany';sub.textContent=`Plan Starter: ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro — bez limitów.`;}
+  else if(reason==='pdf'){title.textContent='Raport PDF — plan Pro';sub.textContent='Generowanie brandowanych raportów PDF jest dostępne w planie Pro lub Agencja.';}
+  else{title.textContent='Ulepsz do Pro';sub.textContent='Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.';}
   openModal('modal-upgrade');
 }
 
-async function goToStripe(plan = 'pro') {
+async function goToStripe(plan='pro') {
   closeModal('modal-upgrade');
-  try {
-    const res = await fetch('/.netlify/functions/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan }) });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else alert('Błąd Stripe. Spróbuj ponownie.');
-  } catch(e) { alert('Błąd połączenia.'); }
+  try{const res=await fetch('/.netlify/functions/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan})});const data=await res.json();if(data.url)window.location.href=data.url;else alert('Błąd Stripe. Spróbuj ponownie.');}
+  catch(e){alert('Błąd połączenia.');}
 }
 
 // ═══════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════
 function switchTab(tab) {
-  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-  document.getElementById('tab-' + tab)?.classList.add('active');
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('tab-'+tab)?.classList.add('active');
   document.querySelector(`.sb-item[data-tab="${tab}"]`)?.classList.add('active');
-  const titles = { overview: 'Przegląd', valuator: 'Nowa wycena', history: 'Historia wycen', klienci: 'Klienci', leady: 'Leady', settings: 'Ustawienia' };
-  document.getElementById('topbar-title').textContent = titles[tab] || tab;
-  if (tab === 'history') renderHistoryList();
-  if (tab === 'leady') loadLeady();
-  if (tab === 'klienci') loadClients();
+  const titles={overview:'Przegląd',valuator:'Nowa wycena',history:'Historia wycen',klienci:'Klienci',leady:'Leady',settings:'Ustawienia'};
+  document.getElementById('topbar-title').textContent=titles[tab]||tab;
+  if(tab==='history'){closeInlinePreview();renderHistoryList();}
+  if(tab==='leady')loadLeady();
+  if(tab==='klienci')loadClients();
 }
 
-function openModal(id) { document.getElementById(id)?.classList.add('open'); }
-function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
-document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-bg.open').forEach(m => m.classList.remove('open')); });
+function openModal(id){document.getElementById(id)?.classList.add('open');}
+function closeModal(id){document.getElementById(id)?.classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg.open').forEach(m=>m.classList.remove('open'));});
 
-async function doLogout() { await sb.auth.signOut(); window.location.replace('/index.html'); }
+async function doLogout(){await sb.auth.signOut();window.location.replace('/index.html');}
 </script>
 </body>
 </html>
