@@ -13,17 +13,23 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);overflow:hidden;}
 input,select,textarea{font-size:16px !important;}
+
+/* ORBS — pointer-events none, no filter on z-stacking context */
 .orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;}
 .o1{width:520px;height:520px;background:radial-gradient(circle,rgba(124,58,237,.3),transparent 70%);top:-160px;left:-80px;}
 .o2{width:420px;height:420px;background:radial-gradient(circle,rgba(37,99,235,.25),transparent 70%);bottom:-80px;right:-80px;}
+
 #loading-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
 .ld-logo{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .ld-dots{display:flex;gap:6px;}
 .ld{width:7px;height:7px;border-radius:50%;background:var(--vl);animation:ld 1.2s infinite;}
 .ld:nth-child(2){animation-delay:.2s;}.ld:nth-child(3){animation-delay:.4s;}
 @keyframes ld{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+
 .dash{display:flex;width:100%;height:100%;position:relative;z-index:1;}
-.sidebar{width:218px;background:var(--s1);border-right:1px solid var(--br);display:flex;flex-direction:column;flex-shrink:0;transition:transform .3s ease;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:218px;background:var(--s1);border-right:1px solid var(--br);display:flex;flex-direction:column;flex-shrink:0;transition:transform .28s cubic-bezier(.4,0,.2,1);}
 .sb-logo{padding:22px 18px 18px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;border-bottom:1px solid var(--br);}
 .sb-plan{margin:12px 10px;border-radius:10px;padding:10px 12px;}
 .sb-plan.trial{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);}
@@ -53,6 +59,8 @@ input,select,textarea{font-size:16px !important;}
 .sb-upg:hover{background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(37,99,235,.2));}
 .sb-upg-l{font-size:11px;color:var(--vl);font-weight:500;margin-bottom:1px;}
 .sb-upg-t{font-size:12px;color:var(--tm);}
+
+/* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
 .topbar{height:54px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
 .topbar-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
@@ -64,8 +72,21 @@ input,select,textarea{font-size:16px !important;}
 .btn-sm-fill:hover{opacity:.88;}
 .mob-burger{display:none;background:none;border:1px solid var(--br);border-radius:8px;padding:6px 9px;cursor:pointer;color:var(--t);align-items:center;justify-content:center;flex-shrink:0;}
 
-/* SIDEBAR OVERLAY — NO backdrop-filter to prevent blur issues */
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(6,4,15,.75);z-index:299;}
+/* ── SIDEBAR OVERLAY — NO backdrop-filter, NO filter, NO blur ──
+   Uses plain rgba background only to avoid creating a stacking context
+   that would blur the sidebar rendered above it.                       */
+.sidebar-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  /* Simple solid-ish dark tint — NO backdrop-filter */
+  background:rgba(6,4,15,.78);
+  z-index:299;
+  /* Prevent any inherited filter from parent */
+  -webkit-transform:translateZ(0);
+  transform:translateZ(0);
+  will-change:opacity;
+}
 .sidebar-overlay.open{display:block;}
 
 .content{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch;}
@@ -186,7 +207,7 @@ input,select,textarea{font-size:16px !important;}
 .cc-btn.assign{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.35);color:var(--vl);}
 .cc-btn.del{color:#F87171;border-color:rgba(239,68,68,.2);}
 
-/* MODALS */
+/* ── MODALS ── */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(6,4,15,.82);z-index:400;align-items:flex-end;justify-content:center;padding:0;}
 .modal-bg.open{display:flex;}
 .modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:none;border-radius:8px;color:var(--tm);font-size:16px;cursor:pointer;padding:5px 10px;line-height:1;}
@@ -252,12 +273,16 @@ input,select,textarea{font-size:16px !important;}
 #inline-preview.open{display:block;}
 .ip-close{background:rgba(255,255,255,.06);border:none;border-radius:7px;color:var(--tm);font-size:13px;cursor:pointer;padding:5px 12px;margin-bottom:14px;}
 .ip-close:hover{background:rgba(255,255,255,.12);color:var(--t);}
+
+/* ── BOTTOM NAV ── */
 .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--s1);border-top:1px solid var(--br);z-index:200;flex-direction:row;}
 .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--tf);transition:color .15s;padding:6px 2px;}
 .bn-item.active{color:var(--vl);}
 .bn-label{font-size:10px;font-weight:500;}
 
+/* ── RESPONSIVE ── */
 @media(min-width:600px){.g2,.g3{grid-template-columns:1fr 1fr;}.dm-grid{grid-template-columns:1fr 1fr;}}
+
 @media(min-width:900px){
   .sidebar{transform:none !important;position:relative;z-index:auto;}
   .mob-burger{display:none !important;}
@@ -275,11 +300,30 @@ input,select,textarea{font-size:16px !important;}
   .content{padding:24px;}
   body{overflow:hidden;}
 }
+
 @media(max-width:899px){
   html,body{overflow:hidden;}
-  /* Sidebar is fixed overlay on mobile — sits above content, no blur */
-  .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:300;transform:translateX(-100%);width:240px;overflow-y:auto;}
+
+  /*
+   * MOBILE SIDEBAR FIX:
+   * - position:fixed so it sits in its own layer above the overlay
+   * - z-index:300 (above overlay at 299)
+   * - NO filter, NO backdrop-filter anywhere on sidebar or its parents
+   * - will-change:transform creates compositing layer cleanly
+   */
+  .sidebar{
+    position:fixed;
+    left:0;top:0;bottom:0;
+    z-index:300;
+    transform:translateX(-100%);
+    width:240px;
+    overflow-y:auto;
+    will-change:transform;
+    /* Ensure no blur leaks from parent stacking contexts */
+    isolation:isolate;
+  }
   .sidebar.open{transform:translateX(0);}
+
   .mob-burger{display:flex !important;}
   .bottom-nav{display:flex;}
   .content{padding:16px;padding-bottom:76px;}
@@ -296,6 +340,7 @@ input,select,textarea{font-size:16px !important;}
   .hist-item{flex-direction:column;align-items:flex-start;}
   .hist-item > div:last-child{display:flex;gap:8px;align-self:flex-end;}
 }
+
 @media(max-width:420px){
   .kpi-row{grid-template-columns:1fr 1fr;}
   .g2{grid-template-columns:1fr;}
@@ -308,6 +353,7 @@ input,select,textarea{font-size:16px !important;}
 <div class="orb o1"></div><div class="orb o2"></div>
 <div id="loading-screen"><div class="ld-logo">estivo</div><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 
+<!-- Overlay — plain dark tint, no blur, no filter -->
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <div class="dash" id="dashboard" style="display:none;">
@@ -641,13 +687,18 @@ input,select,textarea{font-size:16px !important;}
 const SUPABASE_URL='https://wvzuqbdwlmidorgnfpdz.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+// ── PLAN LIMITS ──
+// Starter: 5 wycen/miesiąc (hard limit)
+// Pro / Agencja / Trial: nielimitowane
 const STARTER_LIMIT=5;
+
 let STATE={user:null,profile:null,subscription:null,history:[],lastResult:null};
 let leadyData=[],clientsData=[],logoBase64=null;
 let _assignClientId=null,_assignSelectedValId=null;
 let uploadedPhotos=[];
 
-// ── SIDEBAR MOBILE — clean event delegation, no blur ──
+// ── SIDEBAR MOBILE ──
 document.getElementById('mob-burger-btn').addEventListener('click',function(e){
   e.stopPropagation();
   toggleSidebar();
@@ -659,8 +710,7 @@ document.getElementById('sidebar-overlay').addEventListener('click',function(){
 function toggleSidebar(){
   const sidebar=document.getElementById('sidebar');
   const overlay=document.getElementById('sidebar-overlay');
-  const isOpen=sidebar.classList.contains('open');
-  if(isOpen){
+  if(sidebar.classList.contains('open')){
     sidebar.classList.remove('open');
     overlay.classList.remove('open');
   }else{
@@ -712,20 +762,19 @@ async function loadUserData(){
 }
 
 // ── PLAN HELPERS ──
-// Pro = active pro/agencja subscription
+// Pro = active pro lub agencja subscription
 function isPro(){
   const sub=STATE.subscription;
   if(!sub)return false;
-  if(sub.status==='active'&&(sub.plan==='pro'||sub.plan==='agencja'))return true;
-  return false;
+  return sub.status==='active'&&(sub.plan==='pro'||sub.plan==='agencja');
 }
-// Trial = trial status (gets same access as pro for valuations)
+// Trial = trial status — traktowany jak Pro (nielimitowane)
 function isTrial(){
   const sub=STATE.subscription;
   if(!sub)return false;
   return sub.status==='trial';
 }
-// Starter = no sub or starter plan — HARD limited to 5/month
+// Starter = brak sub lub plan starter — limit 5/miesiąc
 function isStarterOnly(){
   return !isPro()&&!isTrial();
 }
@@ -738,7 +787,7 @@ function monthlyUsed(){
   }).length;
 }
 
-// Strict limit check for starter — pro/trial = unlimited
+// Pro/Trial = unlimited; Starter = max 5/miesiąc
 function canValuate(){
   if(isPro()||isTrial())return true;
   return monthlyUsed()<STARTER_LIMIT;
@@ -775,51 +824,57 @@ function updatePlanUI(){
   const used=monthlyUsed();
 
   if(sub&&sub.status==='trial'){
+    // Trial — nielimitowane wyceny
     const daysLeft=Math.max(0,Math.round((new Date(sub.trial_ends_at)-new Date())/86400000));
     const pct=Math.round((daysLeft/14)*100);
     box.className='sb-plan trial';
-    box.innerHTML=`<div class="sb-plan-label">Trial aktywny</div><div class="sb-plan-val">${daysLeft} dni</div><div class="sb-plan-sub">do końca trialu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#10B981,#06B6D4);width:${pct}%"></div></div>`;
+    box.innerHTML=`<div class="sb-plan-label">Trial aktywny</div><div class="sb-plan-val">${daysLeft} dni</div><div class="sb-plan-sub">do końca trialu · nielimitowane</div><div class="sb-bar"><div class="sb-bar-fill" style="background:linear-gradient(90deg,#10B981,#06B6D4);width:${pct}%"></div></div>`;
     nameEl.textContent=`Trial ${sub.plan==='pro'?'Pro':'Starter'}`;
-    subEl.textContent=`${daysLeft} dni do końca trialu · Nielimitowane`;
+    subEl.textContent=`${daysLeft} dni do końca trialu · Nielimitowane wyceny`;
     upgBtn.style.display='block';setUpgBtn.style.display='block';cancelBtn.style.display='block';
-    document.getElementById('overview-limit-banner').style.display='none';
-    document.getElementById('val-limit-banner').style.display='none';
+    hideLimitBanners();
   }else if(sub&&sub.plan==='pro'&&sub.status==='active'){
+    // Pro — nielimitowane
     box.className='sb-plan pro';
     box.innerHTML='<div class="sb-plan-label">Plan Pro</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
-    nameEl.textContent='Plan Pro';subEl.textContent='199 zł / miesiąc · Nielimitowane';
+    nameEl.textContent='Plan Pro';subEl.textContent='199 zł / miesiąc · Nielimitowane wyceny';
     upgBtn.style.display='none';setUpgBtn.style.display='none';cancelBtn.style.display='none';
-    document.getElementById('overview-limit-banner').style.display='none';
-    document.getElementById('val-limit-banner').style.display='none';
+    hideLimitBanners();
   }else if(sub&&sub.plan==='agencja'&&sub.status==='active'){
+    // Agencja — nielimitowane
     box.className='sb-plan agencja';
-    box.innerHTML='<div class="sb-plan-label">Plan Agencja</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Pełny dostęp</div>';
-    nameEl.textContent='Plan Agencja';subEl.textContent='599 zł / miesiąc';
+    box.innerHTML='<div class="sb-plan-label">Plan Agencja</div><div class="sb-plan-val">Aktywny</div><div class="sb-plan-sub">Nielimitowane wyceny</div>';
+    nameEl.textContent='Plan Agencja';subEl.textContent='599 zł / miesiąc · Nielimitowane wyceny';
     upgBtn.style.display='none';setUpgBtn.style.display='none';cancelBtn.style.display='none';
-    document.getElementById('overview-limit-banner').style.display='none';
-    document.getElementById('val-limit-banner').style.display='none';
+    hideLimitBanners();
   }else{
-    // STARTER — hard 5/month limit
+    // STARTER — twardy limit 5/miesiąc
     const left=Math.max(0,STARTER_LIMIT-used);
     const pct=Math.min(100,Math.round((used/STARTER_LIMIT)*100));
     const barColor=left===0?'linear-gradient(90deg,#EF4444,#DC2626)':left<=1?'linear-gradient(90deg,#F59E0B,#EF4444)':'linear-gradient(90deg,#F59E0B,#FCD34D)';
     box.className='sb-plan starter';
-    box.innerHTML=`<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val">${used}/${STARTER_LIMIT}</div><div class="sb-plan-sub">wycen w tym miesiącu</div><div class="sb-bar"><div class="sb-bar-fill" style="background:${barColor};width:${pct}%"></div></div>`;
-    nameEl.textContent='Plan Starter';subEl.textContent=`${used}/${STARTER_LIMIT} wycen w tym miesiącu`;
+    box.innerHTML=`<div class="sb-plan-label">Plan Starter</div><div class="sb-plan-val">${used}/${STARTER_LIMIT}</div><div class="sb-plan-sub">wycen w tym miesiącu (max ${STARTER_LIMIT})</div><div class="sb-bar"><div class="sb-bar-fill" style="background:${barColor};width:${pct}%"></div></div>`;
+    nameEl.textContent='Plan Starter';
+    subEl.textContent=`${used}/${STARTER_LIMIT} wycen w tym miesiącu (limit: ${STARTER_LIMIT})`;
     upgBtn.style.display='block';setUpgBtn.style.display='block';cancelBtn.style.display='none';
-    renderLimitBanner(used,left);
+    renderLimitBanners(used,left);
   }
 }
 
-function renderLimitBanner(used,left){
+function hideLimitBanners(){
+  document.getElementById('overview-limit-banner').style.display='none';
+  document.getElementById('val-limit-banner').style.display='none';
+}
+
+function renderLimitBanners(used,left){
   ['overview-limit-banner','val-limit-banner'].forEach(id=>{
     const el=document.getElementById(id);
     if(left===0){
       el.style.display='block';
-      el.innerHTML=`<div class="limit-banner danger"><span class="lb-txt">⚠ Limit ${used}/${STARTER_LIMIT} wycen wyczerpany w tym miesiącu</span><button class="lb-btn" onclick="openUpgrade('limit')">Ulepsz do Pro</button></div>`;
+      el.innerHTML=`<div class="limit-banner danger"><span class="lb-txt">⚠ Limit ${STARTER_LIMIT} wycen/miesiąc wyczerpany (Plan Starter)</span><button class="lb-btn" onclick="openUpgrade('limit')">Przejdź na Pro →</button></div>`;
     }else if(left<=2){
       el.style.display='block';
-      el.innerHTML=`<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen (Starter)</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz</button></div>`;
+      el.innerHTML=`<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen w tym miesiącu (Starter)</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz do Pro</button></div>`;
     }else{
       el.style.display='none';
     }
@@ -835,7 +890,9 @@ function updateKPIs(){
     document.getElementById('kpi-limit-txt').style.color='var(--green)';
     document.getElementById('ku-nums').textContent='∞';
     document.getElementById('ku-fill').style.width='0%';
+    document.getElementById('ku-fill').style.background='var(--green)';
   }else{
+    // Starter
     const left=Math.max(0,STARTER_LIMIT-used);
     document.getElementById('kpi-limit-txt').textContent=`${used}/${STARTER_LIMIT} (Starter)`;
     document.getElementById('kpi-limit-txt').style.color=left===0?'var(--red)':left<=2?'var(--amber)':'var(--tm)';
@@ -868,8 +925,9 @@ function renderHistoryList(filter=''){
     :STATE.history;
   if(!items.length){el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wyników.</div>';return;}
   el.innerHTML=items.map(v=>{
-    const vid=v.id; // UUID string
-    const pdfBtn=isPro()||isTrial()
+    const vid=v.id;
+    const canPDF=isPro()||isTrial();
+    const pdfBtn=canPDF
       ?`<button class="hist-btn" data-action="pdf" data-vid="${vid}" style="border-color:rgba(124,58,237,.3);color:var(--vl);">📄 PDF</button>`
       :`<button class="hist-btn" data-action="upgrade-pdf" style="color:rgba(167,139,250,.6);">🔒 PDF</button>`;
     return`<div class="hist-item">
@@ -888,7 +946,6 @@ function renderHistoryList(filter=''){
     </div>`;
   }).join('');
 
-  // Attach events via delegation — avoids all inline handler issues
   el.querySelectorAll('[data-action]').forEach(btn=>{
     btn.addEventListener('click',function(e){
       e.stopPropagation();
@@ -916,7 +973,7 @@ function openInlinePreview(id){
   const canPDF=isPro()||isTrial();
   const pdfBtnHtml=canPDF
     ?`<button id="ip-pdf-${vid}" style="padding:9px 16px;background:linear-gradient(135deg,var(--v),var(--b));border:none;border-radius:9px;font-size:13px;font-weight:500;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;">📄 PDF</button>`
-    :`<button id="ip-upg-${vid}" style="padding:9px 16px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);border-radius:9px;font-size:13px;color:var(--vl);font-family:'DM Sans',sans-serif;cursor:pointer;">🔒 PDF</button>`;
+    :`<button id="ip-upg-${vid}" style="padding:9px 16px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);border-radius:9px;font-size:13px;color:var(--vl);font-family:'DM Sans',sans-serif;cursor:pointer;">🔒 PDF (Pro)</button>`;
   cont.innerHTML=`<div style="display:flex;flex-direction:column;gap:12px;">
     <div>
       <div style="font-size:11px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
@@ -933,15 +990,12 @@ function openInlinePreview(id){
     </div>
   </div>`;
   panel.classList.add('open');
-
-  // Attach events after rendering
   const pdfEl=document.getElementById(`ip-pdf-${vid}`);
   if(pdfEl)pdfEl.addEventListener('click',()=>generatePDFById(vid));
   const upgEl=document.getElementById(`ip-upg-${vid}`);
   if(upgEl)upgEl.addEventListener('click',()=>openUpgrade('pdf'));
   const detEl=document.getElementById(`ip-det-${vid}`);
   if(detEl)detEl.addEventListener('click',()=>openDetail(vid));
-
   setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
 }
 
@@ -961,7 +1015,6 @@ function openDetail(id){
     document.getElementById('dm-photo-grid').innerHTML=v.photo_thumbs.map(src=>`<img src="${src}" style="width:72px;height:72px;border-radius:7px;object-fit:cover;border:1px solid rgba(124,58,237,.2);"/>`).join('');
   }else photosWrap.style.display='none';
   const pdfBtn=document.getElementById('dm-pdf-btn');
-  // Re-attach click event cleanly
   const newBtn=pdfBtn.cloneNode(true);
   pdfBtn.parentNode.replaceChild(newBtn,pdfBtn);
   if(isPro()||isTrial()){
@@ -969,7 +1022,7 @@ function openDetail(id){
     newBtn.style.background='';
     newBtn.addEventListener('click',()=>generatePDFById(v.id));
   }else{
-    newBtn.textContent='🔒 PDF — Pro';
+    newBtn.textContent='🔒 PDF — tylko Pro';
     newBtn.style.background='rgba(124,58,237,.2)';
     newBtn.addEventListener('click',()=>openUpgrade('pdf'));
   }
@@ -1032,7 +1085,7 @@ async function runValuation(){
   const stan=document.getElementById('v-stan').value;
   if(!miasto||!metraz||!stan){alert('Podaj miasto, metraż i stan.');return;}
 
-  // HARD LIMIT for starter
+  // ── TWARDY LIMIT DLA STARTERA ──
   if(!canValuate()){
     openUpgrade('limit');
     return;
@@ -1196,21 +1249,16 @@ function renderClients(filter=''){
     </div>`;
   }).join('');
 
-  // Attach events via delegation — no inline handlers, avoids UUID issues
   grid.querySelectorAll('.cc-btn.assign').forEach(btn=>{
     btn.addEventListener('click',function(){
       openAssignModal(this.getAttribute('data-client-id'),this.getAttribute('data-client-name'));
     });
   });
   grid.querySelectorAll('.edit-btn').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      openClientModal(this.getAttribute('data-client-id'));
-    });
+    btn.addEventListener('click',function(){openClientModal(this.getAttribute('data-client-id'));});
   });
   grid.querySelectorAll('.del-btn').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      deleteClient(this.getAttribute('data-client-id'));
-    });
+    btn.addEventListener('click',function(){deleteClient(this.getAttribute('data-client-id'));});
   });
   grid.querySelectorAll('.cc-val-pill-rm').forEach(btn=>{
     btn.addEventListener('click',function(){
@@ -1220,15 +1268,14 @@ function renderClients(filter=''){
 }
 
 function openAssignModal(clientId,clientName){
-  _assignClientId=clientId; // UUID string
+  _assignClientId=clientId;
   _assignSelectedValId=null;
   document.getElementById('assign-client-name-label').textContent='do klienta: '+clientName;
   const available=STATE.history.filter(v=>!v.client_id||String(v.client_id)===String(clientId));
   const listEl=document.getElementById('assign-val-list');
   if(!available.length){
     listEl.innerHTML=`<div style="text-align:center;padding:28px;color:var(--tf);font-size:14px;">Brak dostępnych wycen.</div>`;
-    openModal('modal-assign');
-    return;
+    openModal('modal-assign');return;
   }
   listEl.innerHTML=available.map(v=>`
     <div class="av-item" data-val-id="${v.id}">
@@ -1240,7 +1287,6 @@ function openAssignModal(clientId,clientName){
       <div class="av-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
       <div class="av-check"><svg width="9" height="7" fill="none" viewBox="0 0 9 7" class="av-check-svg" style="display:none;"><path d="M1 3.5l2.5 2.5 5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>`).join('');
-
   listEl.querySelectorAll('.av-item').forEach(item=>{
     item.addEventListener('click',function(){selectAssignVal(this);});
   });
@@ -1248,7 +1294,7 @@ function openAssignModal(clientId,clientName){
 }
 
 function selectAssignVal(el){
-  const valId=el.getAttribute('data-val-id'); // keep as string (UUID)
+  const valId=el.getAttribute('data-val-id');
   document.querySelectorAll('#assign-val-list .av-item').forEach(item=>{
     item.classList.remove('selected');
     const svg=item.querySelector('.av-check-svg');
@@ -1263,7 +1309,6 @@ function selectAssignVal(el){
 
 async function saveAssignment(){
   if(!_assignSelectedValId){alert('Wybierz wycenę.');return;}
-  // Both are UUID strings
   const{error}=await sb.from('valuations').update({client_id:_assignClientId}).eq('id',_assignSelectedValId);
   if(error){alert('Błąd: '+error.message);return;}
   const v=STATE.history.find(x=>String(x.id)===String(_assignSelectedValId));
@@ -1330,7 +1375,6 @@ async function saveClient(){
 
 async function deleteClient(id){
   if(!confirm('Usunąć tego klienta?'))return;
-  // First unassign any valuations linked to this client
   const{error:ve}=await sb.from('valuations').update({client_id:null}).eq('client_id',id);
   if(ve)console.warn('unassign error:',ve);
   STATE.history.forEach(v=>{if(String(v.client_id)===String(id))v.client_id=null;});
@@ -1428,9 +1472,16 @@ async function submitCancelTrial(){
 
 function openUpgrade(reason){
   const title=document.getElementById('upg-title'),sub=document.getElementById('upg-sub');
-  if(reason==='limit'){title.textContent='Limit wycen wyczerpany';sub.textContent=`Plan Starter: ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro po nielimitowany dostęp.`;}
-  else if(reason==='pdf'){title.textContent='Raport PDF — plan Pro';sub.textContent='PDF z brandingiem dostępny w planie Pro lub Agencja.';}
-  else{title.textContent='Ulepsz do Pro';sub.textContent='Wyceniaj bez ograniczeń i korzystaj ze wszystkich funkcji.';}
+  if(reason==='limit'){
+    title.textContent='Limit wycen wyczerpany';
+    sub.textContent=`Plan Starter pozwala na ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro — nielimitowane wyceny.`;
+  }else if(reason==='pdf'){
+    title.textContent='Raport PDF — plan Pro';
+    sub.textContent='PDF z brandingiem agencji dostępny w planie Pro lub Agencja.';
+  }else{
+    title.textContent='Ulepsz do Pro';
+    sub.textContent='Nielimitowane wyceny, raporty PDF, pełny CRM i więcej.';
+  }
   openModal('modal-upgrade');
 }
 
