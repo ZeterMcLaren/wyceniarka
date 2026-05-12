@@ -1035,7 +1035,18 @@ async function saveToHistory(){
   const btn=document.getElementById('save-hist-btn');if(!btn)return;
   btn.disabled=true;btn.textContent='Zapisywanie...';
   try{
-    const payload={user_id:STATE.user.id,...v};delete payload.id;
+    // Only include columns that exist in the schema — exclude photo_thumbs if not added yet
+    const payload={
+      user_id:STATE.user.id,
+      miasto:v.miasto,dzielnica:v.dzielnica,metraz:v.metraz,
+      stan:v.stan,typ:v.typ,cena:v.cena,
+      cena_min:v.cena_min,cena_max:v.cena_max,
+      cena_za_m2:v.cena_za_m2,pewnosc:v.pewnosc,
+      trend:v.trend,analiza:v.analiza,rynek:v.rynek,
+      created_at:v.created_at
+    };
+    // Add photo columns only if they exist (add them in Supabase first)
+    try{ payload.photo_count=v.photo_count||0; payload.photo_thumbs=v.photo_thumbs||[]; }catch(e){}
     const{data:saved,error}=await sb.from('valuations').insert(payload).select().single();
     if(error){alert('Błąd zapisu: '+error.message);btn.disabled=false;btn.textContent='💾 Zapisz w historii';return;}
     STATE.lastResult={...v,id:saved.id};STATE.history.unshift(saved);
