@@ -71,17 +71,22 @@ input,select,textarea{font-size:16px !important;}
 .btn-sm-fill:hover{opacity:.88;}
 .mob-burger{display:none;background:none;border:1px solid var(--br);border-radius:8px;padding:6px 9px;cursor:pointer;color:var(--t);align-items:center;justify-content:center;flex-shrink:0;}
 
-/* ── SIDEBAR OVERLAY ── */
+/* ── SIDEBAR OVERLAY ──
+   FIX: z-index wyższy niż sidebar (300), pointer-events zawsze auto gdy open */
 .sidebar-overlay{
   display:none;
   position:fixed;
   inset:0;
   background:rgba(6,4,15,.78);
   z-index:299;
+  pointer-events:none;
   -webkit-transform:translateZ(0);
   transform:translateZ(0);
 }
-.sidebar-overlay.open{display:block;}
+.sidebar-overlay.open{
+  display:block;
+  pointer-events:auto;
+}
 
 .content{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch;}
 .content::-webkit-scrollbar{width:3px;}
@@ -97,14 +102,36 @@ input,select,textarea{font-size:16px !important;}
 .ku-nums{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;}
 .ku-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}
 .ku-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+
+/* ── FIX: Aktywność wycen — chart card z właściwą strukturą ── */
 .chart-card{background:var(--s1);border:1px solid var(--br);border-radius:13px;padding:18px 20px;margin-bottom:20px;}
-.chart-bars{display:flex;align-items:flex-end;gap:7px;height:100px;margin-top:14px;}
-.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
+.chart-card .sec-hdr{margin-bottom:10px;}
+/* Kontener wykresu z wyraźną min-height żeby etykiety zawsze były widoczne */
+.chart-bars-wrap{overflow:hidden;}
+.chart-bars{
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  height:90px;  /* stała wysokość samych słupków */
+  padding-bottom:22px; /* miejsce na etykiety DNI — zawsze poniżej słupków */
+}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:0;position:relative;height:100%;}
 .bar-col:hover .bar-tooltip{display:block;}
 .bar-tooltip{display:none;position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:5px 9px;font-size:11px;white-space:nowrap;z-index:10;pointer-events:none;}
 .bar-tooltip-count{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--vl);}
+/* Słupek rośnie od dołu, etykieta zawsze na dole */
+.bar-inner{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  width:100%;
+  flex:1;
+  min-height:0;
+}
 .bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--v),var(--b));min-height:3px;cursor:pointer;}
-.bar-lbl{font-size:10px;color:var(--tm);}
+.bar-lbl{font-size:10px;color:var(--tm);text-align:center;width:100%;margin-top:4px;flex-shrink:0;}
+
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;}
 .sec-hdr h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
 .recent-list{display:flex;flex-direction:column;gap:8px;}
@@ -201,7 +228,7 @@ input,select,textarea{font-size:16px !important;}
 .cc-btn.assign{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.35);color:var(--vl);}
 .cc-btn.del{color:#F87171;border-color:rgba(239,68,68,.2);}
 
-/* ── CITY SEARCH (like index.html) ── */
+/* ── CITY SEARCH ── */
 .city-search-wrap{position:relative;}
 .city-search-input{width:100%;background:var(--bg);border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:16px !important;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;cursor:pointer;}
 .city-search-input:focus{border-color:var(--vl);}
@@ -291,7 +318,7 @@ input,select,textarea{font-size:16px !important;}
 .bn-item.active{color:var(--vl);}
 .bn-label{font-size:10px;font-weight:500;}
 
-/* ── FOOTER (dół strony) ── */
+/* ── FOOTER ── */
 .app-footer{padding:16px 20px;border-top:1px solid var(--br);display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;flex-shrink:0;background:var(--s1);}
 .app-footer a{font-size:11px;color:var(--tf);text-decoration:none;transition:color .2s;}
 .app-footer a:hover{color:var(--tm);}
@@ -321,6 +348,7 @@ input,select,textarea{font-size:16px !important;}
 @media(max-width:899px){
   html,body{overflow:hidden;}
 
+  /* FIX: sidebar mobile — z-index 300, powyżej overlay (299), poniżej modali (400) */
   .sidebar{
     position:fixed;
     left:0;top:0;bottom:0;
@@ -328,8 +356,10 @@ input,select,textarea{font-size:16px !important;}
     transform:translateX(-100%);
     width:240px;
     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
     will-change:transform;
-    isolation:isolate;
+    /* isolation:isolate USUNIĘTE — to powodowało problemy z klikalnością */
+    background:var(--s1);
   }
   .sidebar.open{transform:translateX(0);}
 
@@ -342,7 +372,8 @@ input,select,textarea{font-size:16px !important;}
   .g2{grid-template-columns:1fr 1fr;}
   .g3{grid-template-columns:1fr 1fr;}
   .r-metrics{grid-template-columns:1fr 1fr;}
-  .chart-bars{height:70px;}
+  /* FIX wykres na mobile — mniejsza wysokość ale etykiety zawsze widoczne */
+  .chart-bars{height:70px;padding-bottom:20px;}
   .bar-lbl{font-size:9px;}
   .set-sections{max-width:100%;}
   .leady-table-wrap table{min-width:560px;}
@@ -363,6 +394,7 @@ input,select,textarea{font-size:16px !important;}
 <div class="orb o1"></div><div class="orb o2"></div>
 <div id="loading-screen"><div class="ld-logo">estivo</div><div class="ld-dots"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
 
+<!-- FIX: overlay bez inline style, sterowany klasami -->
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <div class="dash" id="dashboard" style="display:none;">
@@ -408,10 +440,15 @@ input,select,textarea{font-size:16px !important;}
           <div class="kpi"><div class="kpi-lbl">Leady</div><div class="kpi-val" id="kpi-leads">0</div><div class="kpi-d" style="color:var(--tm);">z wyceniarki</div></div>
           <div class="kpi kpi-usage" id="kpi-usage-box"><div class="ku-lbl">Limit wycen</div><div class="ku-nums" id="ku-nums">—</div><div class="ku-bar"><div class="ku-fill" id="ku-fill" style="width:0%"></div></div></div>
         </div>
+
+        <!-- FIX: Aktywność wycen — nowa struktura z chart-bars-wrap -->
         <div class="chart-card">
           <div class="sec-hdr"><h3>Aktywność wycen</h3><span style="font-size:12px;color:var(--tm);">ostatnie 8 dni</span></div>
-          <div class="chart-bars" id="chart-bars"></div>
+          <div class="chart-bars-wrap">
+            <div class="chart-bars" id="chart-bars"></div>
+          </div>
         </div>
+
         <div class="sec-hdr"><h3>Ostatnie wyceny</h3><button class="btn-sm btn-sm-out" onclick="switchTab('history')">Wszystkie</button></div>
         <div class="recent-list" id="recent-list"></div>
       </div>
@@ -589,7 +626,6 @@ input,select,textarea{font-size:16px !important;}
       </div>
     </div>
 
-    <!-- FOOTER NA DOLE STRONY -->
     <footer class="app-footer">
       <a href="/regulamin.html">Regulamin</a>
       <span class="app-footer-sep">·</span>
@@ -721,39 +757,49 @@ const SUPABASE_URL='https://wvzuqbdwlmidorgnfpdz.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_kgSXyaRhcmCbRoRjnQRp0w_HVT4MqyG';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const STARTER_LIMIT=5;
+// ── LIMITY PLANÓW ──
+const STARTER_LIMIT=5; // Max 5 wycen miesięcznie dla Starter
 
 let STATE={user:null,profile:null,subscription:null,history:[],lastResult:null};
 let leadyData=[],clientsData=[],logoBase64=null;
 let _assignClientId=null,_assignSelectedValId=null;
 let uploadedPhotos=[];
 
-// ── SIDEBAR MOBILE ──
+// ── SIDEBAR MOBILE — FIX ──
+// Burger otwiera sidebar
 document.getElementById('mob-burger-btn').addEventListener('click',function(e){
   e.stopPropagation();
   toggleSidebar();
 });
-document.getElementById('sidebar-overlay').addEventListener('click',function(){
+
+// Overlay zamyka sidebar — bezpośrednie kliknięcie w overlay
+document.getElementById('sidebar-overlay').addEventListener('click',function(e){
+  e.stopPropagation();
   closeSidebar();
+});
+
+// Kliknięcie w treść sidebara nie zamyka overlaya
+document.getElementById('sidebar').addEventListener('click',function(e){
+  e.stopPropagation();
 });
 
 function toggleSidebar(){
   const sidebar=document.getElementById('sidebar');
   const overlay=document.getElementById('sidebar-overlay');
   if(sidebar.classList.contains('open')){
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
+    closeSidebar();
   }else{
     sidebar.classList.add('open');
     overlay.classList.add('open');
   }
 }
+
 function closeSidebar(){
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
 }
 
-// ── CITY SEARCH (app) ──
+// ── CITY SEARCH ──
 const POPULAR_CITIES=['Warszawa','Kraków','Wrocław','Gdańsk','Poznań','Łódź','Katowice','Lublin'];
 const ALL_CITIES=['Warszawa','Kraków','Wrocław','Gdańsk','Poznań','Łódź','Katowice','Lublin','Białystok','Bydgoszcz','Częstochowa','Gdynia','Gliwice','Kielce','Opole','Radom','Rzeszów','Sosnowiec','Szczecin','Toruń','Tychy','Zabrze','Bielsko-Biała','Bytom','Elbląg','Gorzów Wielkopolski','Kalisz','Legnica','Olsztyn','Płock','Ruda Śląska','Rybnik','Tarnów','Wałbrzych','Włocławek','Zielona Góra','Dąbrowa Górnicza','Nowy Sącz','Słupsk','Jelenia Góra','Siedlce','Inowrocław','Piła','Piotrków Trybunalski','Pruszków','Puławy','Stalowa Wola','Wieliczka','Myślenice','Nowy Targ','Zakopane','Gorlice','Limanowa','Brzesko','Oświęcim','Chrzanów','Olkusz','Miechów','Niepołomice','Skawina','Wadowice','Andrychów','Sanok','Krosno','Przemyśl','Jarosław','Mielec','Tarnobrzeg','Dębica','Łańcut','Leżajsk','Jasło','Sandomierz','Sopot','Pruszcz Gdański','Tczew','Kwidzyn','Malbork','Starogard Gdański','Chojnice','Lębork','Wejherowo','Rumia','Reda','Puck','Kartuzy','Gniezno','Leszno','Konin','Ostrów Wielkopolski','Lubin','Bolesławiec','Zgorzelec','Świdnica','Dzierżoniów','Kłodzko','Łomża','Suwałki','Augustów','Hajnówka','Radomsko','Pabianice','Zgierz','Tomaszów Mazowiecki','Skierniewice','Łowicz','Kutno','Sieradz','Wieluń','Zduńska Wola','Bełchatów','Grodzisk Mazowiecki','Legionowo','Wołomin','Otwock','Piaseczno','Ciechanów','Mława','Koszalin','Kołobrzeg','Świnoujście','Stargard','Szczecinek','Wałcz','Grudziądz','Brodnica','Ostróda','Iława','Działdowo','Bartoszyce','Kętrzyn','Giżycko','Mrągowo','Ełk','Skarżysko-Kamienna','Starachowice','Ostrowiec Świętokrzyski','Końskie','Jaworzno','Będzin','Czeladź','Trzebinia','Kęty','Czechowice-Dziedzice','Cieszyn','Ustroń','Wisła','Skoczów','Głogów','Polkowice','Rawicz','Gostyń'];
 
@@ -803,7 +849,6 @@ function selectAppCity(city){
   closeAppCityDropdown();
 }
 
-// Close city dropdown on outside click
 document.addEventListener('click',function(e){
   const wrap=document.getElementById('app-city-wrap');
   if(wrap&&!wrap.contains(e.target)&&appCityOpen)closeAppCityDropdown();
@@ -868,8 +913,14 @@ function monthlyUsed(){
   }).length;
 }
 
+// ── FIX: Sprawdza czy użytkownik może wykonać wycenę ──
+// Starter: max STARTER_LIMIT wycen miesięcznie
+// Trial: nielimitowane
+// Pro/Agencja: nielimitowane
 function canValuate(){
-  if(isPro()||isTrial())return true;
+  if(isPro())return true;
+  if(isTrial())return true;
+  // Starter i inne — limit miesięczny
   return monthlyUsed()<STARTER_LIMIT;
 }
 
@@ -925,6 +976,7 @@ function updatePlanUI(){
     upgBtn.style.display='none';setUpgBtn.style.display='none';cancelBtn.style.display='none';
     hideLimitBanners();
   }else{
+    // ── STARTER — limit 5 wycen miesięcznie ──
     const left=Math.max(0,STARTER_LIMIT-used);
     const pct=Math.min(100,Math.round((used/STARTER_LIMIT)*100));
     const barColor=left===0?'linear-gradient(90deg,#EF4444,#DC2626)':left<=1?'linear-gradient(90deg,#F59E0B,#EF4444)':'linear-gradient(90deg,#F59E0B,#FCD34D)';
@@ -947,10 +999,10 @@ function renderLimitBanners(used,left){
     const el=document.getElementById(id);
     if(left===0){
       el.style.display='block';
-      el.innerHTML=`<div class="limit-banner danger"><span class="lb-txt">⚠ Limit ${STARTER_LIMIT} wycen/miesiąc wyczerpany (Plan Starter)</span><button class="lb-btn" onclick="openUpgrade('limit')">Przejdź na Pro →</button></div>`;
+      el.innerHTML=`<div class="limit-banner danger"><span class="lb-txt">⛔ Limit ${STARTER_LIMIT} wycen/miesiąc wyczerpany. Przejdź na Pro aby wyceniać bez limitu.</span><button class="lb-btn" onclick="openUpgrade('limit')">Przejdź na Pro →</button></div>`;
     }else if(left<=2){
       el.style.display='block';
-      el.innerHTML=`<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen w tym miesiącu (Starter)</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz do Pro</button></div>`;
+      el.innerHTML=`<div class="limit-banner"><span class="lb-txt">Pozostało ${left} z ${STARTER_LIMIT} wycen w tym miesiącu (Plan Starter)</span><button class="lb-btn" onclick="openUpgrade()">Ulepsz do Pro</button></div>`;
     }else{
       el.style.display='none';
     }
@@ -963,19 +1015,18 @@ function updateKPIs(){
   document.getElementById('kpi-month').textContent=used;
 
   if(isPro()||isTrial()){
-    // Nielimitowane
     document.getElementById('kpi-limit-txt').textContent='nielimitowane';
     document.getElementById('kpi-limit-txt').style.color='var(--green)';
-    // KPI usage box — pokaż "Nielimitowane"
-    document.getElementById('ku-lbl')&&(document.getElementById('ku-lbl').textContent='Limit wycen');
+    document.getElementById('ku-lbl').textContent='Limit wycen';
     document.getElementById('ku-nums').textContent='∞ Nielimitowane';
     document.getElementById('ku-fill').style.width='0%';
     document.getElementById('ku-fill').style.background='var(--green)';
   }else{
-    // Starter — 5/miesiąc
+    // Starter — wyraźnie pokazuj limit
     const left=Math.max(0,STARTER_LIMIT-used);
     document.getElementById('kpi-limit-txt').textContent=`${used}/${STARTER_LIMIT} wycen (Starter)`;
     document.getElementById('kpi-limit-txt').style.color=left===0?'var(--red)':left<=2?'var(--amber)':'var(--tm)';
+    document.getElementById('ku-lbl').textContent='Limit wycen';
     document.getElementById('ku-nums').textContent=`${used} / ${STARTER_LIMIT}`;
     const pct=Math.min(100,Math.round((used/STARTER_LIMIT)*100));
     document.getElementById('ku-fill').style.width=pct+'%';
@@ -983,19 +1034,52 @@ function updateKPIs(){
   }
 }
 
+// ── FIX: renderChart — nowa struktura HTML dla słupków ──
+// Słupki rosną od dołu, etykiety zawsze poniżej, nigdy nie zasłaniają napisu "Aktywność wycen"
 function renderChart(){
   const bars=document.getElementById('chart-bars');
   const dayData=Array.from({length:8},()=>({count:0}));
-  STATE.history.forEach(v=>{const diff=Math.floor((Date.now()-new Date(v.created_at))/86400000);if(diff<8)dayData[7-diff].count++;});
+  STATE.history.forEach(v=>{
+    const diff=Math.floor((Date.now()-new Date(v.created_at))/86400000);
+    if(diff<8)dayData[7-diff].count++;
+  });
   const labels=['T-7','T-6','T-5','T-4','T-3','T-2','T-1','Dziś'];
   const max=Math.max(...dayData.map(d=>d.count),1);
-  bars.innerHTML=dayData.map((d,i)=>`<div class="bar-col"><div class="bar-tooltip"><div class="bar-tooltip-count">${d.count}</div></div><div class="bar" style="height:${Math.max(3,Math.round((d.count/max)*90))}px;opacity:${i===7?1:.5}"></div><div class="bar-lbl">${labels[i]}</div></div>`).join('');
+
+  bars.innerHTML=dayData.map((d,i)=>{
+    // Procent wysokości słupka (od 3% do 100% dostępnej przestrzeni)
+    const barPct=Math.max(3,Math.round((d.count/max)*100));
+    const opacity=i===7?1:0.5;
+    return`<div class="bar-col">
+      ${d.count>0?`<div class="bar-tooltip"><div class="bar-tooltip-count">${d.count}</div><div style="font-size:10px;color:var(--tm);">${labels[i]}</div></div>`:''}
+      <div class="bar-inner">
+        <div class="bar" style="height:${barPct}%;opacity:${opacity};"></div>
+      </div>
+      <div class="bar-lbl">${labels[i]}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderRecent(){
   const el=document.getElementById('recent-list');
-  if(!STATE.history.length){el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';return;}
-  el.innerHTML=STATE.history.slice(0,5).map(v=>`<div class="ri" onclick="openDetail('${v.id}')"><div class="ri-l"><div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div><div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div><div class="ri-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div></div></div><div><div class="ri-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div><div class="ri-m2">${(v.cena_za_m2||0).toLocaleString('pl-PL')} zł/m²</div></div></div>`).join('');
+  if(!STATE.history.length){
+    el.innerHTML='<div style="text-align:center;padding:36px;color:var(--tf);font-size:14px;">Brak wycen · <a style="color:var(--vl);cursor:pointer;" onclick="switchTab(\'valuator\')">wykonaj pierwszą →</a></div>';
+    return;
+  }
+  el.innerHTML=STATE.history.slice(0,5).map(v=>`
+    <div class="ri" onclick="openDetail('${v.id}')">
+      <div class="ri-l">
+        <div class="ri-ico"><svg width="15" height="15" fill="none" viewBox="0 0 15 15"><path d="M7.5 1l1.8 3.8L13 5.5l-3 2.9.7 4.1-3.2-1.7-3.2 1.7.7-4.1-3-2.9 3.7-.7z" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+        <div>
+          <div class="ri-addr">${v.miasto}${v.dzielnica?', '+v.dzielnica:''}</div>
+          <div class="ri-meta">${v.metraz} m² · ${v.stan||''} · ${new Date(v.created_at).toLocaleDateString('pl-PL')}</div>
+        </div>
+      </div>
+      <div>
+        <div class="ri-price">${(v.cena||0).toLocaleString('pl-PL')} zł</div>
+        <div class="ri-m2">${(v.cena_za_m2||0).toLocaleString('pl-PL')} zł/m²</div>
+      </div>
+    </div>`).join('');
 }
 
 function renderHistoryList(filter=''){
@@ -1165,6 +1249,7 @@ async function runValuation(){
   const stan=document.getElementById('v-stan').value;
   if(!miasto||!metraz||!stan){alert('Podaj miasto, metraż i stan.');return;}
 
+  // ── FIX: Sprawdź limit PRZED wycenią — blokuj Starter po 5 wycenach ──
   if(!canValuate()){
     openUpgrade('limit');
     return;
@@ -1269,6 +1354,7 @@ async function saveToHistory(){
     btn.style.color='#34D399';
     btn.style.border='1px solid rgba(16,185,129,.3)';
     btn.disabled=true;
+    // Odświeź KPI i limity po zapisaniu
     updateKPIs();updatePlanUI();renderChart();renderRecent();
   }catch(e){alert('Błąd: '+e.message);btn.disabled=false;btn.textContent='💾 Zapisz w historii';}
 }
@@ -1552,11 +1638,8 @@ async function submitCancelTrial(){
     return;
   }
   const reason=selected.value==='inne'?(document.getElementById('cancel-other-text').value.trim()||'Inny powód'):selected.value;
-
   btn.disabled=true;
   btn.textContent='Przekierowuję...';
-
-  // Zapisz feedback
   try{
     await sb.from('cancel_feedback').insert({
       user_id:STATE.user.id,
@@ -1564,27 +1647,18 @@ async function submitCancelTrial(){
       created_at:new Date().toISOString()
     }).catch(()=>{});
   }catch(e){}
-
-  // Przekieruj do Stripe Customer Portal
   try{
     const res=await fetch('/.netlify/functions/create-portal',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        user_id:STATE.user.id,
-        email:STATE.user.email,
-        reason
-      })
+      body:JSON.stringify({user_id:STATE.user.id,email:STATE.user.email,reason})
     });
-
     if(!res.ok){
       const text=await res.text();
       console.error('Portal error:',res.status,text);
       throw new Error('Błąd serwera: '+res.status);
     }
-
     const data=await res.json();
-
     if(data.url){
       closeModal('modal-cancel-trial');
       window.location.href=data.url;
@@ -1604,7 +1678,7 @@ function openUpgrade(reason){
   const title=document.getElementById('upg-title'),sub=document.getElementById('upg-sub');
   if(reason==='limit'){
     title.textContent='Limit wycen wyczerpany';
-    sub.textContent=`Plan Starter pozwala na ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro — nielimitowane wyceny.`;
+    sub.textContent=`Plan Starter pozwala na ${STARTER_LIMIT} wycen/miesiąc. Przejdź na Pro — nielimitowane wyceny bez żadnych ograniczeń.`;
   }else if(reason==='pdf'){
     title.textContent='Raport PDF — plan Pro';
     sub.textContent='PDF z brandingiem agencji dostępny w planie Pro lub Agencja.';
@@ -1644,10 +1718,9 @@ function switchTab(tab){
 function openModal(id){document.getElementById(id)?.classList.add('open');}
 function closeModal(id){document.getElementById(id)?.classList.remove('open');}
 
-// ── MODAL BACKGROUND CLICK — ONLY on the dark bg itself, not children ──
+// Zamykanie modali przez kliknięcie w tło
 document.querySelectorAll('.modal-bg').forEach(m=>{
   m.addEventListener('click',function(e){
-    // Only close if click is EXACTLY on the backdrop, not on any child
     if(e.target===m)m.classList.remove('open');
   });
 });
