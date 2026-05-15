@@ -2,6 +2,21 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8"/>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1350928460422365');
+fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1350928460422365&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
 <title>Estivo — Wycena nieruchomości AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -724,18 +739,12 @@ function openModal(id){document.getElementById(id)?.classList.add('open');}
 function closeModal(id){document.getElementById(id)?.classList.remove('open');}
 function openLoginModal(){openModal('modal-login');setTimeout(()=>document.getElementById('ml-email').focus(),200);}
 
-// ─── FIX: close modal only when mousedown AND mouseup both land on the backdrop ───
 ['modal-paywall','modal-login','modal-lead','modal-agencja'].forEach(id=>{
   const bg=document.getElementById(id);
   if(!bg)return;
   let mousedownOnBg=false;
-  bg.addEventListener('mousedown',e=>{
-    mousedownOnBg=(e.target===bg);
-  });
-  bg.addEventListener('mouseup',e=>{
-    if(mousedownOnBg&&e.target===bg)closeModal(id);
-    mousedownOnBg=false;
-  });
+  bg.addEventListener('mousedown',e=>{mousedownOnBg=(e.target===bg);});
+  bg.addEventListener('mouseup',e=>{if(mousedownOnBg&&e.target===bg)closeModal(id);mousedownOnBg=false;});
 });
 
 document.addEventListener('keydown',e=>{
